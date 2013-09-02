@@ -15,3 +15,13 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+Route::get('users', function()
+{
+	Log::info('Entering \'users\' route.');
+	Log::info('Log message', array('context' => 'Other helpful information'));
+    //return View::make('users');
+    $users = User::all();
+
+    return View::make('users')->with('users', $users);
+});
