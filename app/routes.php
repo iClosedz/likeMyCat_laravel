@@ -20,6 +20,14 @@ Route::get('admin/users', function(){
 	return 'user admin page';
 });
 
+Route::get('admin/uploads', function(){
+	return 'admin manages all uploads here';
+});
+ 
+Route::get('user/uploads', function(){
+	return 'user manages their own uploads here';
+});
+
 /**
  * create and apply admin filter
  */
@@ -38,6 +46,18 @@ Route::filter('admin', function(){
 });
 
 Route::when('admin/*', 'admin');
+
+/**
+ * create and apply user filter
+ */
+Route::filter('user', function(){
+	if(!Auth::check()){
+		Session::put('url.intended', URL::current());
+		return Redirect::route('get login')->with('info', 'You must be logged in to access that page.');
+	}
+});
+
+Route::when('user/*', 'user');
 
 /**
  * login
