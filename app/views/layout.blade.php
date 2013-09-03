@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		@yield('title')
+<head>
+	<meta charset="utf-8">
+	@yield('title')
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="">
-		<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-		<!-- Le styles -->
-		<link href="./assets/css/bootstrap.css" rel="stylesheet">
-		<style type="text/css">
-			body {
-				padding-top: 60px;
-				padding-bottom: 40px;
-			}
-			@yield('customStyles')
-		</style>
-		<link href="./assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<!-- Le styles -->
+	<link href="./assets/css/bootstrap.css" rel="stylesheet">
+	<style type="text/css">
+		body {
+			padding-top: 60px;
+			padding-bottom: 40px;
+		}
+		@yield('customStyles')
+	</style>
+	<link href="./assets/css/bootstrap-responsive.css" rel="stylesheet">
 
-		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
 		<script src="./assets/js/html5shiv.js"></script>
 		<![endif]-->
@@ -31,33 +31,56 @@
 		@yield('additionalHeadData')
 	</head>
 	<body>
-	<!--- start nav bar -->
+		<!--- start nav bar -->
 		<div class="navbar navbar-inverse navbar-fixed-top">
-		  	<div class="navbar-inner">
-		   	<div class="container">
-		    		<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-		    			<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-		  			</button>
-		  			<a class="brand" href="./rate">Like My Cat?</a>
-		  				<div class="nav-collapse collapse">
-		    				<ul class="nav">
-						     <li><a href="./rate">Rate</a></li> 
-						     <li><a href="./upload_form">Upload</a></li>
-						     <li><a href="./about">About</a></li> 
-						     <li><a href="./contact">Contact</a></li> 
-							</ul>
-						  <form class="navbar-form pull-right" method="post" action="./login">
-						    <input class="span2" name="user_id" type="text" placeholder="Email"> 
-						    <input class="span2" name="password" type="password" placeholder="Password">
-						    <button type="submit" name="submit" class="btn">Sign in</button>
-						  </form>
-						</div>
+			<div class="navbar-inner">
+				<div class="container">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+					</button>
+					<a class="brand" href="./rate">Like My Cat?</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li><a href="rate">Rate</a></li> 
+							<li><a href="upload_form">Upload</a></li>
+							<li><a href="about">About</a></li> 
+							<li><a href="contact">Contact</a></li> 
+							@if (Auth::check())
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{{ $user->email }}}<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="logout">Log Out</a></li>
+									<li class="divider"></li>
+									<li class="nav-header">Account</li>
+									<li><a href="user/changePassword">Change Password</a></li>
+									@if ($user->hasRole('uploader'))
+									<li><a href="user/ManageUploads">Manage Uploads</a></li>
+									@endif
+									@if ($user->hasRole('admin'))
+									<li class="divider"></li>
+									<li class="nav-header">Administration</li>
+									<li><a href="adminUsers">User Administration</a></li>
+									@endif
+								</ul>
+							</li>
+							@else
+							<li><a href="signUp">Sign Up</a></li> 
+							@endif
+						</ul>
+						@if (Auth::guest())
+							{{ Form::open(array('route' => 'post login', 'class'=>'navbar-form pull-right')) }}
+							{{ Form::email('username', null, array('class' => 'span2', 'placeholder' => 'Email')) }}
+							{{ Form::password('password', array('class' => 'span2', 'placeholder' => 'Password')) }}
+							{{ Form::button('Sign In', array('class' => 'btn', 'type' => 'submit')) }}
+							{{ Form::close() }}
+						@endif
+					</div>
 				</div>
 			</div>
 		</div>
-	<!--- end nav bar -->
+		<!--- end nav bar -->
 		<div class="container">
-		<!-- alerts go here -->
+			<!-- alerts go here -->
 			<div class="container-fluid">
 				@yield('content')
 				<hr/>
@@ -70,4 +93,4 @@
 		<script src="./assets/js/bootstrap.min.js"></script>
 		@yield('additionalScriptTags')
 	</body>
-</html>
+	</html>

@@ -6,6 +6,6 @@
 
 @section('content')
     @foreach($users as $user)
-        <p>{{ $user->password }}</p>
+        <p>{{ $user->email }}</p>
     @endforeach
 @stop

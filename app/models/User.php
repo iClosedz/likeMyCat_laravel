@@ -57,9 +57,9 @@ implements UserInterface, RemindableInterface {
 
 	// to conform to reminder interface
 	public function getReminderEmail()
-    {
-        return $this->email;
-    }
+	{
+		return $this->email;
+	}
 
 
 
@@ -82,6 +82,18 @@ implements UserInterface, RemindableInterface {
 	/**
 	* Done defining various one to many relationships
 	*/
+
+	public function hasRole($roleName){
+		$roles = $this->userRoles;
+		foreach ($roles as $role) {
+			//Log::info('role: ' . $role->role->role_name);
+			if($role->role->role_name == $roleName){
+				return true;
+			}
+		}	
+
+		return false;
+	}
 
 	public function scopeByEmail($query, $email){
 		return $query->where('email', '=', $email);
