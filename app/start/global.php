@@ -50,6 +50,11 @@ Log::useDailyFiles(storage_path().'/logs/'.$logFile);
 
 App::error(function(Exception $exception, $code)
 {
+	// Don't log 404s
+    if ($exception instanceof Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+        return;
+    }
+
 	Log::error($exception);
 });
 
