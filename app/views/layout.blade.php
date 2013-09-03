@@ -64,7 +64,7 @@
 								</ul>
 							</li>
 							@else
-							<li><a href="signUp">Sign Up</a></li> 
+							<li><a href="signup">Sign Up</a></li> 
 							@endif
 						</ul>
 						@if (Auth::guest())
@@ -80,7 +80,24 @@
 		</div>
 		<!--- end nav bar -->
 		<div class="container">
-			<!-- alerts go here -->
+			@if (Session::has('error'))
+				<div class="alert alert-error">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+			    	{{ trans(Session::get('error')) }}
+			    </div>
+			@endif
+			@if (Session::has('success'))
+			    <div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+			    	{{ trans(Session::get('success')) }}
+			    </div>
+			@endif
+			@if (Session::has('info'))
+			    <div class="alert alert-info">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+			    	{{ trans(Session::get('info')) }}
+			    </div>
+			@endif
 			<div class="container-fluid">
 				@yield('content')
 				<hr/>

@@ -16,6 +16,9 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+/**
+ * login
+ */
 Route::post('login', array('before' => 'csrf', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
 	$email = trim(Input::get('username'));
@@ -23,7 +26,7 @@ Route::post('login', array('before' => 'csrf', function(){
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password))){
 		//return 'auth successful';
-		return Redirect::intended('rate');
+		return Redirect::intended('rate')->with('success', 'Login Successful');
 	} else {
 		return 'auth faiiled';
 	}
@@ -36,12 +39,51 @@ Route::get('login', function(){
 	return 'not yet coded...';
 });
 
+/**
+ * signup
+ */
+Route::post('signup', array('before' => 'csrf', function(){
+	Log::info('Entering route "' . Route::currentRouteName() . '"');
+	$email = trim(Input::get('username'));
+	$password = Input::get('password');
+
+	if(User::getUserByEmail($email)){
+		return Redirect::route('get signup')->with('error', 'User already exists');
+	}
+
+	$user = new User;
+	$user->email = $email;
+	$user->password = Hash::make($password);
+	$user->is_guest = 'false';
+	$user->ip_address = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
+	$status = $user->save();
+
+	if($status){
+		Auth::loginUsingId($user->id);
+		return Redirect::route('get rate')->with('success', 'Sign up successful!');
+	} else {
+		return Redirect::route('get signup')->with('error', 'Error creating new user');
+	}
+
+}));
+
+Route::get('signup', function(){
+	Log::info('Entering route "' . Route::currentRouteName() . '"');
+	return View::make('signup');
+});
+
+/**
+ * logout
+ */
 Route::any('logout', function(){
 	Auth::logout();
-	return Redirect::intended('rate');
+	return Redirect::intended('rate')->with('info', 'Logged out');;
 });
 
 
+/**
+ * users
+ */
 Route::get('users', function()
 {
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
@@ -52,6 +94,10 @@ Route::get('users', function()
 	return View::make('users')->with('users', $users);
 });
 
+
+/**
+ * rate
+ */
 Route::get('rate', function()
 {
 	Log::info('Entering route "' . Route::currentRouteName() . '"');

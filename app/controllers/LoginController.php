@@ -9,6 +9,7 @@ class LoginController extends BaseController {
 	 */
 	public function index()
 	{
+		//echo 'hi there'
 		return 'hi there dude';
 	}
 
