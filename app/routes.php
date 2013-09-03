@@ -11,10 +11,33 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
+Route::get('/', function(){
+	//return View::make('hello');
+	return Redirect::route('get rate');
 });
+
+Route::get('admin/users', function(){
+	return 'user admin page';
+});
+
+/**
+ * create and apply admin filter
+ */
+Route::filter('admin', function(){
+	if(!Auth::check()){
+		Session::put('url.intended', URL::current());
+		return Redirect::route('get login')->with('info', 'You must be logged in to access that page.');
+	}
+
+	if(!Auth::user()->hasRole('admin')){
+		//Session::put('url.intended', URL::current());
+		//return Redirect::guest('rate')->with('error', 'You must be an admin to access this page!');
+		return Redirect::route('get /')->with('error', 'You must be an admin to access this page!');
+	}
+
+});
+
+Route::when('admin/*', 'admin');
 
 /**
  * login
@@ -25,19 +48,33 @@ Route::post('login', array('before' => 'csrf', function(){
 	$password = Input::get('password');
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password))){
-		//return 'auth successful';
-		return Redirect::intended('rate')->with('success', 'Login Successful');
+		return Redirect::intended('/')->with('success', 'Login Successful');
 	} else {
-		return 'auth faiiled';
+		//Session::flash('error', 'Authentication failed'); // flash message since we're not redirecting
+		return View::make('login')->with('username', $email)->with('error', true);
 	}
-
 	//todo: figure out how to catch TokenMismatchException
 }));
 
 Route::get('login', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
-	return 'not yet coded...';
+
+	if(Auth::check()){
+		return Redirect::intended('get /')->with('info', 'You are already logged in');
+	} else {
+		return View::make('login');
+	}
 });
+
+
+/**
+ * logout
+ */
+Route::any('logout', function(){
+	Auth::logout();
+	return Redirect::intended('/')->with('info', 'Logged out');;
+});
+
 
 /**
  * signup
@@ -51,33 +88,34 @@ Route::post('signup', array('before' => 'csrf', function(){
 		return Redirect::route('get signup')->with('error', 'User already exists');
 	}
 
-	$user = new User;
-	$user->email = $email;
-	$user->password = Hash::make($password);
-	$user->is_guest = 'false';
-	$user->ip_address = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
-	$status = $user->save();
+	// validate input
+	$rules = array('username' => 'email', 'password' => array('required', 'min:6'));
+	$validator = Validator::make(Input::all(), $rules);
 
-	if($status){
-		Auth::loginUsingId($user->id);
-		return Redirect::route('get rate')->with('success', 'Sign up successful!');
-	} else {
-		return Redirect::route('get signup')->with('error', 'Error creating new user');
-	}
+	if ($validator->fails()){
+    	Log::info('validator errors: ' . $validator); // will this work?
+    	return Redirect::to('get signup')->withErrors($validator);
+    }
+
+    $user = new User;
+    $user->email = $email;
+    $user->password = Hash::make($password);
+    $user->is_guest = 'false';
+    $user->ip_address = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
+    $status = $user->save();
+
+    if($status){
+    	Auth::loginUsingId($user->id);
+    	return Redirect::route('get rate')->with('success', 'Sign up successful!');
+    } else {
+    	return Redirect::route('get signup')->with('error', 'Error creating new user');
+    }
 
 }));
 
 Route::get('signup', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
 	return View::make('signup');
-});
-
-/**
- * logout
- */
-Route::any('logout', function(){
-	Auth::logout();
-	return Redirect::intended('rate')->with('info', 'Logged out');;
 });
 
 
@@ -103,15 +141,15 @@ Route::get('rate', function()
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
 
 	$user = null;
-	$roles = null;
+	//$roles = null;
 
 	if(Auth::check()){
 		//User::getUserByEmail('davidkey@gmail.com');
 		$user = Auth::user();
-		$roles = $user->userRoles;
+		//$roles = $user->userRoles;
 	}
 
-	return View::make('rate')->with('user', $user)->with('roles', $roles);
+	return View::make('rate')->with('user', $user);//->with('roles', $roles); // is passing roles needed?
 });
 
 

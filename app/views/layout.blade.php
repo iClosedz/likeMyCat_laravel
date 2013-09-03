@@ -1,3 +1,4 @@
+<?php if(!isset($user)){ $user=null; } ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +16,7 @@
 			padding-top: 60px;
 			padding-bottom: 40px;
 		}
+
 		@yield('customStyles')
 	</style>
 	<link href="./assets/css/bootstrap-responsive.css" rel="stylesheet">
