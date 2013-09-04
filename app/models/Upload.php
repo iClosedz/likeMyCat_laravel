@@ -9,6 +9,18 @@ class Upload extends Eloquent {
 	 */
 	protected $table = 'uploads';
 
+	public function user(){
+		return $this->belongsTo('User');
+	}
+
+	public function getNumRatings(){
+		return 0; //TODO: fix me
+	}
+
+	public function getAvgRating(){
+		return 0; //TODO: fix me
+	}
+
 }
 
 ?>

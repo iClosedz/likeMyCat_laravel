@@ -5,7 +5,7 @@
 @stop
 
 @section('additionalHeadData')
-<link href="./assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
+<link href="/assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
 @stop
 
 @section('content')
@@ -31,11 +31,11 @@
 	@if (Auth::check())
 		<p>Authorized user</p>
 	@else
-		<p>Not logged in</p>
+		<p>Uploading as guest</p>
 	@endif
 
 @stop
 
 @section('additionalScriptTags')
-	<script src="./assets/js/bootstrap-fileupload.min.js"></script>
+	<script src="/assets/js/bootstrap-fileupload.min.js"></script>
 @stop

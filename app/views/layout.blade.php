@@ -10,7 +10,7 @@
 	<meta name="author" content="">
 
 	<!-- Le styles -->
-	<link href="./assets/css/bootstrap.css" rel="stylesheet">
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
 	<style type="text/css">
 		body {
 			padding-top: 60px;
@@ -19,7 +19,7 @@
 
 		@yield('customStyles')
 	</style>
-	<link href="./assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
@@ -40,33 +40,34 @@
 					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 					</button>
-					<a class="brand" href="./rate">Like My Cat?</a>
+					<a class="brand" href="{{ URL::to('rate') }}">Like My Cat?</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li><a href="rate">Rate</a></li> 
-							<li><a href="upload_form">Upload</a></li>
+							<li><a href="{{ URL::to('rate') }}">Rate</a></li> 
+							<li><a href="{{ URL::to('upload') }}">Upload</a></li>
 							<li><a href="about">About</a></li> 
 							<li><a href="contact">Contact</a></li> 
 							@if (Auth::check())
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{{ $user->email }}}<b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li><a href="logout">Log Out</a></li>
+									<li><a href="{{ URL::to('logout') }}">Log Out</a></li>
 									<li class="divider"></li>
 									<li class="nav-header">Account</li>
 									<li><a href="user/changePassword">Change Password</a></li>
 									@if ($user->hasRole('uploader'))
-									<li><a href="user/ManageUploads">Manage Uploads</a></li>
+									<li><a href="{{ URL::to('user/uploads') }}">Manage Your Uploads</a></li>
 									@endif
 									@if ($user->hasRole('admin'))
 									<li class="divider"></li>
 									<li class="nav-header">Administration</li>
+									<li><a href="{{ URL::to('admin/uploads') }}">Manage All Uploads</a></li>
 									<li><a href="adminUsers">User Administration</a></li>
 									@endif
 								</ul>
 							</li>
 							@else
-							<li><a href="signup">Sign Up</a></li> 
+							<li><a href="{{ URL::to('signup') }}">Sign Up</a></li> 
 							@endif
 						</ul>
 						@if (Auth::guest())
@@ -109,7 +110,7 @@
 			</div>
 		</div>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-		<script src="./assets/js/bootstrap.min.js"></script>
+		<script src="/assets/js/bootstrap.min.js"></script>
 		@yield('additionalScriptTags')
 	</body>
 	</html>

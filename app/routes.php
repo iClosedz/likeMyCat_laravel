@@ -21,11 +21,11 @@ Route::get('admin/users', function(){
 });
 
 Route::get('admin/uploads', function(){
-	return 'admin manages all uploads here';
+	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Upload::all());
 });
 
 Route::get('user/uploads', function(){
-	return 'user manages their own uploads here';
+	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Auth::user()->uploads);
 });
 
 /**
@@ -49,7 +49,7 @@ Route::when('admin/*', 'admin');
  * create and apply user filter
  */
 Route::filter('user', function(){
-	if(!Auth::check()){
+	if(!Auth::check() || Auth::user()->is_guest){
 		Session::put('url.intended', URL::current());
 		return Redirect::route('get login')->with('info', 'You must be logged in to access that page.');
 	}
@@ -89,11 +89,18 @@ Route::get('cat/{upload_id}/image/thumb', function(Upload $upload){
  */
 Route::post('upload', array('before' => 'csrf|upload', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
+
+	if(Auth::check()){
+		$uploadedAs = Auth::user()->id;
+	} else {
+		$uploadedAs = User::where('is_guest', '=', true)->firstOrFail()->id;
+	}
+
+	Log::info('uploadedAs: ' . $uploadedAs);
+
 	$path = Input::file('photo')->getRealPath();
 	$extension = strtolower(Input::file('photo')->getClientOriginalExtension());
 	$mime = Input::file('photo')->getMimeType();
-
-	//echo 'path: ' . $path;
 
 	$orientation = 0;
 	$exif = exif_read_data($path);
@@ -119,7 +126,7 @@ Route::post('upload', array('before' => 'csrf|upload', function(){
 	$image->save(base_path() . '/' . $uploadsDir . $thumbFileName);
 
 	$upload = new Upload();
-	$upload->user_id = Auth::user()->id; // will only work if user is logged in - FIXME
+	$upload->user_id = $uploadedAs; // will only work if user is logged in - FIXME
 	$upload->upload_dir = base_path() . '/uploads/';
 	$upload->file_name = $resizedFileName;
 	$upload->thumb_name = $thumbFileName;
@@ -187,12 +194,10 @@ Route::get('login', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
 
 	if(Auth::check()){
-		// ?? http://bytes.com/topic/asp-classic/answers/53883-after-redirect-back-3rd-party-session-variables-lost
-		//return Redirect::intended('/')->with('info', 'You are already logged in'); // info not coming forward - no info alert
-		return Redirect::intended('rate')->with('info', 'You are already logged in'); // info comes forward, but not best practice
-	} else {
-		return View::make('login');
-	}
+		Auth::logout();
+	} 
+
+	return View::make('login');
 });
 
 
@@ -244,21 +249,8 @@ Route::post('signup', array('before' => 'csrf', function(){
 
 Route::get('signup', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
+	Auth::logout();
 	return View::make('signup');
-});
-
-
-/**
- * users
- */
-Route::get('users', function()
-{
-	Log::info('Entering route "' . Route::currentRouteName() . '"');
-	Log::info('Log message', array('context' => 'Other helpful information'));
-    //return View::make('users');
-	$users = User::all();
-
-	return View::make('users')->with('users', $users);
 });
 
 
@@ -268,7 +260,11 @@ Route::get('users', function()
 Route::get('rate', function()
 {
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
-	return View::make('rate')->with('user', Auth::user());
+	/*if(Auth::guest()){
+		Auth::loginUsingId(User::where('is_guest', '=', true)->firstOrFail()->id);//$user->id);
+}*/
+
+return View::make('rate')->with('user', Auth::user());
 });
 
 

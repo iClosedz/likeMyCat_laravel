@@ -75,7 +75,13 @@ implements UserInterface, RemindableInterface {
 	}
 
 	public function uploads(){
-		return $this->hasMany('Uploads');
+		return $this->hasMany('Upload');
+	}
+
+	// we can define a many-to-many relation using the belongsToMany method:
+	public function roles()
+	{
+		return $this->belongsToMany('Role');
 	}
 
 	/**
