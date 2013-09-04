@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'AddBlobToUploads' => $baseDir . '/app/database/migrations/2013_09_03_220219_add_blob_to_uploads.php',
     'AddMimeToUploads' => $baseDir . '/app/database/migrations/2013_09_03_235737_add_mime_to_uploads.php',
+    'AddNameToUploads' => $baseDir . '/app/database/migrations/2013_09_04_012858_add_name_to_uploads.php',
     'AlterUploads' => $baseDir . '/app/database/migrations/2013_09_04_010647_alter_uploads.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',

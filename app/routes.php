@@ -68,7 +68,6 @@ Route::get('cat/{upload_id}/image', function(Upload $upload){
 
 	$response = Response::make($contents, 200);
 	$response->header('Content-Type', $upload->mime_type);
-	//$response->header('Content-Transfer-Encoding', 'binary'); 
 
 	return $response;
 })
@@ -80,7 +79,6 @@ Route::get('cat/{upload_id}/image/thumb', function(Upload $upload){
 
 	$response = Response::make($contents, 200);
 	$response->header('Content-Type', $upload->mime_type);
-	//$response->header('Content-Transfer-Encoding', 'binary'); 
 
 	return $response;
 })
@@ -108,7 +106,6 @@ Route::post('upload', array('before' => 'csrf|upload', function(){
 	}
 
 	$uniqueFileName = uniqid();
-	//$resizedFile = tmpfile();
 	$uploadsDir = 'uploads/';
 	$resizedFileName = $uniqueFileName . '.' . $extension;
 	$thumbFileName = 't_' . $resizedFileName;
@@ -127,13 +124,15 @@ Route::post('upload', array('before' => 'csrf|upload', function(){
 	$upload->file_name = $resizedFileName;
 	$upload->thumb_name = $thumbFileName;
 	$upload->mime_type = $mime;
+
+	if(Input::has('image_name')){
+		$upload->name = Input::get('image_name');
+	}
+
 	$upload->save();
 
-
-	//echo 'resized path: ' . $resizedPath;
 	return Redirect::route('get upload')->with('info', 'File uploaded as id ' . $upload->id 
-		. ' <a href="cats/' . $upload->id . '/image">click here to view</a>');
-	//return '';
+		. ' <a href="cat/' . $upload->id . '/image">click here to view</a>'); //todo: move this to view, NOT controller (here)
 }));
 
 Route::filter('upload', function(){
@@ -160,7 +159,6 @@ Route::filter('upload', function(){
 		return Redirect::route('get upload')->with('error', 'Invalid file type.');
 	}
 
-	//return Redirect::route('get upload')->with('error', 'default Invalid upload properties');
 });
 
 Route::get('upload', function(){

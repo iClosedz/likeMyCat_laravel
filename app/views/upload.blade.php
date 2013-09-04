@@ -16,7 +16,7 @@
 			<form class="form-signin" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 				<div class="fileupload-exists">
-					<input class="fileupload-exists" type="text" id="cat_name" name="cat_name" placeholder="Pet's Name? (optional)"/>
+					<input class="fileupload-exists" type="text" id="image_name" name="image_name" placeholder="Pet's Name? (optional)"/>
 				</div>
 				<span class="btn btn-file"> 
 					<span class="fileupload-new">Select image</span> 
