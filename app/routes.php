@@ -49,7 +49,7 @@ Route::when('admin/*', 'admin');
  * create and apply user filter
  */
 Route::filter('user', function(){
-	if(!Auth::check() || Auth::user()->is_guest){
+	if(!Auth::check()){
 		Session::put('url.intended', URL::current());
 		return Redirect::route('get login')->with('info', 'You must be logged in to access that page.');
 	}
