@@ -190,15 +190,10 @@ Route::post('login', array('before' => 'csrf', function(){
 	//todo: figure out how to catch TokenMismatchException
 }));
 
-Route::get('login', function(){
+Route::get('login', array('before' => 'guest', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
-
-	if(Auth::check()){
-		Auth::logout();
-	} 
-
 	return View::make('login');
-});
+}));
 
 
 /**
