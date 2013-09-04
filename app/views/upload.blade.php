@@ -21,7 +21,7 @@
 				<span class="btn btn-file"> 
 					<span class="fileupload-new">Select image</span> 
 					<span class="fileupload-exists">Change</span> 
-					<input type="file" name="photo">
+					<input type="file" name="photo"/>
 				</span>
 				<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a> 
 				<input type="submit" name="submit" value="Upload!" class="btn fileupload-exists"/>
@@ -40,9 +40,7 @@
 	</div>
 	@endif
 
-	@if (Auth::check())
-		<p>Authorized user</p>
-	@else
+	@if (Auth::guest())
 		<p>Uploading as guest</p>
 	@endif
 
