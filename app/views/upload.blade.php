@@ -5,7 +5,7 @@
 @stop
 
 @section('additionalHeadData')
-<link href="/assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
+<link href="/assets/css/bootstrap-fileupload.min.css" rel="stylesheet"/>
 @stop
 
 @section('content')
