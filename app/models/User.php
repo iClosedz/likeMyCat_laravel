@@ -74,11 +74,10 @@ implements UserInterface, RemindableInterface {
 		return $this->hasMany('UserRole');
 	}
 
-/*
 	public function uploads(){
 		return $this->hasMany('Uploads');
 	}
-*/
+
 	/**
 	* Done defining various one to many relationships
 	*/

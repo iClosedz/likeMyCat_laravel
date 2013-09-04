@@ -23,7 +23,7 @@ Route::get('admin/users', function(){
 Route::get('admin/uploads', function(){
 	return 'admin manages all uploads here';
 });
- 
+
 Route::get('user/uploads', function(){
 	return 'user manages their own uploads here';
 });
@@ -38,8 +38,6 @@ Route::filter('admin', function(){
 	}
 
 	if(!Auth::user()->hasRole('admin')){
-		//Session::put('url.intended', URL::current());
-		//return Redirect::guest('rate')->with('error', 'You must be an admin to access this page!');
 		return Redirect::route('get /')->with('error', 'You must be an admin to access this page!');
 	}
 
@@ -58,6 +56,117 @@ Route::filter('user', function(){
 });
 
 Route::when('user/*', 'user');
+
+/**
+ * uploads
+ */
+Route::model('upload_id', 'Upload'); // Binding A Parameter To A Model
+
+Route::get('cat/{upload_id}/image', function(Upload $upload){
+	$imagePath = $upload->upload_dir . $upload->file_name;
+	$contents = file_get_contents($imagePath);
+
+	$response = Response::make($contents, 200);
+	$response->header('Content-Type', $upload->mime_type);
+	//$response->header('Content-Transfer-Encoding', 'binary'); 
+
+	return $response;
+})
+->where('upload_id', '[0-9]+');
+
+Route::get('cat/{upload_id}/image/thumb', function(Upload $upload){
+	$imagePath = $upload->upload_dir . $upload->thumb_name;
+	$contents = file_get_contents($imagePath);
+
+	$response = Response::make($contents, 200);
+	$response->header('Content-Type', $upload->mime_type);
+	//$response->header('Content-Transfer-Encoding', 'binary'); 
+
+	return $response;
+})
+->where('upload_id', '[0-9]+');
+
+/**
+ * upload
+ */
+Route::post('upload', array('before' => 'csrf|upload', function(){
+	Log::info('Entering route "' . Route::currentRouteName() . '"');
+	$path = Input::file('photo')->getRealPath();
+	$extension = strtolower(Input::file('photo')->getClientOriginalExtension());
+	$mime = Input::file('photo')->getMimeType();
+
+	//echo 'path: ' . $path;
+
+	$orientation = 0;
+	$exif = exif_read_data($path);
+	if(!empty($exif['Orientation'])){
+		$orientation = $exif['Orientation'];
+	} elseif(isset($exif['COMPUTED']) && isset($exif['COMPUTED']['Orientation'])){
+		$orientation = $exif['COMPUTED']['Orientation'];
+	} elseif (isset($exif['IFD0']) && isset($exif['IFD0']['Orientation'])) {
+		$orientation = $exif['IFD0']['Orientation'];
+	}
+
+	$uniqueFileName = uniqid();
+	//$resizedFile = tmpfile();
+	$uploadsDir = 'uploads/';
+	$resizedFileName = $uniqueFileName . '.' . $extension;
+	$thumbFileName = 't_' . $resizedFileName;
+
+	$image = new SimpleImage();
+	$image->load($path);
+	$image->fixRotation($orientation);
+	$image->resizeToWidth(600); 
+	$image->save(base_path() . '/' . $uploadsDir . $resizedFileName);
+	$image->resizeToWidth(130); 
+	$image->save(base_path() . '/' . $uploadsDir . $thumbFileName);
+
+	$upload = new Upload();
+	$upload->user_id = Auth::user()->id; // will only work if user is logged in - FIXME
+	$upload->upload_dir = base_path() . '/uploads/';
+	$upload->file_name = $resizedFileName;
+	$upload->thumb_name = $thumbFileName;
+	$upload->mime_type = $mime;
+	$upload->save();
+
+
+	//echo 'resized path: ' . $resizedPath;
+	return Redirect::route('get upload')->with('info', 'File uploaded as id ' . $upload->id 
+		. ' <a href="cats/' . $upload->id . '/image">click here to view</a>');
+	//return '';
+}));
+
+Route::filter('upload', function(){
+	Log::info('Applying filer \'upload\'');
+
+	$sizeLimit = 60000000; // 6mb
+
+	if (!Input::hasFile('photo')){
+		return Redirect::route('get upload')->with('error', 'No file included with POST');
+	}
+
+	$allowedExts = array("gif", "jpeg", "jpg", "png");
+	$allowedMimeTypes = array("image/gif", "image/jpeg", "image/jpg", "image/pjpeg", "image/x-png", "image/png");
+
+	$size = Input::file('photo')->getSize();
+	$mime = Input::file('photo')->getMimeType();
+	$extension = strtolower(Input::file('photo')->getClientOriginalExtension());
+
+	if($size > $sizeLimit){
+		return Redirect::route('get upload')->with('error', 'File too large - 6 MB limit.');
+	}
+
+	if(!in_array($mime, $allowedMimeTypes) || !in_array($extension, $allowedExts)){
+		return Redirect::route('get upload')->with('error', 'Invalid file type.');
+	}
+
+	//return Redirect::route('get upload')->with('error', 'default Invalid upload properties');
+});
+
+Route::get('upload', function(){
+	Log::info('Entering route "' . Route::currentRouteName() . '"');
+	return View::make('upload')->with('user', Auth::user());
+});
 
 /**
  * login
@@ -80,7 +189,9 @@ Route::get('login', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
 
 	if(Auth::check()){
-		return Redirect::intended('get /')->with('info', 'You are already logged in');
+		// ?? http://bytes.com/topic/asp-classic/answers/53883-after-redirect-back-3rd-party-session-variables-lost
+		//return Redirect::intended('/')->with('info', 'You are already logged in'); // info not coming forward - no info alert
+		return Redirect::intended('rate')->with('info', 'You are already logged in'); // info comes forward, but not best practice
 	} else {
 		return View::make('login');
 	}
@@ -159,17 +270,7 @@ Route::get('users', function()
 Route::get('rate', function()
 {
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
-
-	$user = null;
-	//$roles = null;
-
-	if(Auth::check()){
-		//User::getUserByEmail('davidkey@gmail.com');
-		$user = Auth::user();
-		//$roles = $user->userRoles;
-	}
-
-	return View::make('rate')->with('user', $user);//->with('roles', $roles); // is passing roles needed?
+	return View::make('rate')->with('user', Auth::user());
 });
 
 
