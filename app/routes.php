@@ -63,6 +63,8 @@ Route::when('user/*', 'user');
 Route::model('upload_id', 'Upload'); // Binding A Parameter To A Model
 
 Route::get('cat/{upload_id}/image', function(Upload $upload){
+	Log::info('Entering route "' . Route::currentRouteName() . '"');
+
 	$imagePath = $upload->upload_dir . $upload->file_name;
 	$contents = file_get_contents($imagePath);
 
@@ -74,6 +76,8 @@ Route::get('cat/{upload_id}/image', function(Upload $upload){
 ->where('upload_id', '[0-9]+');
 
 Route::get('cat/{upload_id}/image/thumb', function(Upload $upload){
+	Log::info('Entering route "' . Route::currentRouteName() . '"');
+
 	$imagePath = $upload->upload_dir . $upload->thumb_name;
 	$contents = file_get_contents($imagePath);
 
@@ -87,6 +91,10 @@ Route::get('cat/{upload_id}/image/thumb', function(Upload $upload){
 /**
  * upload
  */
+//ImageUpload\
+Route::post('upload', 'ImageUploadController@uploadImage');
+
+/*
 Route::post('upload', array('before' => 'csrf|upload', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
 
@@ -126,7 +134,7 @@ Route::post('upload', array('before' => 'csrf|upload', function(){
 	$image->save(base_path() . '/' . $uploadsDir . $thumbFileName);
 
 	$upload = new Upload();
-	$upload->user_id = $uploadedAs; // will only work if user is logged in - FIXME
+	$upload->user_id = $uploadedAs;
 	$upload->upload_dir = base_path() . '/uploads/';
 	$upload->file_name = $resizedFileName;
 	$upload->thumb_name = $thumbFileName;
@@ -167,6 +175,7 @@ Route::filter('upload', function(){
 	}
 
 });
+*/
 
 Route::get('upload', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');

@@ -28,6 +28,18 @@
 			</form>
 		</div>
 	</div>
+
+	@if (Session::has('upload'))
+	<div class="alert">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong>Image uploaded!</strong> <a href="{{ URL::route('get cat/{upload_id}/image', array(Session::get('upload')->id)) }}">Click here</a> to view or share.
+		<br/><br/>
+		<a href="{{ URL::route('get cat/{upload_id}/image', array(Session::get('upload')->id)) }}">
+			<img src="{{ URL::route('get cat/{upload_id}/image/thumb', array(Session::get('upload')->id)) }}"/>
+		</a>
+	</div>
+	@endif
+
 	@if (Auth::check())
 		<p>Authorized user</p>
 	@else

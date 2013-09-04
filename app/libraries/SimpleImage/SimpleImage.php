@@ -1,4 +1,7 @@
 <?php
+
+//namespace ImageUpload;
+
 class SimpleImage
 {
     var $image;
