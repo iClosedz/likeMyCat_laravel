@@ -32,7 +32,7 @@
 	@if (Session::has('upload'))
 	<div class="alert">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
-		<strong>Image uploaded!</strong> <a href="{{ URL::route('get cat/{upload_id}/image', array(Session::get('upload')->id)) }}">Click here</a> to view or share.
+		<strong>{{{Session::get('upload')->name}}} uploaded!</strong> <a href="{{ URL::route('get cat/{upload_id}/image', array(Session::get('upload')->id)) }}">Click here</a> to view or share.
 		<br/><br/>
 		<a href="{{ URL::route('get cat/{upload_id}/image', array(Session::get('upload')->id)) }}">
 			<img src="{{ URL::route('get cat/{upload_id}/image/thumb', array(Session::get('upload')->id)) }}"/>
@@ -41,7 +41,7 @@
 	@endif
 
 	@if (Auth::guest())
-		<p>Uploading as guest</p>
+		<div>Uploading as guest</div>
 	@endif
 
 @stop
