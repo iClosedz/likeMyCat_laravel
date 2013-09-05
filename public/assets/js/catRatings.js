@@ -36,7 +36,7 @@ function catImage(uploadId, fileName, fileNameThumb, avgRating, numRatings, catN
 
 function rateImage(rating) {
    console.log('rating imageId ' + currentImage.uploadId + ': ' + rating);
-   $.post("/cat/" + currentImage.uploadId + "/rate/" + rating, {
+   $.get("/cat/" + currentImage.uploadId + "/rate/" + rating, {
       })
       .done(function (data) {
          console.log('rating returned "' + data + '"');

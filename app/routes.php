@@ -21,8 +21,37 @@ Route::get('admin/users', function(){
 });
 
 Route::get('admin/uploads', function(){
-	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Upload::all());
+	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Upload::orderBy('id', 'DESC')->get());
 });
+
+Route::get('user/uploads', function(){
+	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Auth::user()->uploads);
+});
+
+Route::get('admin/uploads/delete/{upload_id}', function(Upload $upload){
+	$status = $upload->delete();
+
+	return Response::json(array(
+		'success' => $status, 
+		'results' => array('upload_id' => $upload->id)
+		));
+})->where('upload_id', '[0-9]+');
+
+Route::get('user/uploads/delete/{upload_id}', function(Upload $upload){
+	if(Auth::user()->id === $upload->user_id){
+		$status = $upload->delete();
+
+		return Response::json(array(
+			'success' => $status, 
+			'results' => array('upload_id' => $upload->id)
+			));
+	} else {
+		return Response::json(array(
+			'success' => false, 
+			'results' => 'you don\'t own this image'
+			));
+	}
+})->where('upload_id', '[0-9]+');
 
 Route::get('user/uploads', function(){
 	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Auth::user()->uploads);
@@ -85,7 +114,7 @@ Route::get('cat/{upload_id}/image/thumb', function(Upload $upload){
 ->where('upload_id', '[0-9]+');
 
 // should be post
-Route::any('cat/{upload_id}/rate/{rating}', function(Upload $upload, $inRating){
+Route::get('cat/{upload_id}/rate/{rating}', function(Upload $upload, $inRating){
 
 	if(Auth::check()){
 		$rating = Auth::user()->ratings()->where('upload_id', '=', $upload->id)->first();

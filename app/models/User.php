@@ -75,13 +75,13 @@ implements UserInterface, RemindableInterface {
 	}
 
 	public function uploads(){
-		return $this->hasMany('Upload');
+		return $this->hasMany('Upload')->orderBy('uploads.id', 'desc');
 	}
 
 	// we can define a many-to-many relation using the belongsToMany method:
 	public function roles()
 	{
-		return $this->belongsToMany('Role');
+		return $this->belongsToMany('Role'); // is this right?
 	}
 
 	/**
