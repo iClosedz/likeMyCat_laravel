@@ -198,6 +198,14 @@ Route::any('logout', function(){
 	return Redirect::intended('/')->with('info', 'Logged out');;
 });
 
+/**
+ * about
+ */
+Route::any('about', function(){
+	return View::make('about')->with('user', Auth::user());
+});
+
+
 
 /**
  * signup
