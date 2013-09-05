@@ -43,7 +43,7 @@
         <div class="media">
           <div class="media-body">
             <h4 class="media-heading">I would like to report a bug/advertise on your site/tell you something important.  Where can I do this?</h4>
-            We have a Contact page.  Go on, <a href="./contact.php">establish contact</a>.
+            We have a Contact page.  Go on, <a href="{{ URL::to('contact') }}">establish contact</a>.
           </div>
         </div>
         <hr/>
