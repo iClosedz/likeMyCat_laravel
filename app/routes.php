@@ -63,8 +63,6 @@ Route::when('user/*', 'user');
 Route::model('upload_id', 'Upload'); // Binding A Parameter To A Model
 
 Route::get('cat/{upload_id}/image', function(Upload $upload){
-	Log::info('Entering route "' . Route::currentRouteName() . '"');
-
 	$imagePath = $upload->upload_dir . $upload->file_name;
 	$contents = file_get_contents($imagePath);
 
@@ -76,8 +74,6 @@ Route::get('cat/{upload_id}/image', function(Upload $upload){
 ->where('upload_id', '[0-9]+');
 
 Route::get('cat/{upload_id}/image/thumb', function(Upload $upload){
-	Log::info('Entering route "' . Route::currentRouteName() . '"');
-
 	$imagePath = $upload->upload_dir . $upload->thumb_name;
 	$contents = file_get_contents($imagePath);
 
@@ -91,11 +87,13 @@ Route::get('cat/{upload_id}/image/thumb', function(Upload $upload){
 /**
  * upload
  */
-
 Route::post('upload', 'ImageUploadController@uploadImage');
+Route::when('upload', 'csrf', array('post'));
+Route::when('upload', 'filterUploadImage', array('post'));
+
+//Route::when('upload', 'csrf|filterUploadImage', array('post'));
 
 Route::get('upload', function(){
-	Log::info('Entering route "' . Route::currentRouteName() . '"');
 	return View::make('upload')->with('user', Auth::user());
 });
 
@@ -178,15 +176,12 @@ Route::get('signup', function(){
 /**
  * rate
  */
-Route::get('rate', function()
-{
+Route::get('rate', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
-	/*if(Auth::guest()){
-		Auth::loginUsingId(User::where('is_guest', '=', true)->firstOrFail()->id);//$user->id);
-}*/
-
-return View::make('rate')->with('user', Auth::user());
+	return View::make('rate')->with('user', Auth::user());
 });
+
+Route::any('rate/getUploads', 'ImageUploadController@getUploads');
 
 
 ?>

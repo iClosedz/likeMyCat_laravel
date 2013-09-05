@@ -23,7 +23,7 @@
 @stop
 
 @section('additionalScriptTags')
-<script src="./catRatings.js"></script>
+<script src="/assets/js/catRatings.js"></script>
 @stop
 
 @section('content')
