@@ -45,8 +45,8 @@
 						<ul class="nav">
 							<li><a href="{{ URL::to('rate') }}">Rate</a></li> 
 							<li><a href="{{ URL::to('upload') }}">Upload</a></li>
-							<li><a href="about">About</a></li> 
-							<li><a href="contact">Contact</a></li> 
+							<li><a href="{{ URL::to('about') }}">About</a></li> 
+							<li><a href="{{ URL::to('contact') }}">Contact</a></li> 
 							@if (Auth::check())
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{{ $user->email }}}<b class="caret"></b></a>
@@ -54,7 +54,7 @@
 									<li><a href="{{ URL::to('logout') }}">Log Out</a></li>
 									<li class="divider"></li>
 									<li class="nav-header">Account</li>
-									<li><a href="user/changePassword">Change Password</a></li>
+									<li><a href="{{ URL::to('user/changePassword') }}">Change Password</a></li>
 									@if ($user->hasRole('uploader'))
 									<li><a href="{{ URL::to('user/uploads') }}">Manage Your Uploads</a></li>
 									@endif

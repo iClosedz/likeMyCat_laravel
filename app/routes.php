@@ -205,7 +205,13 @@ Route::any('about', function(){
 	return View::make('about')->with('user', Auth::user());
 });
 
+Route::any('contact', function(){
+	return View::make('contact')->with('user', Auth::user());
+});
 
+Route::any('anger', function(){
+	return View::make('anger')->with('user', Auth::user());
+});
 
 /**
  * signup
