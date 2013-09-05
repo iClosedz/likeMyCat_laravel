@@ -22,8 +22,27 @@ $(document).ready(function () {
          return false;
       });
 
+      $('.flagImage').click(function () {
+         flagImage(currentImage.upload_id);
+         return false;
+      });
+
    });
 });
+
+function flagImage(uploadId) {
+   console.log('flaging imageId ' + currentImage.uploadId);
+
+   $.get("/cat/" + currentImage.uploadId + "/flag/", {})
+      .done(function (data) {
+         console.log('rating returned "' + data + '"');
+         alert("Image flagged as inappropriate!");
+         getImageData(); // get next set of images
+      })
+      .fail(function (data) {
+         console.log("Failed: " + data);
+      });
+}
 
 function catImage(uploadId, fileName, fileNameThumb, avgRating, numRatings, catName) {
    this.uploadId = uploadId;
@@ -36,8 +55,8 @@ function catImage(uploadId, fileName, fileNameThumb, avgRating, numRatings, catN
 
 function rateImage(rating) {
    console.log('rating imageId ' + currentImage.uploadId + ': ' + rating);
-   $.get("/cat/" + currentImage.uploadId + "/rate/" + rating, {
-      })
+
+   $.get("/cat/" + currentImage.uploadId + "/rate/" + rating, {})
       .done(function (data) {
          console.log('rating returned "' + data + '"');
          getImageData(); // get next set of images

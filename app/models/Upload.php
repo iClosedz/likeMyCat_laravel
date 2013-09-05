@@ -21,6 +21,10 @@ class Upload extends Eloquent {
 		return $this->hasMany('RatingGuest');
 	}
 
+	public function flagged(){
+		return $this->hasMany('FlaggedUpload');
+	}
+
 	public function getNumRatings(){
 		return ($this->ratings()->count()) + ($this->guestRatings()->count());
 	}

@@ -44,8 +44,8 @@
 				<button name="rate_10" class="btn btn-mini btn-rate">10</button>
 			</div>
 			<div class="btn-group">
-				<button type="submit" name="skip" value="skip" class="btn btn-mini btn-primary getNextImage">Skip</button>
-				<button type="submit" name="report" value="report" class="btn btn-mini btn-warning reportImage">Report</button>
+				<button type="submit" name="skip" value="skip" class="btn btn-mini btn-primary getNextImage">Skip Image</button>
+				<button type="submit" name="report" value="report" class="btn btn-mini btn-danger flagImage">Inappropriate</button>
 			</div>
 		</div>
 		<div class="btn-toolbar btn-rating-bar hidden-phone">
@@ -62,8 +62,8 @@
 				<button name="rate_10" class="btn btn-rate">10</button>
 			</div>
 			<div class="btn-group">
-				<button type="submit" name="skip" value="skip" class="btn btn-mini btn-primary getNextImage">Skip</button>
-				<button type="submit" name="report" value="report" class="btn btn-mini btn-warning reportImage">Report</button>
+				<button type="submit" name="skip" value="skip" class="btn btn-mini btn-primary getNextImage">Skip Image</button>
+				<button type="submit" name="report" value="report" class="btn btn-mini btn-danger flagImage">Inappropriate</button>
 			</div>
 		</div>
 		<img id="img_upload_current" alt="Current Image" src="./assets/img/placeholder_600.gif" />

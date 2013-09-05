@@ -155,6 +155,54 @@ Route::get('cat/{upload_id}/rate/{rating}', function(Upload $upload, $inRating){
 ->where('upload_id', '[0-9]+')->where('rating', '[1-9]|10');
 
 /**
+ * flagging
+ */
+Route::get('cat/{upload_id}/flag', function(Upload $upload){
+	Log::info('Entering route "' . Route::currentRouteName() . '"');
+
+	$myIpAddress = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
+
+	$flaggedUpload = FlaggedUpload::where('upload_id', '=', $upload->id)
+	->where('ip_address', '=', $myIpAddress)
+	->first();
+
+	if(empty($flaggedUpload)){
+		$flaggedUpload = new FlaggedUpload();
+		$flaggedUpload->upload_id = $upload->id;
+		$flaggedUpload->ip_address = $myIpAddress;
+	} else {
+		$flaggedUpload->touch();
+	}
+
+	$result = $flaggedUpload->save();
+	
+	return Response::json(array(
+		'success' => ($result != false), 
+		'results' => array(
+			'upload_id' => $upload->id, 
+			'flagged_id' => $flaggedUpload->id
+			)));
+})
+->where('upload_id', '[0-9]+');
+
+Route::get('cat/{upload_id}/flag/clear', array('before' => 'auth', function(Upload $upload){
+	Log::info('Entering route "' . Route::currentRouteName() . '"');
+
+	if(Auth::user()->hasRole('admin')) {
+		$result = FlaggedUpload::where('upload_id', '=', $upload->id)->delete();
+	} else {
+		$result = false;
+	}
+	
+	return Response::json(array(
+		'success' => ($result != false), 
+		'results' => array(
+			'upload_id' => $upload->id
+			)));
+}))
+->where('upload_id', '[0-9]+');
+
+/**
  * upload
  */
 Route::post('upload', 'ImageUploadController@uploadImage');
