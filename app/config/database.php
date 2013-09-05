@@ -71,7 +71,7 @@ return array(
 			'password' => 'test_password',
 			'charset'  => 'utf8',
 			'prefix'   => '',
-			'schema'   => 'public',
+			'schema'   => 'public', // should be something else... FIXME TODO
 		),
 
 		'sqlsrv' => array(

@@ -58,7 +58,7 @@ Route::filter('user', function(){
 Route::when('user/*', 'user');
 
 /**
- * uploads
+ * cat/{upload_id}/
  */
 Route::model('upload_id', 'Upload'); // Binding A Parameter To A Model
 
@@ -83,6 +83,47 @@ Route::get('cat/{upload_id}/image/thumb', function(Upload $upload){
 	return $response;
 })
 ->where('upload_id', '[0-9]+');
+
+// should be post
+Route::any('cat/{upload_id}/rate/{rating}', function(Upload $upload, $inRating){
+
+	if(Auth::check()){
+		$rating = Auth::user()->ratings()->where('upload_id', '=', $upload->id)->first();
+
+		if(empty($rating)){
+			$rating = new Rating();
+			$rating->user_id = Auth::user()->id;
+			$rating->upload_id = $upload->id;
+		}
+
+		$rating->rating = $inRating;
+		$rating->save();
+
+		//return 'rating saved';
+	} else {
+		$rating = RatingGuest::where('upload_id', '=', $upload->id)->where('session_id', '=', session_id())->first();
+		if(empty($rating)){
+			$rating = new RatingGuest();
+			$rating->session_id = session_id();
+			$rating->upload_id = $upload->id;
+		}
+
+		$rating->rating = $inRating;
+		$rating->ip_address = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
+		$rating->save();
+
+		//return 'rated as guest';
+	}
+
+	return Response::json(array(
+		'success' => true, 
+		'results' => array(
+			'upload_id' => $upload->id, 
+			'rating' => $rating->rating,
+			'as_guest' => Auth::guest())
+		));
+})
+->where('upload_id', '[0-9]+')->where('rating', '[1-9]|10');
 
 /**
  * upload
@@ -183,5 +224,9 @@ Route::get('rate', function(){
 
 Route::any('rate/getUploads', 'ImageUploadController@getUploads');
 
+/* log all queries */
+Event::listen("illuminate.query", function($query, $bindings, $time, $name){
+	Log::debug($query."\n", $bindings);
+});
 
 ?>

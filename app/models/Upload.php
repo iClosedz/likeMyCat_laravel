@@ -13,12 +13,27 @@ class Upload extends Eloquent {
 		return $this->belongsTo('User');
 	}
 
+	public function ratings(){
+		return $this->hasMany('Rating');
+	}
+
+	public function guestRatings(){
+		return $this->hasMany('RatingGuest');
+	}
+
 	public function getNumRatings(){
-		return 0; //TODO: fix me
+		return ($this->ratings()->count()) + ($this->guestRatings()->count());
 	}
 
 	public function getAvgRating(){
-		return 0; //TODO: fix me
+		$sum = ($this->ratings()->sum('rating')) + ($this->guestRatings()->sum('rating'));
+		$numRatings = $this->getNumRatings();
+
+		if($numRatings == 0){
+			return 0;
+		} else {
+			return $sum / $numRatings;
+		}
 	}
 
 }

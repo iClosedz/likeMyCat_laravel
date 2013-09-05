@@ -36,12 +36,10 @@ function catImage(uploadId, fileName, fileNameThumb, avgRating, numRatings, catN
 
 function rateImage(rating) {
    console.log('rating imageId ' + currentImage.uploadId + ': ' + rating);
-   $.post("./services/rateUploadService.php", {
-      'upload_id': currentImage.uploadId,
-      'rating': rating
-   })
+   $.post("/cat/" + currentImage.uploadId + "/rate/" + rating, {
+      })
       .done(function (data) {
-         console.log('rateUploadService.php returned "' + $.param(data) + '"');
+         console.log('rating returned "' + data + '"');
          getImageData(); // get next set of images
       })
       .fail(function (data) {
