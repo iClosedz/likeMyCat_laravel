@@ -34,7 +34,7 @@ class ImageUploadController extends BaseController {
 			$firstUpload = Upload::find($shareImageId);
 		} else {
 			if($excludeImageId){
-				$firstUpload = Upload::where('id', '!=', $excludeImageId)->orderBy(DB::raw('RANDOM()'))->firstOrFail();
+				$firstUpload = Upload::with('user', 'ratings', 'guestRatings')->where('id', '!=', $excludeImageId)->orderBy(DB::raw('RANDOM()'))->firstOrFail();
 			} else {
     			$firstUpload = Upload::take(1)->firstOrFail(); // fixme
     		}
@@ -50,7 +50,8 @@ class ImageUploadController extends BaseController {
     	if($howManyResults > 1){
 
     		if(Auth::check()){
-    			$additionalUploads = Upload::where('id', '!=', $firstUpload->id)
+    			$additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
+                ->where('id', '!=', $firstUpload->id)
     			->whereRaw('"id" not in (select upload_id from "ratings" where user_id = ' . Auth::user()->id . ')')
     			->orderBy(DB::raw('RANDOM()'))
     			->take($howManyResults-1)
@@ -60,7 +61,8 @@ class ImageUploadController extends BaseController {
 
     		if(empty($additionalUploads)){
     		//Log::info('no additional uploads not yet rated - just grabbing random uploads now');
-    			$additionalUploads = Upload::where('id', '!=', $firstUpload->id)
+    			$additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
+                ->where('id', '!=', $firstUpload->id)
     			->orderBy(DB::raw('RANDOM()'))
     			->take($howManyResults-1)
     			->get();
