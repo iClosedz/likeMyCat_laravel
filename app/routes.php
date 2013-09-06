@@ -20,7 +20,7 @@ Route::get('admin/uploads', function(){
 });
 
 Route::get('user/uploads', function(){
-	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Auth::user()->uploads()->with('user', 'ratings', 'guestRatings', 'flagged')->orderBy('id', 'DESC')->get());
+	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Auth::user()->uploads()->with('user', 'ratings', 'guestRatings')->orderBy('id', 'DESC')->get());
 });
 
 Route::get('admin/cat/{upload_id_inc_deleted}/image/thumb', function($uploadId){
