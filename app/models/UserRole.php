@@ -9,9 +9,12 @@ class UserRole extends Eloquent {
 	 */
 	protected $table = 'user_roles';
 
+
 	public function role()
     {
         return $this->hasOne('Role', 'id');
+        //return $this->hasOne('Role', 'role_id');
+
     }
 
 /*

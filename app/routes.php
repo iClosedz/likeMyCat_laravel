@@ -21,23 +21,59 @@ Route::get('admin/users', function(){
 });
 
 Route::get('admin/uploads', function(){
-	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Upload::orderBy('id', 'DESC')->get());
+	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Upload::withTrashed()->orderBy('id', 'DESC')->get());
 });
 
 Route::get('user/uploads', function(){
 	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Auth::user()->uploads);
 });
 
-Route::get('admin/uploads/delete/{upload_id}', function(Upload $upload){
+Route::get('admin/cat/{upload_id_inc_deleted}/image/thumb', function($uploadId){
+	$upload = Upload::withTrashed()->findOrFail($uploadId);
+	$imagePath = $upload->upload_dir . $upload->thumb_name;
+	$contents = file_get_contents($imagePath);
+
+	$response = Response::make($contents, 200);
+	$response->header('Content-Type', $upload->mime_type);
+
+	return $response;
+})
+->where('upload_id_inc_deleted', '[0-9]+');
+
+Route::get('admin/uploads/delete/{delete_upload_id}', function($uploadId){
+	Log::info('Entering route "' . Route::currentRouteName() . '"');
+
+	$upload = Upload::withTrashed()->findOrFail($uploadId);
+	$status = $upload->forceDelete();
+
+	return Response::json(array(
+		'success' => $status, 
+		'results' => array('upload_id' => $upload->id)
+		));
+})->where('delete_upload_id', '[0-9]+');
+
+Route::get('admin/uploads/hide/{upload_id}', function(Upload $upload){
 	$status = $upload->delete();
 
 	return Response::json(array(
 		'success' => $status, 
 		'results' => array('upload_id' => $upload->id)
 		));
+	
 })->where('upload_id', '[0-9]+');
 
-Route::get('user/uploads/delete/{upload_id}', function(Upload $upload){
+Route::get('admin/uploads/restore/{restore_upload_id}', function($uploadId){
+	$upload = Upload::withTrashed()->findOrFail($uploadId);
+	$status = $upload->restore();
+
+	return Response::json(array(
+		'success' => $status, 
+		'results' => array('upload_id' => $upload->id)
+		));
+	
+})->where('upload_id', '[0-9]+');
+
+Route::get('user/uploads/hide/{upload_id}', function(Upload $upload){
 	if(Auth::user()->id === $upload->user_id){
 		$status = $upload->delete();
 
@@ -52,10 +88,6 @@ Route::get('user/uploads/delete/{upload_id}', function(Upload $upload){
 			));
 	}
 })->where('upload_id', '[0-9]+');
-
-Route::get('user/uploads', function(){
-	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Auth::user()->uploads);
-});
 
 /**
  * create and apply admin filter
@@ -220,7 +252,7 @@ Route::get('upload', function(){
  */
 Route::post('login', array('before' => 'csrf', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
-	$email = trim(Input::get('username'));
+	$email = strtolower(trim(Input::get('username')));
 	$password = Input::get('password');
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password))){
@@ -266,7 +298,7 @@ Route::any('anger', function(){
  */
 Route::post('signup', array('before' => 'csrf', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
-	$email = trim(Input::get('username'));
+	$email = strtolower(trim(Input::get('username')));
 	$password = Input::get('password');
 
 	if(User::getUserByEmail($email)){
@@ -287,6 +319,7 @@ Route::post('signup', array('before' => 'csrf', function(){
     $user->password = Hash::make($password);
     $user->is_guest = 'false';
     $user->ip_address = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
+    //TODO: add user to default role(s)
     $status = $user->save();
 
     if($status){
@@ -314,6 +347,10 @@ Route::get('rate', function(){
 });
 
 Route::any('rate/getUploads', 'ImageUploadController@getUploads');
+
+Route::get('test', function(){
+	return Auth::user()->addRole('admin');
+});
 
 /* log all queries */
 Event::listen("illuminate.query", function($query, $bindings, $time, $name){

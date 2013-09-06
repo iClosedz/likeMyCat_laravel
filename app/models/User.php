@@ -100,6 +100,21 @@ implements UserInterface, RemindableInterface {
 		return false;
 	}
 
+	public function addRole($roleName){
+		if($this->hasRole($roleName)){
+			return true;
+		}
+
+		$role = Role::where('role_name', '=', $roleName)->firstOrFail();
+
+		$userRole = new UserRole();
+		$userRole->role = $role;
+		$userRole->user_id = $this->id;
+
+		$this->userRoles()->save($userRole);
+		return true;
+	}
+
 	public function scopeByEmail($query, $email){
 		return $query->where('email', '=', $email);
 	}

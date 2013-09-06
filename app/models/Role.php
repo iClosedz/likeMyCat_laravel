@@ -9,6 +9,12 @@ class Role extends Eloquent {
 	 */
 	protected $table = 'roles';
 
+	public function role()
+    {
+        return $this->hasMany('UserRole', 'role_id');
+        //return $this->hasOne('Role', 'role_id');
+
+    }
 }
 
 ?>
