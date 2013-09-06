@@ -55,10 +55,10 @@
 									<li class="divider"></li>
 									<li class="nav-header">Account</li>
 									<li><a href="{{ URL::to('user/changePassword') }}">Change Password</a></li>
-									@if ($user->hasRole('uploader'))
+									@if ($user->hasRole(Role::getByRoleName('uploader')))
 									<li><a href="{{ URL::to('user/uploads') }}">Manage Your Uploads</a></li>
 									@endif
-									@if ($user->hasRole('admin'))
+									@if ($user->hasRole(Role::getByRoleName('admin')))
 									<li class="divider"></li>
 									<li class="nav-header">Administration</li>
 									<li><a href="{{ URL::to('admin/uploads') }}">Manage All Uploads</a></li>

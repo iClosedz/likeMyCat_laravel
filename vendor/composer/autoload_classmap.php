@@ -12,6 +12,7 @@ return array(
     'AddNameToUploads' => $baseDir . '/app/database/migrations/2013_09_04_012858_add_name_to_uploads.php',
     'AddSoftDeletesToUploads' => $baseDir . '/app/database/migrations/2013_09_05_225106_add_soft_deletes_to_uploads.php',
     'AddUniqueToRatings' => $baseDir . '/app/database/migrations/2013_09_05_050426_add_unique_to_ratings.php',
+    'AddUniquesToUserRoles' => $baseDir . '/app/database/migrations/2013_09_06_013544_add_uniques_to_user_roles.php',
     'AlterUploads' => $baseDir . '/app/database/migrations/2013_09_04_010647_alter_uploads.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',

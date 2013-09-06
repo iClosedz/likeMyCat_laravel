@@ -4,11 +4,6 @@
 |--------------------------------------------------------------------------
 | Application Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
 */
 
 Route::get('/', function(){
@@ -98,7 +93,7 @@ Route::filter('admin', function(){
 		return Redirect::route('get login')->with('info', 'You must be logged in to access that page.');
 	}
 
-	if(!Auth::user()->hasRole('admin')){
+	if(!Auth::user()->hasRole(Role::getByRoleName('admin'))){
 		return Redirect::route('get /')->with('error', 'You must be an admin to access this page!');
 	}
 
@@ -220,7 +215,7 @@ Route::get('cat/{upload_id}/flag', function(Upload $upload){
 Route::get('cat/{upload_id}/flag/clear', array('before' => 'auth', function(Upload $upload){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
 
-	if(Auth::user()->hasRole('admin')) {
+	if(Auth::user()->hasRole(Role::getByRoleName('admin'))) {
 		$result = FlaggedUpload::where('upload_id', '=', $upload->id)->delete();
 	} else {
 		$result = false;
@@ -237,11 +232,10 @@ Route::get('cat/{upload_id}/flag/clear', array('before' => 'auth', function(Uplo
 /**
  * upload
  */
-Route::post('upload', 'ImageUploadController@uploadImage');
-Route::when('upload', 'csrf', array('post'));
-Route::when('upload', 'filterUploadImage', array('post'));
 
-//Route::when('upload', 'csrf|filterUploadImage', array('post'));
+// filters are handled inside ImageUploadController constructor
+Route::post('upload', 'ImageUploadController@uploadImage');
+
 
 Route::get('upload', function(){
 	return View::make('upload')->with('user', Auth::user());
@@ -319,8 +313,10 @@ Route::post('signup', array('before' => 'csrf', function(){
     $user->password = Hash::make($password);
     $user->is_guest = 'false';
     $user->ip_address = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
-    //TODO: add user to default role(s)
     $status = $user->save();
+
+    //add user to default role(s)
+    $user->grantRole(Role::getByRoleName('user'))->grantRole(Role::getByRoleName('uploader'));
 
     if($status){
     	Auth::loginUsingId($user->id);
@@ -347,10 +343,6 @@ Route::get('rate', function(){
 });
 
 Route::any('rate/getUploads', 'ImageUploadController@getUploads');
-
-Route::get('test', function(){
-	return Auth::user()->addRole('admin');
-});
 
 /* log all queries */
 Event::listen("illuminate.query", function($query, $bindings, $time, $name){

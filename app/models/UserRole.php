@@ -8,6 +8,8 @@ class UserRole extends Eloquent {
 	 * @var string
 	 */
 	protected $table = 'user_roles';
+    public $timestamps = true;
+
 
 
 	public function role()
@@ -15,6 +17,10 @@ class UserRole extends Eloquent {
         return $this->hasOne('Role', 'id');
         //return $this->hasOne('Role', 'role_id');
 
+    }
+
+    public function user(){
+        return $this->hasOne('User', 'user_id');
     }
 
 /*

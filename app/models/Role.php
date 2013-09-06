@@ -9,12 +9,19 @@ class Role extends Eloquent {
 	 */
 	protected $table = 'roles';
 
-	public function role()
-    {
-        return $this->hasMany('UserRole', 'role_id');
-        //return $this->hasOne('Role', 'role_id');
+	public function users()
+	{
+		return $this->belongsToMany('User', 'user_roles')->withTimestamps();
+	}
 
-    }
+	public static function scopeByRoleName($query, $roleName){
+		return $query->where('role_name', '=', $roleName);
+	}
+
+	public static function getByRoleName($roleName){
+		return Role::byRoleName($roleName)->firstOrFail();
+	}
+
 }
 
 ?>
