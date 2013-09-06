@@ -33,7 +33,7 @@ class ImageUploadController extends BaseController {
 			Log::info('shareImageId: ' . $shareImageId);
 			$firstUpload = Upload::find($shareImageId);
 		} else {
-			if($excludeImageId){
+			if($excludeImageId && $excludeImageId > 0){
 				$firstUpload = Upload::with('user', 'ratings', 'guestRatings')->where('id', '!=', $excludeImageId)->orderBy(DB::raw('RANDOM()'))->firstOrFail();
 			} else {
     			$firstUpload = Upload::take(1)->firstOrFail(); // fixme
@@ -58,7 +58,6 @@ class ImageUploadController extends BaseController {
     			->get();
     		}
 
-
     		if(empty($additionalUploads)){
     		//Log::info('no additional uploads not yet rated - just grabbing random uploads now');
     			$additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
@@ -66,7 +65,13 @@ class ImageUploadController extends BaseController {
     			->orderBy(DB::raw('RANDOM()'))
     			->take($howManyResults-1)
     			->get();
-    		}
+    		} else if(count($additionalUploads) < $howManyResults-1){
+                $additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
+                ->where('id', '!=', $firstUpload->id)
+                ->orderBy(DB::raw('RANDOM()'))
+                ->take($howManyResults-count($additionalUploads)-1)
+                ->get();
+            }
 
     		for($i = 0; $i < $howManyResults-1; $i++){
     			$upload = $additionalUploads[$i];
