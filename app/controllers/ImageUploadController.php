@@ -73,7 +73,7 @@ class ImageUploadController extends BaseController {
                 ->get();
             }
 
-    		for($i = 0; $i < $howManyResults-1; $i++){
+    		for($i = 0; $i < count($additionalUploads); $i++){
     			$upload = $additionalUploads[$i];
     			$uploads[$i+1]['upload_id'] = $upload->id;
     			$uploads[$i+1]['cat_name'] = htmlspecialchars(utf8_encode($upload->name));
