@@ -16,11 +16,11 @@ Route::get('admin/users', function(){
 });
 
 Route::get('admin/uploads', function(){
-	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Upload::withTrashed()->orderBy('id', 'DESC')->get());
+	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Upload::withTrashed()->with('user', 'ratings', 'guestRatings', 'flagged')->orderBy('id', 'DESC')->get());
 });
 
 Route::get('user/uploads', function(){
-	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Auth::user()->uploads);
+	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Auth::user()->uploads()->with('user', 'ratings', 'guestRatings', 'flagged')->orderBy('id', 'DESC')->get());
 });
 
 Route::get('admin/cat/{upload_id_inc_deleted}/image/thumb', function($uploadId){

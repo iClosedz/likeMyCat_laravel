@@ -39,7 +39,7 @@
 				<strong>Rated</strong>: {{ $upload->getNumRatings() }} times
 				<br/>
 				@if (Route::getCurrentRoute()->getPath() === '/admin/uploads')
-				<strong>Flagged as inappropriate</strong>: <span id="flagged_count_{{$upload->id}}">{{ $upload->flagged()->count() }}</span> times
+				<strong>Flagged as inappropriate</strong>: <span id="flagged_count_{{$upload->id}}">{{ $upload->getNumFlagged() }}</span> times
 				<br/>
 				@endif
 				<strong>Share link</strong>: <a href="{{ URL::to('rate') }}#{{$upload->id}}">{{ URL::to('rate') }}#{{$upload->id}}</a>
