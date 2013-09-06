@@ -28,7 +28,9 @@ $app->redirectIfTrailingSlash();
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('your-machine-name'),
+	'dev' => array('debianVm'),
+	//'staging' => array('your-staging-machine-name'),
+    'production' => array('www')
 
 ));
 

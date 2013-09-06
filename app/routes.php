@@ -344,9 +344,11 @@ Route::get('rate', function(){
 
 Route::any('rate/getUploads', 'ImageUploadController@getUploads');
 
-/* log all queries */
-Event::listen("illuminate.query", function($query, $bindings, $time, $name){
-	Log::debug($query."\n", $bindings);
-});
+if(App::environment() === 'dev'){
+	/* log all queries */
+	Event::listen("illuminate.query", function($query, $bindings, $time, $name){
+		Log::debug($query."\n", $bindings);
+	});
+}
 
 ?>
