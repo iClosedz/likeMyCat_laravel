@@ -23,11 +23,11 @@ class RoleTableSeeder extends Seeder {
 		DB::table('roles')->delete();
 
         // create roles
-		Role::create(array('admin'));
-		Role::create(array('user'));
-		Role::create(array('uploader'));
-		Role::create(array('reviewer'));
-		Role::create(array('guest'));
+		Role::create(array('role_name' => 'admin'));
+		Role::create(array('role_name' => 'user'));
+		Role::create(array('role_name' => 'uploader'));
+		Role::create(array('role_name' => 'reviewer'));
+		Role::create(array('role_name' => 'guest'));
 	}
 }
 
@@ -66,7 +66,7 @@ class UserTableSeeder extends Seeder {
 					->grantRole($userRole)
 					->grantRole($uploaderRole)
 					->grantRole($reviewerRole);
-					
+
 		$guestUser->grantRole($guestRole);
 	}
 }
