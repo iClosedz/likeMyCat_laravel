@@ -28,7 +28,7 @@ Route::post('password/remind', function(){ // should be POST
 
     //return Password::remind($credentials);
     return Password::remind($credentials, function($message, $user){
-    	$message->from(array('address' => 'admin@likemycat.com', 'name' => 'Like My Cat'));
+    	$message->from(array('address' => 'admin@likemycat.com', 'name' => 'LikeMyCat Admin'));
 	    $message->subject('Your Password Reminder');
 	});
 });
