@@ -13,10 +13,7 @@ Route::post('password/change', array('before' => 'auth|csrf', function(){
 	$newPassword = Input::get('new_password');
 	$newPasswordConfirm = Input::get('new_password_confirmation');
 
-	Log::info("Email: $email -- password: $password --- newPassword: $newPassword");
-
 	if (Auth::attempt(array('email' => $email, 'password' => $password))){
-
 		// validate input
 		$rules = array(
 			'username' => 'email', 
