@@ -62,4 +62,5 @@
 		</div>
 		<br/>
 		@endforeach
+		<?php echo $uploads->links(); ?>
 		@stop

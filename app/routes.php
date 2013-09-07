@@ -7,7 +7,6 @@
 */
 
 Route::get('/', function(){
-	//return View::make('hello');
 	return Redirect::route('get rate');
 });
 
@@ -16,11 +15,25 @@ Route::get('admin/users', function(){
 });
 
 Route::get('admin/uploads', function(){
-	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Upload::withTrashed()->with('user', 'ratings', 'guestRatings', 'flagged')->orderBy('id', 'DESC')->get());
+	return View::make('manageUploads')
+		->with('user', Auth::user())
+		->with('uploads', Upload::withTrashed()
+		->with('user', 'ratings', 'guestRatings', 'flagged')
+		->orderBy('id', 'DESC')
+		->paginate(4)
+		//->get()
+		);
 });
 
 Route::get('user/uploads', function(){
-	return View::make('manageUploads')->with('user', Auth::user())->with('uploads', Auth::user()->uploads()->with('user', 'ratings', 'guestRatings')->orderBy('id', 'DESC')->get());
+	return View::make('manageUploads')
+		->with('user', Auth::user())
+		->with('uploads', Auth::user()->uploads()
+		->with('user', 'ratings', 'guestRatings')
+		->orderBy('id', 'DESC')
+		->paginate(4)
+		//->get()
+		);
 });
 
 Route::get('admin/cat/{upload_id_inc_deleted}/image/thumb', function($uploadId){
