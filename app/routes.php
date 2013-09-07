@@ -11,13 +11,17 @@ Route::post('password/change', array('before' => 'auth|csrf', function(){
 	$email = Auth::user()->email;
 	$password = Input::get('current_password');
 	$newPassword = Input::get('new_password');
+	$newPasswordConfirm = Input::get('new_password_confirmation');
 
 	Log::info("Email: $email -- password: $password --- newPassword: $newPassword");
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password))){
 
 		// validate input
-		$rules = array('username' => 'email', 'new_password' => array('required', 'min:6'));
+		$rules = array(
+			'username' => 'email', 
+			'new_password' => array('required', 'min:6', 'same:new_password_confirmation')
+			);
 		$validator = Validator::make(Input::all(), $rules);
 		if ($validator->fails()){
 			return Redirect::to('password/change')->withErrors($validator);
