@@ -6,9 +6,13 @@
 |--------------------------------------------------------------------------
 */
 
+/* Root route */
 Route::get('/', function(){
 	return Redirect::route('get rate');
 });
+
+/* Binding upload_id to Upload model */
+Route::model('upload_id', 'Upload'); 
 
 /**
  * Route groups
@@ -18,7 +22,7 @@ Route::group(array('prefix' => 'admin'), function(){
 	Route::get('uploads/delete/{delete_upload_id}', 'AdminController@deleteUploadById')->where('delete_upload_id', '[0-9]+');
 	Route::get('uploads/hide/{upload_id}', 'AdminController@hideUpload')->where('upload_id', '[0-9]+');
 	Route::get('uploads/restore/{restore_upload_id}', 'AdminController@restoreUploadById')->where('restore_upload_id', '[0-9]+');
-	Route::get('cat/{upload_id_inc_deleted}/image/thumb', 'AdminController@getThumbIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
+	Route::get('uploads/{upload_id_inc_deleted}/image/thumb', 'AdminController@getThumbIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
 	Route::get('users', 'AdminController@showUsers');
 });
 
@@ -51,132 +55,22 @@ Route::group(array('prefix' => 'password'), function()
 });
 
 
+Route::group(array('prefix' => 'uploads'), function(){
+	Route::get('{upload_id}/image', 'UploadsController@getImage')->where('upload_id', '[0-9]+');
+	Route::get('{upload_id}/image/thumb', 'UploadsController@getImageThumb')->where('upload_id', '[0-9]+');
+	Route::get('{upload_id}/rate/{rating}', 'UploadsController@setRating')->where('upload_id', '[0-9]+')->where('rating', '[1-9]|10');
+	Route::get('{upload_id}/flag', 'UploadsController@flagUpload')->where('upload_id', '[0-9]+');
+	Route::get('{flagged_upload_id}/flag/clear', 'UploadsController@clearFlags')->where('flagged_upload_id', '[0-9]+');
+
+});
 
 
 /**
- * cat/{upload_id}/
- */
-Route::model('upload_id', 'Upload'); // Binding A Parameter To A Model
-
-Route::get('cat/{upload_id}/image', function(Upload $upload){
-	$imagePath = $upload->upload_dir . $upload->file_name;
-	$contents = file_get_contents($imagePath);
-
-	$response = Response::make($contents, 200);
-	$response->header('Content-Type', $upload->mime_type);
-
-	return $response;
-})
-->where('upload_id', '[0-9]+');
-
-Route::get('cat/{upload_id}/image/thumb', function(Upload $upload){
-	$imagePath = $upload->upload_dir . $upload->thumb_name;
-	$contents = file_get_contents($imagePath);
-
-	$response = Response::make($contents, 200);
-	$response->header('Content-Type', $upload->mime_type);
-
-	return $response;
-})
-->where('upload_id', '[0-9]+');
-
-// should be post
-Route::get('cat/{upload_id}/rate/{rating}', function(Upload $upload, $inRating){
-
-	if(Auth::check()){
-		$rating = Auth::user()->ratings()->where('upload_id', '=', $upload->id)->first();
-
-		if(empty($rating)){
-			$rating = new Rating();
-			$rating->user_id = Auth::user()->id;
-			$rating->upload_id = $upload->id;
-		}
-
-		$rating->rating = $inRating;
-		$rating->save();
-
-		//return 'rating saved';
-	} else {
-		$rating = RatingGuest::where('upload_id', '=', $upload->id)->where('session_id', '=', session_id())->first();
-		if(empty($rating)){
-			$rating = new RatingGuest();
-			$rating->session_id = session_id();
-			$rating->upload_id = $upload->id;
-		}
-
-		$rating->rating = $inRating;
-		$rating->ip_address = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
-		$rating->save();
-
-		//return 'rated as guest';
-	}
-
-	return Response::json(array(
-		'success' => true, 
-		'results' => array(
-			'upload_id' => $upload->id, 
-			'rating' => $rating->rating,
-			'as_guest' => Auth::guest())
-		));
-})
-->where('upload_id', '[0-9]+')->where('rating', '[1-9]|10');
-
-/**
- * flagging
- */
-Route::get('cat/{upload_id}/flag', function(Upload $upload){
-	Log::info('Entering route "' . Route::currentRouteName() . '"');
-
-	$myIpAddress = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
-
-	$flaggedUpload = FlaggedUpload::where('upload_id', '=', $upload->id)
-	->where('ip_address', '=', $myIpAddress)
-	->first();
-
-	if(empty($flaggedUpload)){
-		$flaggedUpload = new FlaggedUpload();
-		$flaggedUpload->upload_id = $upload->id;
-		$flaggedUpload->ip_address = $myIpAddress;
-	} else {
-		$flaggedUpload->touch();
-	}
-
-	$result = $flaggedUpload->save();
-	
-	return Response::json(array(
-		'success' => ($result != false), 
-		'results' => array(
-			'upload_id' => $upload->id, 
-			'flagged_id' => $flaggedUpload->id
-			)));
-})
-->where('upload_id', '[0-9]+');
-
-Route::get('cat/{upload_id}/flag/clear', array('before' => 'auth', function(Upload $upload){
-	Log::info('Entering route "' . Route::currentRouteName() . '"');
-
-	if(Auth::user()->hasRole(Role::getByRoleName('admin'))) {
-		$result = FlaggedUpload::where('upload_id', '=', $upload->id)->delete();
-	} else {
-		$result = false;
-	}
-	
-	return Response::json(array(
-		'success' => ($result != false), 
-		'results' => array(
-			'upload_id' => $upload->id
-			)));
-}))
-->where('upload_id', '[0-9]+');
-
-/**
- * upload
+ * uploader
  */
 
-// filters are handled inside ImageUploadController constructor
-Route::post('upload', 'ImageUploadController@uploadImage');
-
-Route::get('upload', function(){
+Route::post('uploader', 'ImageUploadController@uploadImage');
+Route::get('uploader', function(){
 	return View::make('upload')->with('user', Auth::user());
 });
 
@@ -216,7 +110,7 @@ Route::any('logout', function(){
 });
 
 /**
- * about
+ * about / contact / anger
  */
 Route::any('about', function(){
 	return View::make('about')->with('user', Auth::user());

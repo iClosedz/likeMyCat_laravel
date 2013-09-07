@@ -70,7 +70,7 @@ function clearFlagging(uploadId) {
 	console.log('clear flagging for upload ' + uploadId);
 
 	var rowToRemove = $('#row_for_upload_' + uploadId);
-	$.get("/cat/" + uploadId + "/flag/clear", {})
+	$.get("/uploads/" + uploadId + "/flag/clear", {})
 	.done(function (data) {
 		console.log('clearFlagging returned "' + data + '"');
 		$('#flagged_count_' + uploadId).text('0');

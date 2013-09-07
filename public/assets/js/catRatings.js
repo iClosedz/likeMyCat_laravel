@@ -33,7 +33,7 @@ $(document).ready(function () {
 function flagImage(uploadId) {
    console.log('flaging imageId ' + currentImage.uploadId);
 
-   $.get("/cat/" + currentImage.uploadId + "/flag/", {})
+   $.get("/uploads/" + currentImage.uploadId + "/flag/", {})
       .done(function (data) {
          console.log('rating returned "' + data + '"');
          alert("Image flagged as inappropriate!");
@@ -56,7 +56,7 @@ function catImage(uploadId, fileName, fileNameThumb, avgRating, numRatings, catN
 function rateImage(rating) {
    console.log('rating imageId ' + currentImage.uploadId + ': ' + rating);
 
-   $.get("/cat/" + currentImage.uploadId + "/rate/" + rating, {})
+   $.get("/uploads/" + currentImage.uploadId + "/rate/" + rating, {})
       .done(function (data) {
          console.log('rating returned "' + data + '"');
          getImageData(); // get next set of images

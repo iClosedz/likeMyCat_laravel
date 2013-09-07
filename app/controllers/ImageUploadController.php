@@ -42,8 +42,8 @@ class ImageUploadController extends BaseController {
 
     	$uploads[0]['upload_id'] = $firstUpload->id;
     	$uploads[0]['cat_name'] = htmlspecialchars(utf8_encode($firstUpload->name));
-    	$uploads[0]['file_name'] = URL::route('get cat/{upload_id}/image', array($firstUpload->id));
-    	$uploads[0]['file_name_thumb'] = URL::route('get cat/{upload_id}/image/thumb', array($firstUpload->id));
+    	$uploads[0]['file_name'] = URL::route('get uploads/{upload_id}/image', array($firstUpload->id));
+    	$uploads[0]['file_name_thumb'] = URL::route('get uploads/{upload_id}/image/thumb', array($firstUpload->id));
     	$uploads[0]['avg_rating'] = $firstUpload->getAvgRating();
     	$uploads[0]['num_ratings'] = $firstUpload->getNumRatings();
 
@@ -77,8 +77,8 @@ class ImageUploadController extends BaseController {
     			$upload = $additionalUploads[$i];
     			$uploads[$i+1]['upload_id'] = $upload->id;
     			$uploads[$i+1]['cat_name'] = htmlspecialchars(utf8_encode($upload->name));
-    			$uploads[$i+1]['file_name'] = URL::route('get cat/{upload_id}/image', array($upload->id));
-    			$uploads[$i+1]['file_name_thumb'] = URL::route('get cat/{upload_id}/image/thumb', array($upload->id));
+    			$uploads[$i+1]['file_name'] = URL::route('get uploads/{upload_id}/image', array($upload->id));
+    			$uploads[$i+1]['file_name_thumb'] = URL::route('get uploads/{upload_id}/image/thumb', array($upload->id));
     			$uploads[$i+1]['avg_rating'] = $upload->getAvgRating();
     			$uploads[$i+1]['num_ratings'] = $upload->getNumRatings();
     		}
@@ -140,9 +140,9 @@ class ImageUploadController extends BaseController {
     	$result = $upload->save();
 
     	if($result){
-    		return Redirect::route('get upload')->with('upload', $upload);
+    		return Redirect::route('get uploader')->with('upload', $upload);
     	} else {
-    		return Redirect::route('get upload')->with('error', 'Error uploading image');
+    		return Redirect::route('get uploader')->with('error', 'Error uploading image');
     	}
     }
 
@@ -154,7 +154,7 @@ class ImageUploadController extends BaseController {
     	$this->beforeFilter(function(){
     		Log::info('before filter for uploadImage');
     		if (!Input::hasFile('photo')){
-    			return Redirect::route('get upload')->with('error', 'No file included with POST');
+    			return Redirect::route('get uploader')->with('error', 'No file included with POST');
     		}
 
     		$allowedExts = array("gif", "jpeg", "jpg", "png");
@@ -165,11 +165,11 @@ class ImageUploadController extends BaseController {
     		$extension = strtolower(Input::file('photo')->getClientOriginalExtension());
 
     		if($size > ImageUploadController::UPLOAD_SIZE_LIMIT){
-    			return Redirect::route('get upload')->with('error', 'File too large - 6 MB limit.');
+    			return Redirect::route('get uploader')->with('error', 'File too large - 6 MB limit.');
     		}
 
     		if(!in_array($mime, $allowedMimeTypes) || !in_array($extension, $allowedExts)){
-    			return Redirect::route('get upload')->with('error', 'Invalid file type.');
+    			return Redirect::route('get uploader')->with('error', 'Invalid file type.');
     		}
     	}, array('only' => array('uploadImage')));
     }

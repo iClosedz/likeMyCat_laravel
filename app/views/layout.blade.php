@@ -44,7 +44,7 @@
 					<div class="nav-collapse collapse">
 						<ul class="nav">
 							<li><a href="{{ URL::to('rate') }}">Rate</a></li> 
-							<li><a href="{{ URL::to('upload') }}">Upload</a></li>
+							<li><a href="{{ URL::to('uploader') }}">Upload</a></li>
 							<li><a href="{{ URL::to('about') }}">About</a></li> 
 							<li><a href="{{ URL::to('contact') }}">Contact</a></li> 
 							@if (Auth::check())
