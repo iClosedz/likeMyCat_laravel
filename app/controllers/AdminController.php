@@ -16,8 +16,76 @@ class AdminController extends BaseController {
 		});
 	}
 
+	function showRoles($userId){
+		$user = User::withTrashed()->find($userId);
+
+		return View::make('admin.userRoles')
+			->with('user', Auth::user())
+			->with('userBeingManaged', $user);
+	}
+
+	function grantRole($userId, $roleId){
+		$user = User::withTrashed()->find($userId);
+		$role = Role::find($roleId);
+
+		$status = $user->grantRole($role);
+		$user->save();
+
+		return Redirect::action('AdminController@showRoles', array($user->id))
+				->with('success', 'Role updated');
+	}
+
+	function revokeRole($userId, $roleId){
+		$user = User::withTrashed()->find($userId);
+		$role = Role::find($roleId);
+
+		if($user->id === Auth::user()->id && $role->id === Role::byRoleName('admin')->firstOrFail()->id){
+			return Redirect::action('AdminController@showRoles', array($user->id))
+				->with('error', 'Can\'t remove self from admin role');
+		}
+
+		$status = $user->revokeRole($role);
+		$user->save();
+
+		return Redirect::action('AdminController@showRoles', array($user->id))
+				->with('success', 'Role updated');
+	}
+
+	function disableUser($userId){
+		$user = User::find($userId);
+
+		if($user->hasRole(Role::getByRoleName('admin'))){
+			return Response::json(array(
+				'success' => false, 
+				'results' => array('user_id' => $user->id, 'message' => 'can\'t disable admin user')
+				));
+		}
+
+		$status = $user->delete();
+		return Response::json(array(
+			'success' => $status, 
+			'results' => array('user_id' => $user->id)
+			));
+	}
+
+	function enableUser($userId){
+		$user = User::withTrashed()->find($userId);
+		$status = $user->restore();
+
+		return Response::json(array(
+			'success' => $status, 
+			'results' => array('user_id' => $user->id)
+			));
+	}
+
 	function showUsers(){
-		return 'user admin page';
+		return View::make('admin.users')
+		->with('user', Auth::user())
+		->with('users', User::withTrashed()
+			->with('roles')
+			->orderBy('id', 'DESC')
+			->get()
+			);
 	}
 
 	function showUploads(){

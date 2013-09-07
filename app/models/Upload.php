@@ -12,7 +12,7 @@ class Upload extends Eloquent {
 	protected $touches = array('user');
 
 	public function user(){
-		return $this->belongsTo('User');
+		return $this->belongsTo('User')->withTrashed();
 	}
 
 	public function ratings(){

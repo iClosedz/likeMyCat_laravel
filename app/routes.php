@@ -25,6 +25,12 @@ Route::group(array('prefix' => 'admin'), function(){
 	Route::get('uploads/{upload_id_inc_deleted}/image', 'AdminController@getImageIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
 	Route::get('uploads/{upload_id_inc_deleted}/image/thumb', 'AdminController@getThumbIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
 	Route::get('users', 'AdminController@showUsers');
+	Route::get('users/{user_id}/disable', 'AdminController@disableUser')->where('user_id', '[0-9]+');
+	Route::get('users/{user_id}/enable', 'AdminController@enableUser')->where('user_id', '[0-9]+');
+	Route::get('users/{user_id}/roles', 'AdminController@showRoles')->where('user_id', '[0-9]+');
+	Route::get('users/{user_id}/roles/{role_id}/grant', 'AdminController@grantRole')->where('user_id', '[0-9]+')->where('role_id', '[0-9]+');
+	Route::get('users/{user_id}/roles/{role_id}/revoke', 'AdminController@revokeRole')->where('user_id', '[0-9]+')->where('role_id', '[0-9]+');
+
 });
 
 Route::group(array('prefix' => 'user'), function(){

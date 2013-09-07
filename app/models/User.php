@@ -21,6 +21,8 @@ implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password');
 
+	protected $softDelete = true;
+
 	/**
 	 * Get the unique identifier for the user.
 	 *

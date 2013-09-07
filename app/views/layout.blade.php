@@ -23,7 +23,7 @@
 
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
-		<script src="./assets/js/html5shiv.js"></script>
+		<script src="/assets/js/html5shiv.js"></script>
 		<![endif]-->
 		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="./assets/ico/apple-touch-icon-144-precomposed.png">
 		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="./assets/ico/apple-touch-icon-114-precomposed.png">
