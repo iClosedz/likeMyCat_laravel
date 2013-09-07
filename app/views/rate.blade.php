@@ -29,7 +29,7 @@
 @section('content')
 <div class="row-fluid">
 	<div class="span8" id="current_box" style="outline: black solid thin; text-align: center;">
-		<h2>Rate this cat!!</h2>
+		<h2>Rate this cat!</h2>
 		<div class="btn-toolbar btn-rating-bar visible-phone">
 			<div class="btn-group">
 				<button name="rate_1" class="btn btn-mini btn-rate">1</button>
