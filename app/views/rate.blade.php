@@ -66,14 +66,14 @@
 				<button type="submit" name="report" value="report" class="btn btn-mini btn-danger flagImage">Inappropriate</button>
 			</div>
 		</div>
-		<img id="img_upload_current" alt="Current Image" src="./assets/img/placeholder_600.gif" />
+		<img id="img_upload_current" alt="Current Image" src="/assets/img/placeholder_600.gif" />
 		<p class="lead" style="margin-top:.5cm;"><span id="cat_name" class="catName"></span></p>
 		<a href="#" id="share_url">Share</a>
 	</div>
 	<div class="span2" style="outline: black dotted thin; text-align: center; padding-bottom:.5cm;">
 		<div id="previous_div_box" class="" style="visibility:hidden; display: none;">
 			<a class="getPrevImage" id="previous_link" href="#"><h4>&laquo; Previous</h4></a>
-			<img class="getPrevImage" id="img_upload_prev" alt="Previous Image" src="./assets/img/placeholder_130.gif" />
+			<img class="getPrevImage" id="img_upload_prev" alt="Previous Image" src="/assets/img/placeholder_130.gif" />
 			<div>
 				<small>Average rating: <span id="avg_rating_display">0.0</span>
 					<br/>
@@ -82,7 +82,7 @@
 			</div>
 			<div>
 				<a class="getNextImage" href="#" id="next_link"><h4>Next &raquo;</h4></a>
-				<img class="getNextImage" id="img_upload_next" alt="Next Image" src="./assets/img/placeholder_130.gif" />
+				<img class="getNextImage" id="img_upload_next" alt="Next Image" src="/assets/img/placeholder_130.gif" />
 			</div>
 		</div>
 	</div>
