@@ -35,7 +35,20 @@ class Upload extends Eloquent {
 	}
 
 	public function getAvgRating(){
-		$sum = ($this->ratings()->sum('rating')) + ($this->guestRatings()->sum('rating'));
+		//$sum = ($this->ratings()->sum('rating')) + ($this->guestRatings()->sum('rating'));
+
+		// summing manually since eager loading doesn't seem to work correctly for SUM()
+		$sumNormalRatings = 0;
+		foreach ($this->ratings as $rating) {
+			$sumNormalRatings += $rating->rating;
+		}
+
+		$sumGuestRatings = 0;
+		foreach ($this->guestRatings as $rating) {
+			$sumGuestRatings += $rating->rating;
+		}
+
+		$sum = $sumNormalRatings + $sumGuestRatings;
 		$numRatings = $this->getNumRatings();
 
 		if($numRatings == 0){
