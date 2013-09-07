@@ -69,7 +69,7 @@ class ImageUploadController extends BaseController {
                 $additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
                 ->where('id', '!=', $firstUpload->id)
                 ->orderBy(DB::raw('RANDOM()'))
-                ->take($howManyResults-count($additionalUploads)-1)
+                ->take(($howManyResults - 1) - count($additionalUploads))
                 ->get();
             }
 
