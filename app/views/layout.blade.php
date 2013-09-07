@@ -16,7 +16,17 @@
 			padding-top: 60px;
 			padding-bottom: 40px;
 		}
-
+		
+		@if (App::environment() !== 'production')
+			#environment_warning {
+				background: black;
+				opacity: 0.5;
+				position: fixed;
+				top: 50px;
+				left: 50px;
+			    background-color: red;
+			}
+		@endif
 		@yield('customStyles')
 	</style>
 	<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
@@ -83,6 +93,9 @@
 		</div>
 		<!--- end nav bar -->
 		<div class="container">
+			@if (App::environment() !== 'production')
+				<div id="environment_warning"><h4>{{ App::environment() }}</h4></div>
+			@endif
 			@if (isset($errors))
 			 	@foreach($errors->all() as $message)
 	        		<div class="alert alert-error">
