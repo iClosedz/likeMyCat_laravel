@@ -53,13 +53,13 @@
 					<a class="brand" href="{{ URL::to('rate') }}">Like My Cat?</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li><a href="{{ URL::to('rate') }}">Rate</a></li> 
-							<li><a href="{{ URL::to('uploader') }}">Upload</a></li>
-							<li><a href="{{ URL::to('about') }}">About</a></li> 
-							<li><a href="{{ URL::to('contact') }}">Contact</a></li> 
+							<li><a href="{{ URL::to('rate') }}"><i class="icon-thumbs-up icon-white"></i> Rate</a></li> 
+							<li><a href="{{ URL::to('uploader') }}"><i class="icon-upload icon-white"></i> Upload</a></li>
+							<li><a href="{{ URL::to('about') }}"><i class="icon-info-sign icon-white"></i> About</a></li> 
+							<li><a href="{{ URL::to('contact') }}"><i class="icon-envelope icon-white"></i> Contact</a></li> 
 							@if (Auth::check())
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{{ $user->email }}}<b class="caret"></b></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{{ $user->email }}}<b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li><a href="{{ URL::to('logout') }}">Log Out</a></li>
 									<li class="divider"></li>

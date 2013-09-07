@@ -44,8 +44,8 @@
 				<button name="rate_10" class="btn btn-mini btn-rate">10</button>
 			</div>
 			<div class="btn-group">
-				<button type="submit" name="skip" value="skip" class="btn btn-mini btn-primary getNextImage">Skip Image</button>
-				<button type="submit" name="report" value="report" class="btn btn-mini btn-danger flagImage">Inappropriate</button>
+				<button type="submit" name="skip" value="skip" class="btn btn-mini btn-primary getNextImage"><i class="icon-step-forward"></i> Skip Image</button>
+				<button type="submit" name="report" value="report" class="btn btn-mini btn-danger flagImage"><i class="icon-minus-sign"></i> Inappropriate</button>
 			</div>
 		</div>
 		<div class="btn-toolbar btn-rating-bar hidden-phone">
@@ -62,13 +62,13 @@
 				<button name="rate_10" class="btn btn-rate">10</button>
 			</div>
 			<div class="btn-group">
-				<button type="submit" name="skip" value="skip" class="btn btn-mini btn-primary getNextImage">Skip Image</button>
-				<button type="submit" name="report" value="report" class="btn btn-mini btn-danger flagImage">Inappropriate</button>
+				<button type="submit" name="skip" value="skip" class="btn btn-mini btn-primary getNextImage"><i class="icon-step-forward"></i> Skip Image</button>
+				<button type="submit" name="report" value="report" class="btn btn-mini btn-danger flagImage"><i class="icon-minus-sign"></i> Inappropriate</button>
 			</div>
 		</div>
 		<img id="img_upload_current" alt="Current Image" src="/assets/img/placeholder_600.gif" />
 		<p class="lead" style="margin-top:.5cm;"><span id="cat_name" class="catName"></span></p>
-		<a href="#" id="share_url">Share</a>
+		<a href="#" id="share_url"><i class="icon-share"></i> Share</a>
 	</div>
 	<div class="span2" style="outline: black dotted thin; text-align: center; padding-bottom:.5cm;">
 		<div id="previous_div_box" class="" style="visibility:hidden; display: none;">
