@@ -6,6 +6,37 @@
 |--------------------------------------------------------------------------
 */
 
+Route::post('password/reset/{token}', function(){
+    $credentials = array('email' => Input::get('email'));
+
+    return Password::reset($credentials, function($user, $password){
+        $user->password = Hash::make($password);
+        $user->save();
+        Auth::loginUsingId($user->id);
+    	return Redirect::route('get rate')->with('success', 'Password changed!');
+        //return Redirect::to('home');
+    });
+});
+
+Route::get('password/reset/{token}', function($token){
+    return View::make('passwordReset')->with('token', $token)->with('user', Auth::user());
+});
+
+Route::post('password/remind', function(){ // should be POST
+	$email = trim(Input::get('email'));
+    $credentials = array('email' => $email);
+
+    //return Password::remind($credentials);
+    return Password::remind($credentials, function($message, $user){
+    	$message->from('admin@likemycat.com');
+	    $message->subject('Your Password Reminder');
+	});
+});
+
+Route::get('password/remind', function(){ // should be POST
+	return View::make('passwordRemind')->with('user', Auth::user());
+});
+
 Route::get('/', function(){
 	return Redirect::route('get rate');
 });
@@ -263,10 +294,11 @@ Route::post('login', array('before' => 'csrf', function(){
 	$password = Input::get('password');
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password))){
+		//Session::flash('success', 'Login Successful'); // flash message since we're not redirecting
 		return Redirect::intended('/')->with('success', 'Login Successful');
 	} else {
 		//Session::flash('error', 'Authentication failed'); // flash message since we're not redirecting
-		return View::make('login')->with('username', $email)->with('error', true);
+		return View::make('login')->with('username', $email)->with('error', 'Authentication failed');
 	}
 	//todo: figure out how to catch TokenMismatchException
 }));
@@ -362,6 +394,9 @@ if(App::environment() === 'dev'){
 	Event::listen("illuminate.query", function($query, $bindings, $time, $name){
 		Log::debug($query."\n", $bindings);
 	});
+
+	/* don't actually send emails */
+	Mail::pretend();
 }
 
 ?>

@@ -86,20 +86,32 @@
 			@if (Session::has('error'))
 				<div class="alert alert-error">
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
-			    	{{ trans(Session::get('error')) }}
+					@if (Session::has('reason'))
+						{{ trans(Session::get('reason')) }}
+					@else
+						{{ Session::get('error') }}
+					@endif
 			    </div>
 			@endif
 			@if (Session::has('success'))
 			    <div class="alert alert-success">
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
-			    	{{ trans(Session::get('success')) }}
-			    </div>
+					@if (Session::has('reason'))
+						{{ trans(Session::get('reason')) }}
+					@else
+						{{ Session::get('success') }}
+					@endif
+				</div>
 			@endif
 			@if (Session::has('info'))
 			    <div class="alert alert-info">
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
-			    	{{ trans(Session::get('info')) }}
-			    </div>
+					@if (Session::has('reason'))
+						{{ trans(Session::get('reason')) }}
+					@else
+						{{ Session::get('info') }}
+					@endif	   
+				</div>
 			@endif
 			<div class="container-fluid">
 				@yield('content')
