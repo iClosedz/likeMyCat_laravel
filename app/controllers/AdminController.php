@@ -3,13 +3,11 @@
 class AdminController extends BaseController {
 
 	public function __construct(){
-		$this->beforeFilter('auth');
+		//$this->beforeFilter('auth');
 		$this->beforeFilter('csrf', array('on' => 'post'));
 		$this->beforeFilter(function(){
-			Log::info('before filter for AdminController');
 			if(!Auth::check()){
-				Session::put('url.intended', URL::current());
-				return Redirect::route('get login')->with('info', 'You must be logged in to access that page.');
+				return Redirect::route('get login')->with('error', 'You must be logged in to access that page.');
 			}
 
 			if(!Auth::user()->hasRole(Role::getByRoleName('admin'))){

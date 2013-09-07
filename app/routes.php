@@ -10,10 +10,27 @@ Route::get('/', function(){
 	return Redirect::route('get rate');
 });
 
+/**
+ * Route groups
+ */
+Route::group(array('prefix' => 'admin'), function(){
+	Route::get('uploads', 'AdminController@showUploads');
+	Route::get('uploads/delete/{delete_upload_id}', 'AdminController@deleteUploadById')->where('delete_upload_id', '[0-9]+');
+	Route::get('uploads/hide/{upload_id}', 'AdminController@hideUpload')->where('upload_id', '[0-9]+');
+	Route::get('uploads/restore/{restore_upload_id}', 'AdminController@restoreUploadById')->where('restore_upload_id', '[0-9]+');
+	Route::get('cat/{upload_id_inc_deleted}/image/thumb', 'AdminController@getThumbIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
+	Route::get('users', 'AdminController@showUsers');
+});
+
+Route::group(array('prefix' => 'user'), function(){
+	Route::get('uploads', 'UserController@showUploads');
+	Route::get('uploads/hide/{upload_id}', 'UserController@hideUpload')->where('upload_id', '[0-9]+');
+});
+
 Route::group(array('prefix' => 'password'), function()
 {
 	Route::resource('change', 'PasswordChangeController', array('only' => array('index', 'store')));
-	
+
 	Route::get('reset/{token}', function($token){
 		return View::make('passwordReset')->with('token', $token)->with('user', Auth::user());
 	});
@@ -33,72 +50,8 @@ Route::group(array('prefix' => 'password'), function()
 	});
 });
 
-Route::group(array('prefix' => 'admin'), function(){
-	Route::get('uploads', 'AdminController@showUploads');
-	Route::get('uploads/delete/{delete_upload_id}', 'AdminController@deleteUploadById')->where('delete_upload_id', '[0-9]+');
-	Route::get('uploads/hide/{upload_id}', 'AdminController@hideUpload')->where('upload_id', '[0-9]+');
-	Route::get('uploads/restore/{restore_upload_id}', 'AdminController@restoreUploadById')->where('restore_upload_id', '[0-9]+');
-	Route::get('cat/{upload_id_inc_deleted}/image/thumb', 'AdminController@getThumbIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
-	Route::get('users', 'AdminController@showUsers');
-});
 
 
-
-Route::get('user/uploads', function(){
-	return View::make('manageUploads')
-	->with('user', Auth::user())
-	->with('uploads', Auth::user()->uploads()
-		->with('user', 'ratings', 'guestRatings')
-		->orderBy('id', 'DESC')
-		->paginate(4)
-		//->get()
-		);
-});
-
-Route::get('user/uploads/hide/{upload_id}', function(Upload $upload){
-	if(Auth::user()->id === $upload->user_id){
-		$status = $upload->delete();
-
-		return Response::json(array(
-			'success' => $status, 
-			'results' => array('upload_id' => $upload->id)
-			));
-	} else {
-		return Response::json(array(
-			'success' => false, 
-			'results' => 'you don\'t own this image'
-			));
-	}
-})->where('upload_id', '[0-9]+');
-
-/**
- * create and apply admin filter
- */
-Route::filter('admin', function(){
-	if(!Auth::check()){
-		Session::put('url.intended', URL::current());
-		return Redirect::route('get login')->with('info', 'You must be logged in to access that page.');
-	}
-
-	if(!Auth::user()->hasRole(Role::getByRoleName('admin'))){
-		return Redirect::route('get /')->with('error', 'You must be an admin to access this page!');
-	}
-
-});
-
-Route::when('admin/*', 'admin');
-
-/**
- * create and apply user filter
- */
-Route::filter('user', function(){
-	if(!Auth::check()){
-		Session::put('url.intended', URL::current());
-		return Redirect::route('get login')->with('info', 'You must be logged in to access that page.');
-	}
-});
-
-Route::when('user/*', 'user');
 
 /**
  * cat/{upload_id}/
