@@ -94,7 +94,7 @@ class ImageUploadController extends BaseController {
     		$uploadedAs = User::where('is_guest', '=', true)->firstOrFail()->id;
     	}
 
-    	Log::info('uploadedAs: ' . $uploadedAs);
+    	Log::info('uploadImage() uploadedAs: ' . $uploadedAs);
 
     	$path = Input::file('photo')->getRealPath();
     	$extension = strtolower(Input::file('photo')->getClientOriginalExtension());

@@ -9,6 +9,7 @@ class Role extends Eloquent {
 	 */
 	protected $table = 'roles';
 	public $timestamps = false;
+	protected $touches = array('users');
 
 	public function users()
 	{

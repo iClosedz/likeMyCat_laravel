@@ -8,6 +8,7 @@ class Rating extends Eloquent {
 	 * @var string
 	 */
 	protected $table = 'ratings';
+	protected $touches = array('user');
 
 	public function user(){
 		return $this->belongsTo('User');

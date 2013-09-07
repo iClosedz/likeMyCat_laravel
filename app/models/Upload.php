@@ -9,6 +9,7 @@ class Upload extends Eloquent {
 	 */
 	protected $table = 'uploads';
 	protected $softDelete = true;
+	protected $touches = array('user');
 
 	public function user(){
 		return $this->belongsTo('User');
