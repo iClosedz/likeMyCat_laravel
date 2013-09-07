@@ -59,6 +59,17 @@ class AdminController extends BaseController {
 			));
 	}
 
+	function getImageIncDeleted($uploadId){
+		$upload = Upload::withTrashed()->findOrFail($uploadId);
+		$imagePath = $upload->upload_dir . $upload->file_name;
+		$contents = file_get_contents($imagePath);
+
+		$response = Response::make($contents, 200);
+		$response->header('Content-Type', $upload->mime_type);
+
+		return $response;
+	}
+
 	function getThumbIncDeleted($uploadId){
 		$upload = Upload::withTrashed()->findOrFail($uploadId);
 		$imagePath = $upload->upload_dir . $upload->thumb_name;

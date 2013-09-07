@@ -22,6 +22,7 @@ Route::group(array('prefix' => 'admin'), function(){
 	Route::get('uploads/delete/{delete_upload_id}', 'AdminController@deleteUploadById')->where('delete_upload_id', '[0-9]+');
 	Route::get('uploads/hide/{upload_id}', 'AdminController@hideUpload')->where('upload_id', '[0-9]+');
 	Route::get('uploads/restore/{restore_upload_id}', 'AdminController@restoreUploadById')->where('restore_upload_id', '[0-9]+');
+	Route::get('uploads/{upload_id_inc_deleted}/image', 'AdminController@getImageIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
 	Route::get('uploads/{upload_id_inc_deleted}/image/thumb', 'AdminController@getThumbIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
 	Route::get('users', 'AdminController@showUsers');
 });

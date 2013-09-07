@@ -20,12 +20,13 @@
 <div>
 	<div class="row upload-box" id="row_for_upload_{{ $upload->id }}" style="padding-bottom:1cm;">
 		<div class="span3">
+			@if (Route::getCurrentRoute()->getPath() === '/admin/uploads')
+			<a href="/admin/uploads/{{ $upload->id }}/image">
+			<img src="/admin/uploads/{{ $upload->id }}/image/thumb"/>
+			@else
 			<a href="/uploads/{{ $upload->id }}/image">
-				@if (Route::getCurrentRoute()->getPath() === '/admin/uploads')
-				<img src="/admin/uploads/{{ $upload->id }}/image/thumb"/>
-				@else
-				<img src="/uploads/{{ $upload->id }}/image/thumb"/>
-				@endif
+			<img src="/uploads/{{ $upload->id }}/image/thumb"/>
+			@endif
 			</a>
 		</div>
 		<div class="span3">
