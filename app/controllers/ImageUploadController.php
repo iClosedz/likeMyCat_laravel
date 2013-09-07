@@ -43,7 +43,7 @@ class ImageUploadController extends BaseController {
     	$uploads[0]['upload_id'] = $firstUpload->id;
     	$uploads[0]['cat_name'] = htmlspecialchars(utf8_encode($firstUpload->name));
     	$uploads[0]['file_name'] = URL::route('get cat/{upload_id}/image', array($firstUpload->id));
-    	$uploads[0]['file_name_thumb'] = URL::route('get cat/{upload_id}/image', array($firstUpload->id));
+    	$uploads[0]['file_name_thumb'] = URL::route('get cat/{upload_id}/image/thumb', array($firstUpload->id));
     	$uploads[0]['avg_rating'] = $firstUpload->getAvgRating();
     	$uploads[0]['num_ratings'] = $firstUpload->getNumRatings();
 
