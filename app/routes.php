@@ -325,14 +325,17 @@ Route::get('upload', function(){
  */
 Route::post('login', array('before' => 'csrf', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
+
+	if(Input::has('forgot')){
+		return Redirect::route('get password/remind');
+	}
+
 	$email = strtolower(trim(Input::get('username')));
 	$password = Input::get('password');
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password))){
-		//Session::flash('success', 'Login Successful'); // flash message since we're not redirecting
 		return Redirect::intended('/')->with('success', 'Login Successful');
 	} else {
-		//Session::flash('error', 'Authentication failed'); // flash message since we're not redirecting
 		return View::make('login')->with('username', $email)->with('error', 'Authentication failed');
 	}
 	//todo: figure out how to catch TokenMismatchException
@@ -423,6 +426,9 @@ Route::get('rate', function(){
 
 Route::any('rate/getUploads', 'ImageUploadController@getUploads');
 
+/**
+ * environment settings
+ */
 if(App::environment() === 'dev'){
 	/* log all queries */
 	Event::listen("illuminate.query", function($query, $bindings, $time, $name){

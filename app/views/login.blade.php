@@ -52,6 +52,7 @@
          		</div>
 			@endif
 			{{ Form::button('Sign In', array('class' => 'btn btn-large btn-primary', 'type' => 'submit')) }}
+			{{ Form::button('Forgot Password', array('class' => 'btn btn-large btn-warn', 'type' => 'submit', 'name' => 'forgot', 'value' => 'forgot')) }}
 		{{ Form::close() }}
 	@else
 		<h1>You're already logged in. Why are you here?</h1>
