@@ -6,87 +6,43 @@
 |--------------------------------------------------------------------------
 */
 
-Route::post('password/change', array('before' => 'auth|csrf', function(){
-	Log::info("entering password/change");
-	$email = Auth::user()->email;
-	$password = Input::get('current_password');
-	$newPassword = Input::get('new_password');
-	$newPasswordConfirm = Input::get('new_password_confirmation');
-
-	if (Auth::attempt(array('email' => $email, 'password' => $password))){
-		// validate input
-		$rules = array(
-			'username' => 'email', 
-			'new_password' => array('required', 'min:6', 'same:new_password_confirmation')
-			);
-		$validator = Validator::make(Input::all(), $rules);
-		if ($validator->fails()){
-			return Redirect::to('password/change')->withErrors($validator);
-		}
-
-		Auth::user()->password = Hash::make($newPassword);
-		Auth::user()->save();
-		return Redirect::to('rate')->with('success', 'Password changed!');
-	} else {
-		return View::make('passwordChange')->with('user', Auth::user())->with('username', $email)
-		->with('error', 'Current password incorrect');
-	}
-
-}));
-
-Route::get('password/change', function(){
-	return View::make('passwordChange')->with('user', Auth::user());
-});
-
-Route::post('password/reset/{token}', function(){
-	$credentials = array('email' => Input::get('email'));
-
-	return Password::reset($credentials, function($user, $password){
-		$user->password = Hash::make($password);
-		$user->save();
-		Auth::loginUsingId($user->id);
-		return Redirect::to('rate')->with('success', 'Password changed!');
-        //return Redirect::to('home');
-	});
-});
-
-Route::get('password/reset/{token}', function($token){
-	return View::make('passwordReset')->with('token', $token)->with('user', Auth::user());
-});
-
-Route::post('password/remind', function(){ // should be POST
-	$email = trim(Input::get('email'));
-	$credentials = array('email' => $email);
-
-    //return Password::remind($credentials);
-	return Password::remind($credentials, function($message, $user){
-		$message->from('admin@likemycat.com', 'LikeMyCat Admin');
-		$message->subject('Your Password Reminder');
-	});
-});
-
-Route::get('password/remind', function(){ // should be POST
-	return View::make('passwordRemind')->with('user', Auth::user());
-});
-
 Route::get('/', function(){
 	return Redirect::route('get rate');
 });
 
-Route::get('admin/users', function(){
-	return 'user admin page';
+Route::group(array('prefix' => 'password'), function()
+{
+	Route::resource('change', 'PasswordChangeController', array('only' => array('index', 'store')));
+	
+	Route::get('reset/{token}', function($token){
+		return View::make('passwordReset')->with('token', $token)->with('user', Auth::user());
+	});
+
+	Route::post('remind', function(){
+		$email = trim(Input::get('email'));
+		$credentials = array('email' => $email);
+
+		return Password::remind($credentials, function($message, $user){
+			$message->from('admin@likemycat.com', 'LikeMyCat Admin');
+			$message->subject('Your Password Reminder');
+		});
+	});
+
+	Route::get('remind', function(){ 
+		return View::make('passwordRemind')->with('user', Auth::user());
+	});
 });
 
-Route::get('admin/uploads', function(){
-	return View::make('manageUploads')
-	->with('user', Auth::user())
-	->with('uploads', Upload::withTrashed()
-		->with('user', 'ratings', 'guestRatings', 'flagged')
-		->orderBy('id', 'DESC')
-		->paginate(4)
-		//->get()
-		);
+Route::group(array('prefix' => 'admin'), function(){
+	Route::get('uploads', 'AdminController@showUploads');
+	Route::get('uploads/delete/{delete_upload_id}', 'AdminController@deleteUploadById')->where('delete_upload_id', '[0-9]+');
+	Route::get('uploads/hide/{upload_id}', 'AdminController@hideUpload')->where('upload_id', '[0-9]+');
+	Route::get('uploads/restore/{restore_upload_id}', 'AdminController@restoreUploadById')->where('restore_upload_id', '[0-9]+');
+	Route::get('cat/{upload_id_inc_deleted}/image/thumb', 'AdminController@getThumbIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
+	Route::get('users', 'AdminController@showUsers');
 });
+
+
 
 Route::get('user/uploads', function(){
 	return View::make('manageUploads')
@@ -98,51 +54,6 @@ Route::get('user/uploads', function(){
 		//->get()
 		);
 });
-
-Route::get('admin/cat/{upload_id_inc_deleted}/image/thumb', function($uploadId){
-	$upload = Upload::withTrashed()->findOrFail($uploadId);
-	$imagePath = $upload->upload_dir . $upload->thumb_name;
-	$contents = file_get_contents($imagePath);
-
-	$response = Response::make($contents, 200);
-	$response->header('Content-Type', $upload->mime_type);
-
-	return $response;
-})
-->where('upload_id_inc_deleted', '[0-9]+');
-
-Route::get('admin/uploads/delete/{delete_upload_id}', function($uploadId){
-	Log::info('Entering route "' . Route::currentRouteName() . '"');
-
-	$upload = Upload::withTrashed()->findOrFail($uploadId);
-	$status = $upload->forceDelete();
-
-	return Response::json(array(
-		'success' => $status, 
-		'results' => array('upload_id' => $upload->id)
-		));
-})->where('delete_upload_id', '[0-9]+');
-
-Route::get('admin/uploads/hide/{upload_id}', function(Upload $upload){
-	$status = $upload->delete();
-
-	return Response::json(array(
-		'success' => $status, 
-		'results' => array('upload_id' => $upload->id)
-		));
-	
-})->where('upload_id', '[0-9]+');
-
-Route::get('admin/uploads/restore/{restore_upload_id}', function($uploadId){
-	$upload = Upload::withTrashed()->findOrFail($uploadId);
-	$status = $upload->restore();
-
-	return Response::json(array(
-		'success' => $status, 
-		'results' => array('upload_id' => $upload->id)
-		));
-	
-})->where('upload_id', '[0-9]+');
 
 Route::get('user/uploads/hide/{upload_id}', function(Upload $upload){
 	if(Auth::user()->id === $upload->user_id){
@@ -311,7 +222,6 @@ Route::get('cat/{upload_id}/flag/clear', array('before' => 'auth', function(Uplo
 
 // filters are handled inside ImageUploadController constructor
 Route::post('upload', 'ImageUploadController@uploadImage');
-
 
 Route::get('upload', function(){
 	return View::make('upload')->with('user', Auth::user());

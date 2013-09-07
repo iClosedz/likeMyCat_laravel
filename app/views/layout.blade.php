@@ -62,7 +62,7 @@
 									<li class="divider"></li>
 									<li class="nav-header">Administration</li>
 									<li><a href="{{ URL::to('admin/uploads') }}">Manage All Uploads</a></li>
-									<li><a href="adminUsers">User Administration</a></li>
+									<li><a href="{{ URL::to('admin/users') }}">User Administration</a></li>
 									@endif
 								</ul>
 							</li>
