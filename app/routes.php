@@ -45,7 +45,7 @@ Route::post('password/reset/{token}', function(){
 		$user->password = Hash::make($password);
 		$user->save();
 		Auth::loginUsingId($user->id);
-		return Redirect::route('get rate')->with('success', 'Password changed!');
+		return Redirect::to('rate')->with('success', 'Password changed!');
         //return Redirect::to('home');
 	});
 });
