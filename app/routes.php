@@ -6,30 +6,61 @@
 |--------------------------------------------------------------------------
 */
 
-Route::post('password/reset/{token}', function(){
-    $credentials = array('email' => Input::get('email'));
+Route::post('password/change', array('before' => 'auth|csrf', function(){
+	Log::info("entering password/change");
+	$email = Auth::user()->email;
+	$password = Input::get('current_password');
+	$newPassword = Input::get('new_password');
 
-    return Password::reset($credentials, function($user, $password){
-        $user->password = Hash::make($password);
-        $user->save();
-        Auth::loginUsingId($user->id);
-    	return Redirect::route('get rate')->with('success', 'Password changed!');
+	Log::info("Email: $email -- password: $password --- newPassword: $newPassword");
+
+	if (Auth::attempt(array('email' => $email, 'password' => $password))){
+
+		// validate input
+		$rules = array('username' => 'email', 'new_password' => array('required', 'min:6'));
+		$validator = Validator::make(Input::all(), $rules);
+		if ($validator->fails()){
+			return Redirect::to('password/change')->withErrors($validator);
+		}
+
+		Auth::user()->password = Hash::make($newPassword);
+		Auth::user()->save();
+		return Redirect::to('rate')->with('success', 'Password changed!');
+	} else {
+		return View::make('passwordChange')->with('user', Auth::user())->with('username', $email)
+		->with('error', 'Current password incorrect');
+	}
+
+}));
+
+Route::get('password/change', function(){
+	return View::make('passwordChange')->with('user', Auth::user());
+});
+
+Route::post('password/reset/{token}', function(){
+	$credentials = array('email' => Input::get('email'));
+
+	return Password::reset($credentials, function($user, $password){
+		$user->password = Hash::make($password);
+		$user->save();
+		Auth::loginUsingId($user->id);
+		return Redirect::route('get rate')->with('success', 'Password changed!');
         //return Redirect::to('home');
-    });
+	});
 });
 
 Route::get('password/reset/{token}', function($token){
-    return View::make('passwordReset')->with('token', $token)->with('user', Auth::user());
+	return View::make('passwordReset')->with('token', $token)->with('user', Auth::user());
 });
 
 Route::post('password/remind', function(){ // should be POST
 	$email = trim(Input::get('email'));
-    $credentials = array('email' => $email);
+	$credentials = array('email' => $email);
 
     //return Password::remind($credentials);
-    return Password::remind($credentials, function($message, $user){
-    	$message->from('admin@likemycat.com', 'LikeMyCat Admin');
-	    $message->subject('Your Password Reminder');
+	return Password::remind($credentials, function($message, $user){
+		$message->from('admin@likemycat.com', 'LikeMyCat Admin');
+		$message->subject('Your Password Reminder');
 	});
 });
 
@@ -47,8 +78,8 @@ Route::get('admin/users', function(){
 
 Route::get('admin/uploads', function(){
 	return View::make('manageUploads')
-		->with('user', Auth::user())
-		->with('uploads', Upload::withTrashed()
+	->with('user', Auth::user())
+	->with('uploads', Upload::withTrashed()
 		->with('user', 'ratings', 'guestRatings', 'flagged')
 		->orderBy('id', 'DESC')
 		->paginate(4)
@@ -58,8 +89,8 @@ Route::get('admin/uploads', function(){
 
 Route::get('user/uploads', function(){
 	return View::make('manageUploads')
-		->with('user', Auth::user())
-		->with('uploads', Auth::user()->uploads()
+	->with('user', Auth::user())
+	->with('uploads', Auth::user()->uploads()
 		->with('user', 'ratings', 'guestRatings')
 		->orderBy('id', 'DESC')
 		->paginate(4)
@@ -349,26 +380,25 @@ Route::post('signup', array('before' => 'csrf', function(){
 	$validator = Validator::make(Input::all(), $rules);
 
 	if ($validator->fails()){
-    	Log::info('validator errors: ' . $validator); // will this work?
-    	return Redirect::to('get signup')->withErrors($validator);
-    }
+		return Redirect::to('signup')->withErrors($validator);
+	}
 
-    $user = new User;
-    $user->email = $email;
-    $user->password = Hash::make($password);
-    $user->is_guest = 'false';
-    $user->ip_address = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
-    $status = $user->save();
+	$user = new User;
+	$user->email = $email;
+	$user->password = Hash::make($password);
+	$user->is_guest = 'false';
+	$user->ip_address = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
+	$status = $user->save();
 
     //add user to default role(s)
-    $user->grantRole(Role::getByRoleName('user'))->grantRole(Role::getByRoleName('uploader'));
+	$user->grantRole(Role::getByRoleName('user'))->grantRole(Role::getByRoleName('uploader'));
 
-    if($status){
-    	Auth::loginUsingId($user->id);
-    	return Redirect::route('get rate')->with('success', 'Sign up successful!');
-    } else {
-    	return Redirect::route('get signup')->with('error', 'Error creating new user');
-    }
+	if($status){
+		Auth::loginUsingId($user->id);
+		return Redirect::route('get rate')->with('success', 'Sign up successful!');
+	} else {
+		return Redirect::route('get signup')->with('error', 'Error creating new user');
+	}
 
 }));
 

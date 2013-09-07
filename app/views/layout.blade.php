@@ -54,7 +54,7 @@
 									<li><a href="{{ URL::to('logout') }}">Log Out</a></li>
 									<li class="divider"></li>
 									<li class="nav-header">Account</li>
-									<li><a href="{{ URL::to('user/changePassword') }}">Change Password</a></li>
+									<li><a href="{{ URL::to('password/change') }}">Change Password</a></li>
 									@if ($user->hasRole(Role::getByRoleName('uploader')))
 									<li><a href="{{ URL::to('user/uploads') }}">Manage Your Uploads</a></li>
 									@endif
@@ -83,6 +83,15 @@
 		</div>
 		<!--- end nav bar -->
 		<div class="container">
+			@if (isset($errors))
+			 	@foreach($errors->all() as $message)
+	        		<div class="alert alert-error">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						{{ $message }}
+				    </div>
+	    		@endforeach
+    		@endif
+
 			@if (Session::has('error'))
 				<div class="alert alert-error">
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -99,7 +108,7 @@
 					@if (Session::has('reason'))
 						{{ trans(Session::get('reason')) }}
 					@else
-						{{ Session::get('success') }}
+						Success!
 					@endif
 				</div>
 			@endif
@@ -112,6 +121,24 @@
 						{{ Session::get('info') }}
 					@endif	   
 				</div>
+			@endif
+			@if (!empty($error))
+			<div class="alert alert-error">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					{{ $error }}
+			    </div>
+			@endif
+			@if (!empty($success))
+			<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					{{ $success }}
+			    </div>
+			@endif
+			@if (!empty($info))
+			<div class="alert alert-info">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					{{ $info }}
+			    </div>
 			@endif
 			<div class="container-fluid">
 				@yield('content')

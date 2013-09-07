@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-	<title>Forgot Password</title>
+<title>Change Password</title>
 @stop
 
 @section('customStyles')
@@ -38,15 +38,11 @@
 @stop
 
 @section('content')
-	{{ Form::open(array('route' => 'post password/remind', 'class'=>'form-signin')) }}
-		<h2 class="form-signin-heading">Forgot Password</h2>
-		{{ Form::email('email', null, array('class' => 'input-block-level', 'placeholder' => 'Email')) }}
-			@if (Session::has('success'))
-			<div class="alert alert-success">
-				<button type="button" class="close" data-dismiss="alert">&times;</button>
-				<strong>Password reminder sent!</strong> Please check your email.
-			</div>
-			@endif
-		{{ Form::button('Send Reminder', array('class' => 'btn btn-large btn-primary', 'type' => 'submit')) }}
-	{{ Form::close() }}
+	{{ Form::open(array('class'=>'form-signin')) }}
+	<h2 class="form-signin-heading">Change Password</h2>
+	{{ Form::password('current_password', array('class' => 'input-block-level', 'placeholder' => 'Current Password')) }}
+	{{ Form::password('new_password', array('class' => 'input-block-level', 'placeholder' => 'New Password')) }}
+	{{ Form::password('new_password_confirmation', array('class' => 'input-block-level', 'placeholder' => 'Confirm New Password')) }}
+	{{ Form::button('Update Password', array('class' => 'btn btn-large btn-primary', 'type' => 'submit')) }}
+</form>
 @stop
