@@ -9,7 +9,7 @@ First, see the excellent documentation for a Laravel 4 starter site [here](https
 Our personal workflow:
 
 1.	git clone [this repository]
-2.	Create app/config/production (or app/config/(dev|staging|etc)
+2.	Create app/config/production (or app/config/(local|staging|production)
 3.	Copy app/config/database.php to app/config/production and make suitable edits
 4.	from root likemycat_laravel directory: php artisan migrate
 5.	php artisan db:seed
