@@ -1,4 +1,4 @@
-## [LikeMyCat](https://www.likemycat.com) - recreated with Lavarel 4
+## [LikeMyCat](https://www.likemycat.com) - recreated with Laravel 4
 
 [GitHub Repository](https://github.com/davidkey/likeMyCat_laravel) for LikeMyCat site. The master branch is deployed to our production VM nightly.
 
