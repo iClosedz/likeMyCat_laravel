@@ -46,7 +46,7 @@ Route::group(array('prefix' => 'password'), function()
 		return View::make('passwordReset')->with('token', $token)->with('user', Auth::user());
 	});
 
-	Route::post('password/reset/{token}', function(){
+	Route::post('reset/{token}', function(){
 		$credentials = array('email' => Input::get('email'));
 
 		return Password::reset($credentials, function($user, $password){
