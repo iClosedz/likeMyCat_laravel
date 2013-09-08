@@ -15,7 +15,6 @@
 <h1>Manage Uploads</h1>
 @endif
 <hr/>
-<!-- using eager loading ??? -->
 @foreach($uploads as $upload)
 <div>
 	<div class="row upload-box" id="row_for_upload_{{ $upload->id }}" style="padding-bottom:1cm;">
