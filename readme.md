@@ -1,21 +1,18 @@
-## Laravel PHP Framework
+## LikeMyCat [link](https://www.likemycat.com) - recreated with Lavarel 4
 
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/version.png)](https://packagist.org/packages/laravel/framework) [![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.png)](https://packagist.org/packages/laravel/framework) [![Build Status](https://travis-ci.org/laravel/framework.png)](https://travis-ci.org/laravel/framework)
+[GitHub Repository](https://github.com/davidkey/likeMyCat_laravel) for LikeMyCat site. The master branch is deployed to our production VM nightly.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, and caching.
+## Deployment instructions (mostly for our own benifit :))
 
-Laravel aims to make the development process a pleasing one for the developer without sacrificing application functionality. Happy developers make the best code. To this end, we've attempted to combine the very best of what we have seen in other web frameworks, including frameworks implemented in other languages, such as Ruby on Rails, ASP.NET MVC, and Sinatra.
+First, see the excellent documentation for a Laravel 4 starter site [here](https://github.com/andrew13/Laravel-4-Bootstrap-Starter-Site).
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+Our personal workflow
+1. git clone [this repository]
+2. Create app/config/production (or app/config/(dev|staging|etc)
+3. Copy app/config/database.php to app/config/production and make suitable edits
+4. from root likemycat_laravel directory: php artisan migrate
+5. php artisan db:seed
+6. ./deploy.sh (change chown :www-data ... piece if needed)
+7. After configuring webserver config appropriately, login as 'admin@admin.com'. Note that image display won't really work correctly until at least 2 image uploads are made.
 
-## Official Documentation
-
-Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
-
-### Contributing To Laravel
-
-**All issues and pull requests should be filed on the [laravel/framework](http://github.com/laravel/framework) repository.**
-
-### License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+More info about LikeMyCat [here](https://www.likemycat.com/about) if interested.
