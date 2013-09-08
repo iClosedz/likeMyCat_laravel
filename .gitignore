@@ -8,5 +8,5 @@ composer.phar
 /app/config/staging
 /app/config/production
 
-# upload location
-/public/uploads/*
+#local sync job for dev
+sync.sh
