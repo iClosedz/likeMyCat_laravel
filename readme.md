@@ -6,7 +6,8 @@
 
 First, see the excellent documentation for a Laravel 4 starter site [here](https://github.com/andrew13/Laravel-4-Bootstrap-Starter-Site).
 
-Our personal workflow
+Our personal workflow:
+
 1.	git clone [this repository]
 2.	Create app/config/production (or app/config/(dev|staging|etc)
 3.	Copy app/config/database.php to app/config/production and make suitable edits
