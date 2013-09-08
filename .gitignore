@@ -7,3 +7,6 @@ composer.phar
 /app/config/local
 /app/config/staging
 /app/config/production
+
+# upload location
+/public/uploads/*
