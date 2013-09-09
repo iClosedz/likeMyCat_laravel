@@ -2,7 +2,10 @@
 
 class AdminController extends BaseController {
 
-	public function __construct(){
+	protected $user;
+	protected $userWithTrashed;
+
+	public function __construct(User $user){
 		//$this->beforeFilter('auth');
 		$this->beforeFilter('csrf', array('on' => 'post'));
 		$this->beforeFilter(function(){
@@ -14,14 +17,22 @@ class AdminController extends BaseController {
 				return Redirect::route('get /')->with('error', 'You must be an admin to access this page!');
 			}
 		});
+
+		$this->user = $user->all();
+		$this->userWithTrashed = $user->withTrashed();
+
+	}
+
+	function showFlaggedUploads($userId){
+
 	}
 
 	function showRoles($userId){
 		$user = User::withTrashed()->find($userId);
 
 		return View::make('admin.userRoles')
-			->with('user', Auth::user())
-			->with('userBeingManaged', $user);
+		->with('user', Auth::user())
+		->with('userBeingManaged', $user);
 	}
 
 	function grantRole($userId, $roleId){
@@ -32,7 +43,7 @@ class AdminController extends BaseController {
 		$user->save();
 
 		return Redirect::action('AdminController@showRoles', array($user->id))
-				->with('success', 'Role updated');
+		->with('success', 'Role updated');
 	}
 
 	function revokeRole($userId, $roleId){
@@ -41,14 +52,14 @@ class AdminController extends BaseController {
 
 		if($user->id === Auth::user()->id && $role->id === Role::byRoleName('admin')->firstOrFail()->id){
 			return Redirect::action('AdminController@showRoles', array($user->id))
-				->with('error', 'Can\'t remove self from admin role');
+			->with('error', 'Can\'t remove self from admin role');
 		}
 
 		$status = $user->revokeRole($role);
 		$user->save();
 
 		return Redirect::action('AdminController@showRoles', array($user->id))
-				->with('success', 'Role updated');
+		->with('success', 'Role updated');
 	}
 
 	function disableUser($userId){
@@ -90,12 +101,12 @@ class AdminController extends BaseController {
 
 	function showUploads(){
 		return View::make('manageUploads')
-			->with('user', Auth::user())
-			->with('uploads', Upload::withTrashed()
-				->with('user', 'ratings', 'guestRatings', 'flagged')
-				->orderBy('id', 'DESC')
-				->paginate(4)
-				);
+		->with('user', Auth::user())
+		->with('uploads', Upload::withTrashed()
+			->with('user', 'ratings', 'guestRatings', 'flagged')
+			->orderBy('id', 'DESC')
+			->paginate(4)
+			);
 	}
 
 	function deleteUploadById($uploadId){
