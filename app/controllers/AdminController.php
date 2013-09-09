@@ -5,7 +5,10 @@ class AdminController extends BaseController {
 	protected $user;
 	protected $userWithTrashed;
 
-	public function __construct(User $user){
+	protected $upload;
+	protected $uploadWithTrashed;
+
+	public function __construct(User $user, Upload $upload){
 		//$this->beforeFilter('auth');
 		$this->beforeFilter('csrf', array('on' => 'post'));
 		$this->beforeFilter(function(){
@@ -18,13 +21,22 @@ class AdminController extends BaseController {
 			}
 		});
 
-		$this->user = $user->all();
+		$this->user = $user->all(); 
 		$this->userWithTrashed = $user->withTrashed();
+
+		$this->upload = $upload->all(); 
+		$this->uploadWithTrashed = $upload->withTrashed();
 
 	}
 
 	function showFlaggedUploads($userId){
-
+		return View::make('manageUploads')
+			->with('user', Auth::user())
+			->with('uploads', Upload::withTrashed()
+				->with('user', 'ratings', 'guestRatings', 'flagged')
+				->orderBy('id', 'DESC')
+				->paginate(4)
+				);
 	}
 
 	function showRoles($userId){
