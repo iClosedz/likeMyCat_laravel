@@ -8,6 +8,12 @@ echo 'grabbing latest code from github'
 time git fetch --all
 time git reset --hard origin/master
 
+# kinda hacky, but keeps site down after git writes over whatever it is that's flagging site as down
+php artisan down
+
+echo 'artisan optimize'
+php artisan optimize
+
 echo 'updating permissins'
 chown -R :www-data . 2>/dev/null
 chmod -R 775 uploads 2>/dev/null
