@@ -34,7 +34,7 @@
 @stop
 
 @section('content')
-<h1>Manage Users</h1>
+<h1>Manage Users - {{{ $user->email }}}</h1>
 <hr/>
 <table class="table table-condensed table-hover" id="sort">
 	<thead>
