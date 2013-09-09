@@ -14,4 +14,7 @@ chmod -R 775 app/storage
 echo 'composer install'
 composer install
 
+echo 'migrate database changes'
+php artisan migrate
+
 echo 'done'
