@@ -109,7 +109,28 @@ Route::post('login', array('before' => 'csrf', function(){
 	if (Auth::attempt(array('email' => $email, 'password' => $password))){
 		return Redirect::intended('/')->with('success', 'Login Successful');
 	} else {
-		return View::make('login')->with('username', $email)->with('error', 'Authentication failed');
+
+		// Please note that for this to work, 
+		// the following command may have to be executed as postgres user
+		// on your server(s):
+		// echo "create extension pgcrypto" | psql -d catapp_db_laravel
+
+		// handle legacy login
+		try {
+			$usersCount = UserLegacy::whereRaw('email = ? and (password = crypt(CAST(? as text), CAST(salt as text)) OR password = crypt(CAST(? || salt as text), CAST(salt as text)))', 
+				array($email, $password, $password))->count();
+		} catch (Exception $exception) {
+			Log::error($exception);
+			Log::error('UserLegacy query failed. Do you have pgcrypto installed on your database? Crypt() function is required.');
+		}
+
+		if(!empty($usersCount) && $usersCount > 0){
+			Auth::user()->password = Hash::make($password);
+			Auth::user()->save();
+			return Redirect::intended('/')->with('success', 'Login Successful');
+		} else {
+			return View::make('login')->with('username', $email)->with('error', 'Authentication failed');
+		}
 	}
 	//todo: figure out how to catch TokenMismatchException
 }));
