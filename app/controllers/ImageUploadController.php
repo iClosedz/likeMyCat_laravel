@@ -34,9 +34,9 @@ class ImageUploadController extends BaseController {
 			$firstUpload = Upload::find($shareImageId);
 		} else {
 			if($excludeImageId && $excludeImageId > 0){
-				$firstUpload = Upload::with('user', 'ratings', 'guestRatings')->where('id', '!=', $excludeImageId)->orderBy(DB::raw('RANDOM()'))->firstOrFail();
+				$firstUpload = Upload::with('user', 'ratings', 'guestRatings')->where('id', '!=', $excludeImageId)->orderBy(DB::raw('RANDOM()', ''))->firstOrFail();
 			} else {
-    			$firstUpload = Upload::take(1)->firstOrFail(); // fixme
+                $firstUpload = Upload::with('user', 'ratings', 'guestRatings')->orderBy(DB::raw('RANDOM()', ''))->firstOrFail();
     		}
     	}
 
@@ -53,14 +53,14 @@ class ImageUploadController extends BaseController {
     			$additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
                 ->where('id', '!=', $firstUpload->id)
     			->whereRaw('"id" not in (select upload_id from "ratings" where user_id = ' . Auth::user()->id . ')')
-    			->orderBy(DB::raw('RANDOM()'))
+    			->orderBy(DB::raw('RANDOM()'), '')
     			->take($howManyResults-1)
     			->get();
     		} else {
               $additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
                 ->where('id', '!=', $firstUpload->id)
                 ->whereRaw('"id" not in (select upload_id from "ratings_guest" where session_id = \'' . session_id(). '\')')
-                ->orderBy(DB::raw('RANDOM()'))
+                ->orderBy(DB::raw('RANDOM()'), '')
                 ->take($howManyResults-1)
                 ->get();  
             }
@@ -69,13 +69,13 @@ class ImageUploadController extends BaseController {
     		//Log::info('no additional uploads not yet rated - just grabbing random uploads now');
     			$additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
                 ->where('id', '!=', $firstUpload->id)
-    			->orderBy(DB::raw('RANDOM()'))
+    			->orderBy(DB::raw('RANDOM()'), '')
     			->take($howManyResults-1)
     			->get();
     		} else if(count($additionalUploads) < $howManyResults-1){
                 $additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
                 ->where('id', '!=', $firstUpload->id)
-                ->orderBy(DB::raw('RANDOM()'))
+                ->orderBy(DB::raw('RANDOM()'), '')
                 ->take(($howManyResults - 1) - count($additionalUploads))
                 ->get();
             }
