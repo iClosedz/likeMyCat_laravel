@@ -125,7 +125,7 @@ Route::post('login', array('before' => 'csrf', function(){
 		}
 
 		if(!empty($usersCount) && $usersCount > 0){
-			Auth::loginUsingId(User::where('email', '=', $email)->firstOrFail());
+			Auth::loginUsingId(User::where('email', '=', $email)->firstOrFail()->id);
 			Auth::user()->password = Hash::make($password);
 			Auth::user()->save();
 			return Redirect::intended('/')->with('success', 'Login Successful');
