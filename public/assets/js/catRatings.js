@@ -6,6 +6,8 @@ var firstTimeLoad = true;
 $(document).ready(function () {
    //console.log("The DOM is now loaded and can be manipulated.");
    getImageData();
+   getTodaysTopCat();
+   getTopCatAllTime();
 
    $(function () {
       $("button.btn-rate").click(function () {
@@ -29,6 +31,34 @@ $(document).ready(function () {
 
    });
 });
+
+function getTodaysTopCat(){
+ $.get("/uploads/top/day", {})
+   .done(function (data) {
+      console.log('rating returned "' + data + '"');
+
+      document.getElementById('top_cat_name').innerHTML = data['results']['name'];
+      document.getElementById('top_cat_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
+      document.getElementById('img_top_cat').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
+   })
+   .fail(function (data) {
+      console.log("getTodaysTopCat failed: " + data);
+   });
+}
+
+function getTopCatAllTime(){
+ $.get("/uploads/top/ever", {})
+   .done(function (data) {
+      console.log('rating returned "' + data + '"');
+
+      document.getElementById('top_cat_ever_name').innerHTML = data['results']['name'];
+      document.getElementById('top_cat_ever_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
+      document.getElementById('img_top_cat_ever').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
+   })
+   .fail(function (data) {
+      console.log("getTodaysTopCat failed: " + data);
+   });
+}
 
 function flagImage(uploadId) {
    console.log('flaging imageId ' + currentImage.uploadId);

@@ -6,19 +6,19 @@
 
 @section('customStyles')
 .btn-mini {
-	padding: 5px 9.5px;
+padding: 5px 9.5px;
 }
 .catName{
-	font-style:italic;
+font-style:italic;
 }
 .catName:before{
-	content:"\"";
+content:"\"";
 }
 .catName:after{
-	content:"\"";
+content:"\"";
 }
 .btn-rating-bar{
-	margin-bottom: 10px;
+margin-bottom: 10px;
 }
 @stop
 
@@ -77,14 +77,30 @@
 			<div>
 				<small>Average rating: <span id="avg_rating_display">0.0</span>
 					<br/>
-					(<span id="rating_count_display">0</span> votes)</small>
-				</div>
-			</div>
-			<div>
-				<a class="getNextImage" href="#" id="next_link"><h4>Next &raquo;</h4></a>
-				<img class="getNextImage" id="img_upload_next" alt="Next Image" src="/assets/img/placeholder_130.gif" />
+					(<span id="rating_count_display">0</span> votes)
+				</small>
 			</div>
 		</div>
+		<div>
+			<a class="getNextImage" href="#" id="next_link"><h4>Next &raquo;</h4></a>
+			<img class="getNextImage" id="img_upload_next" alt="Next Image" src="/assets/img/placeholder_130.gif" />
+		</div>
+		<hr/>
+		<div>
+			<h5>Today's Top Cat:</h5>
+			<img id="img_top_cat" alt="Top Cat" src="/assets/img/placeholder_130.gif" />
+			<span class="catName" id="top_cat_name"></span>
+			<br/>
+			<small>Rating: <span id="top_cat_rating"></span></small>
+		</div>
+		<div>
+			<h5>All Time Leader:</h5>
+			<img id="img_top_cat_ever" alt="Top Cat Ever" src="/assets/img/placeholder_130.gif" />
+			<span class="catName" id="top_cat_ever_name"></span>
+			<br/>
+			<small>Rating: <span id="top_cat_ever_rating"></span></small>
+		</div>
 	</div>
+</div>
 </div>
 @stop
