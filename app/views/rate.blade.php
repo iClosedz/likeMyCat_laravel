@@ -88,14 +88,14 @@ margin-bottom: 10px;
 		<hr/>
 		<div>
 			<h5>Today's Top Cat:</h5>
-			<img id="img_top_cat" alt="Top Cat" src="/assets/img/placeholder_130.gif" />
+			<a href="#" id="top_cat_link"><img id="img_top_cat" alt="Top Cat" src="/assets/img/placeholder_130.gif" /></a>
 			<span class="catName" id="top_cat_name"></span>
 			<br/>
 			<small>Rating: <span id="top_cat_rating"></span></small>
 		</div>
 		<div>
 			<h5>All Time Leader:</h5>
-			<img id="img_top_cat_ever" alt="Top Cat Ever" src="/assets/img/placeholder_130.gif" />
+			<a href="#" id="top_cat_ever_link"><img id="img_top_cat_ever" alt="Top Cat Ever" src="/assets/img/placeholder_130.gif" /></a>
 			<span class="catName" id="top_cat_ever_name"></span>
 			<br/>
 			<small>Rating: <span id="top_cat_ever_rating"></span></small>
