@@ -13,6 +13,7 @@ return array(
     'AddNameToUploads' => $baseDir . '/app/database/migrations/2013_09_04_012858_add_name_to_uploads.php',
     'AddSoftDeletesToUploads' => $baseDir . '/app/database/migrations/2013_09_05_225106_add_soft_deletes_to_uploads.php',
     'AddSoftDeletesToUsers' => $baseDir . '/app/database/migrations/2013_09_07_192844_add_soft_deletes_to_users.php',
+    'AddTimestampsToRatingsGuest' => $baseDir . '/app/database/migrations/2013_09_09_145548_add_timestamps_to_ratings_guest.php',
     'AddUniqueToRatings' => $baseDir . '/app/database/migrations/2013_09_05_050426_add_unique_to_ratings.php',
     'AddUniquesToUserRoles' => $baseDir . '/app/database/migrations/2013_09_06_013544_add_uniques_to_user_roles.php',
     'AdminController' => $baseDir . '/app/controllers/AdminController.php',

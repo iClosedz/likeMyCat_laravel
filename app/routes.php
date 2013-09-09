@@ -82,7 +82,7 @@ Route::group(array('prefix' => 'uploads'), function(){
 	Route::get('{upload_id}/image/thumb', 'UploadsController@getImageThumb')->where('upload_id', '[0-9]+');
 	Route::get('{upload_id}/rate/{rating}', 'UploadsController@setRating')->where('upload_id', '[0-9]+')->where('rating', '[1-9]|10');
 	Route::get('{upload_id}/flag', 'UploadsController@flagUpload')->where('upload_id', '[0-9]+');
-
+	Route::get('top/{timespan}', 'UploadsController@getTopUploads')->where('timespan', '(ever|year|month|week|day)');
 });
 
 

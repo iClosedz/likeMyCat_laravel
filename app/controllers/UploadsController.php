@@ -2,6 +2,43 @@
 
 class UploadsController extends BaseController {
 
+	function getTopUploads($timespan){
+		$topUploadId = 0;
+		$topUploadRating = 0;
+
+		if($timespan === 'ever'){
+			$allUploads = Upload::with('ratings', 'guestRatings')->get();
+		} else {
+			$sinceWhen = date('Y-m-d', strtotime("-1 $timespan"));
+
+			$allUploads = Upload::with(array(
+				'ratings' => function($query) use($sinceWhen) { 
+            		$query->where('updated_at', '>', $sinceWhen);
+      			}, 
+				'guestRatings' => function($query) use($sinceWhen) { 
+            		$query->where('created_at', '>', $sinceWhen);
+      			}))->get();
+		}
+
+		foreach ($allUploads as $u) {
+			if($u->getAvgRating() > $topUploadRating){
+				$topUploadId = $u->id;
+				$topUploadRating = $u->getAvgRating();
+			}
+		}
+
+		$topRatedUpload = Upload::find($topUploadId);
+
+		return Response::json(array(
+			'success' => true, 
+			'results' => array(
+				'upload_id' => $topRatedUpload->id, 
+				'name' => $topRatedUpload->name,
+				'rating' => $topUploadRating,
+				'timespan' => $timespan
+				)));
+	}
+
 	function getImage(Upload $upload){
 		$imagePath = $upload->upload_dir . $upload->file_name;
 		$contents = file_get_contents($imagePath);
