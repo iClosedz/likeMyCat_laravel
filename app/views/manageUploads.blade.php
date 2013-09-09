@@ -16,6 +16,8 @@
 @if (strpos(Route::getCurrentRoute()->getPath(), '/admin/') === 0)
 	@if (Route::getCurrentRoute()->getPath() === '/admin/uploads/flagged')
 	<h1>Admin - Manage Flagged Uploads</h1>
+	@elseif (Route::getCurrentRoute()->getPath() === '/admin/uploads/hidden')
+	<h1>Admin - Manage Hidden Uploads</h1>
 	@else
 	<h1>Admin - Manage All Uploads</h1>
 	@endif
