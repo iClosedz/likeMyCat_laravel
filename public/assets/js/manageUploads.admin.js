@@ -42,16 +42,41 @@ $(document).ready(function () {
 	});
 });
 
+function restoreUploadById(uploadId) {
+	console.log('restore upload ' + uploadId);
+
+	$.get("/admin/uploads/restore/" + uploadId, {})
+	.done(function (data) {
+		console.log('restore returned "' + data + '"');
+	})
+	.fail(function (data) {
+		alert("Failed to restore image: " + data);
+	});
+}
 
 function hideUploadById(uploadId) {
 	console.log('hide upload ' + uploadId);
 
-	$.get("/user/uploads/hide/" + uploadId, {})
+	$.get("/admin/uploads/hide/" + uploadId, {})
 	.done(function (data) {
 		console.log('delete returned "' + data + '"');
 	})
 	.fail(function (data) {
 		alert("Failed to delete image: " + data);
+	});
+}
+
+function clearFlagging(uploadId) {
+	console.log('clear flagging for upload ' + uploadId);
+
+	var rowToRemove = $('#row_for_upload_' + uploadId);
+	$.get("/uploads/" + uploadId + "/flag/clear", {})
+	.done(function (data) {
+		console.log('clearFlagging returned "' + data + '"');
+		$('#flagged_count_' + uploadId).text('0');
+	})
+	.fail(function (data) {
+		alert("Failed to clear flagging: " + data);
 	});
 }
 
@@ -63,5 +88,18 @@ function removeRowByUploadId(uploadId) {
 		"complete": function () {
 			rowToRemove.remove();
 		}
+	});
+}
+
+function deleteUploadById(uploadId) {
+	console.log('deleting upload ' + uploadId);
+
+	$.get("/admin/uploads/delete/" + uploadId, {})
+	.done(function (data) {
+		console.log('delete returned "' + data + '"');
+		removeRowByUploadId(uploadId);
+	})
+	.fail(function (data) {
+		alert("Failed to delete image: " + data);
 	});
 }

@@ -5,7 +5,11 @@
 @stop
 
 @section('additionalScriptTags')
-<script src="/assets/js/manageUploads.js"></script>
+@if (strpos(Route::getCurrentRoute()->getPath(), '/admin/') === 0)
+{{ HTML::script('/assets/js/manageUploads.admin.js') }}
+@else
+{{ HTML::script('/assets/js/manageUploads.js') }}
+@endif
 @stop
 
 @section('content')
@@ -19,6 +23,7 @@
 	<h1>Manage Uploads</h1>
 @endif
 <hr/>
+@if (strpos(Route::getCurrentRoute()->getPath(), '/admin/') === 0)
 <div class="btn-toolbar" style="text-align: center;">
   <div class="btn-group">
   	@if (Route::getCurrentRoute()->getPath() === '/admin/uploads')
@@ -39,6 +44,7 @@
   </div>
 </div>
 <br/>
+@endif
 @foreach($uploads as $upload)
 <div>
 	<div class="row upload-box" id="row_for_upload_{{ $upload->id }}" style="padding-bottom:1cm;">
