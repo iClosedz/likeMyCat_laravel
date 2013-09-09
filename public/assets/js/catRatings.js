@@ -149,6 +149,7 @@ function setShareId(shareId) {
    console.log('setShareId(' + shareId + ')');
    window.location.hash = shareId;
    document.getElementById('share_url').href = 'https://www.likemycat.com/rate.php#' + shareId;
+   document.getElementById('share_url').href = 'https://www.likemycat.com/rate#' + shareId;
 }
 
 function getImageData() {
