@@ -13,30 +13,43 @@ class UploadsController extends BaseController {
 
 			$allUploads = Upload::with(array(
 				'ratings' => function($query) use($sinceWhen) { 
-            		$query->where('updated_at', '>', $sinceWhen);
-      			}, 
+					$query->where('updated_at', '>', $sinceWhen);
+				}, 
 				'guestRatings' => function($query) use($sinceWhen) { 
-            		$query->where('created_at', '>', $sinceWhen);
-      			}))->get();
+					$query->where('created_at', '>', $sinceWhen);
+				}))->get();
 		}
 
 		foreach ($allUploads as $u) {
 			if($u->getAvgRating() > $topUploadRating){
-				$topUploadId = $u->id;
-				$topUploadRating = $u->getAvgRating();
+				// 5 ratings minimum for all time rating
+				if(($timespan === 'ever' && $u->getNumRatings() > 5) || $timespan !== 'ever'){
+					$topUploadId = $u->id;
+					$topUploadRating = $u->getAvgRating();
+				}
 			}
 		}
 
 		$topRatedUpload = Upload::find($topUploadId);
 
-		return Response::json(array(
-			'success' => true, 
-			'results' => array(
-				'upload_id' => $topRatedUpload->id, 
-				'name' => $topRatedUpload->name,
-				'rating' => $topUploadRating,
-				'timespan' => $timespan
-				)));
+		if(!empty($topRatedUpload)){
+			return Response::json(array(
+				'success' => true, 
+				'results' => array(
+					'upload_id' => $topRatedUpload->id, 
+					'name' => $topRatedUpload->name,
+					'rating' => $topUploadRating,
+					'ratings' => $topRatedUpload->getNumRatings(),
+					'timespan' => $timespan
+					)));
+		} else {
+			return Response::json(array(
+				'success' => false, 
+				'results' => array(
+					'message' => 'no data returned for criteria', 
+					'timespan' => $timespan
+					)));
+		}
 	}
 
 	function getImage(Upload $upload){
