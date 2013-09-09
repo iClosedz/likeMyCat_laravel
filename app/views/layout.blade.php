@@ -1,4 +1,4 @@
-<?php if(!isset($user)){ $user=null; } else { Log::info('current user email: ' . $user->email); } ?>
+<?php if(!isset($user)){ $user=null; } else { $user = Auth::user(); /*Log::info('current user email: ' . $user->email);*/ } ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
