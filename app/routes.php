@@ -26,6 +26,7 @@ Route::group(array('prefix' => 'admin'), function(){
 	Route::get('uploads/restore/{restore_upload_id}', 'AdminController@restoreUploadById')->where('restore_upload_id', '[0-9]+');
 	Route::get('uploads/{upload_id_inc_deleted}/image', 'AdminController@getImageIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
 	Route::get('uploads/{upload_id_inc_deleted}/image/thumb', 'AdminController@getThumbIncDeleted')->where('upload_id_inc_deleted', '[0-9]+');
+	Route::get('uploads/{flagged_upload_id}/flag/clear', 'AdminController@clearFlags')->where('flagged_upload_id', '[0-9]+');
 	Route::get('users', 'AdminController@showUsers');
 	Route::get('users/{user_id}/disable', 'AdminController@disableUser')->where('user_id', '[0-9]+');
 	Route::get('users/{user_id}/enable', 'AdminController@enableUser')->where('user_id', '[0-9]+');
@@ -81,7 +82,6 @@ Route::group(array('prefix' => 'uploads'), function(){
 	Route::get('{upload_id}/image/thumb', 'UploadsController@getImageThumb')->where('upload_id', '[0-9]+');
 	Route::get('{upload_id}/rate/{rating}', 'UploadsController@setRating')->where('upload_id', '[0-9]+')->where('rating', '[1-9]|10');
 	Route::get('{upload_id}/flag', 'UploadsController@flagUpload')->where('upload_id', '[0-9]+');
-	Route::get('{flagged_upload_id}/flag/clear', 'UploadsController@clearFlags')->where('flagged_upload_id', '[0-9]+');
 
 });
 

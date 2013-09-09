@@ -27,6 +27,20 @@ class AdminController extends BaseController {
 		});
 	}
 
+	function clearFlags($uploadId){
+		if(Auth::user()->hasRole(Role::getByRoleName('admin'))) {
+			$result = FlaggedUpload::where('upload_id', '=', $uploadId)->delete();
+		} else {
+			$result = false;
+		}
+
+		return Response::json(array(
+			'success' => ($result != false), 
+			'results' => array(
+				'upload_id' => $uploadId
+				)));
+	}
+
 	function showHiddenUploads(){
 		return View::make('manageUploads')
 		->with('user', Auth::user())
