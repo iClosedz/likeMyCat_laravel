@@ -9,9 +9,9 @@ time git fetch --all
 time git reset --hard origin/master
 
 echo 'updating permissins'
-chown -R :www-data .
+chown -R :www-data . 2>/dev/null
 chmod -R 775 uploads
-chmod -R 775 app/storage 2>/dev/null
+chmod -R 775 app/storage
 
 echo 'composer install'
 composer install
