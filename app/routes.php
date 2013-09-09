@@ -100,6 +100,7 @@ Route::get('uploader', function(){
  */
 Route::post('login', array('before' => 'csrf', function(){
 	Log::info('Entering route "' . Route::currentRouteName() . '"');
+	$remember = true;
 
 	if(Input::has('forgot')){
 		return Redirect::route('get password/remind');
@@ -108,7 +109,7 @@ Route::post('login', array('before' => 'csrf', function(){
 	$email = strtolower(trim(Input::get('username')));
 	$password = Input::get('password');
 
-	if (Auth::attempt(array('email' => $email, 'password' => $password))){
+	if (Auth::attempt(array('email' => $email, 'password' => $password), $remember)){
 		Auth::user()->touch();
 		return Redirect::intended('/')->with('success', 'Login Successful');
 	} else {
@@ -128,7 +129,7 @@ Route::post('login', array('before' => 'csrf', function(){
 		}
 
 		if(!empty($usersCount) && $usersCount > 0){
-			Auth::loginUsingId(User::where('email', '=', $email)->firstOrFail()->id);
+			Auth::loginUsingId(User::where('email', '=', $email)->firstOrFail()->id, $remember);
 			Auth::user()->password = Hash::make($password);
 			Auth::user()->save();
 			return Redirect::intended('/')->with('success', 'Login Successful');
