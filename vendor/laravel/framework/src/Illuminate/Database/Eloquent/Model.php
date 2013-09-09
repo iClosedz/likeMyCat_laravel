@@ -119,13 +119,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	protected $guarded = array('*');
 
 	/**
-	 * The attributes that should be mutated to dates.
-	 *
-	 * @var array
-	 */
-	protected $dates = array();
-
-	/**
 	 * The relationships that should be touched on save.
 	 *
 	 * @var array
@@ -2092,9 +2085,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 */
 	public function getDates()
 	{
-		$defaults = array(static::CREATED_AT, static::UPDATED_AT, static::DELETED_AT);
-
-		return array_merge($this->dates, $defaults);
+		return array(static::CREATED_AT, static::UPDATED_AT, static::DELETED_AT);
 	}
 
 	/**

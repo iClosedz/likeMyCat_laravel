@@ -103,6 +103,22 @@ class PostgreSqlPlatform extends AbstractPlatform
     /**
      * {@inheritDoc}
      */
+    public function getDateAddHourExpression($date, $hours)
+    {
+        return "(" . $date ." + (" . $hours . " || ' hour')::interval)";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDateSubHourExpression($date, $hours)
+    {
+        return "(" . $date ." - (" . $hours . " || ' hour')::interval)";    
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getDateAddDaysExpression($date, $days)
     {
         return "(" . $date ." + (" . $days . " || ' day')::interval)";
@@ -529,6 +545,22 @@ class PostgreSqlPlatform extends AbstractPlatform
             $sequence = $sequence->getQuotedName($this);
         }
         return 'DROP SEQUENCE ' . $sequence . ' CASCADE';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreateSchemaSQL($schemaName)
+    {
+        return 'CREATE SCHEMA ' . $schemaName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function schemaNeedsCreation($schemaName)
+    {
+        return !in_array($schemaName, array('default', 'public'));
     }
 
     /**

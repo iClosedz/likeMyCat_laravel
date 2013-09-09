@@ -169,6 +169,17 @@ class ProviderRepository {
 	}
 
 	/**
+	 * Get the manifest file path.
+	 *
+	 * @param  \Illuminate\Foundation\Application  $app
+	 * @return string
+	 */
+	protected function getManifestPath($app)
+	{
+		return $this->manifestPath;
+	}
+
+	/**
 	 * Create a fresh manifest array.
 	 *
 	 * @param  array  $providers

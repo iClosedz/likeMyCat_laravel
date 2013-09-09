@@ -1222,12 +1222,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/common.git",
-            "reference": "67c8d7ea5dfe93b758d21c9bcb1e7a831b3a9e54"
+            "reference": "b4c7860e0c5a8d13598ca34d156533300b0dacf0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/common/zipball/67c8d7ea5dfe93b758d21c9bcb1e7a831b3a9e54",
-            "reference": "67c8d7ea5dfe93b758d21c9bcb1e7a831b3a9e54",
+            "url": "https://api.github.com/repos/doctrine/common/zipball/b4c7860e0c5a8d13598ca34d156533300b0dacf0",
+            "reference": "b4c7860e0c5a8d13598ca34d156533300b0dacf0",
             "shasum": ""
         },
         "require": {
@@ -1238,11 +1238,11 @@
             "doctrine/lexer": "1.*",
             "php": ">=5.3.2"
         },
-        "time": "2013-09-07 10:21:05",
+        "time": "2013-08-20 18:10:31",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.5.x-dev"
+                "dev-master": "2.4.x-dev"
             }
         },
         "installation-source": "dist",
@@ -1292,24 +1292,96 @@
         ]
     },
     {
-        "name": "nesbot/carbon",
-        "version": "1.4.0",
-        "version_normalized": "1.4.0.0",
+        "name": "doctrine/dbal",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
-            "url": "https://github.com/briannesbitt/Carbon.git",
-            "reference": "06f0b8a99a90c5392ceccb09b75b74ff6c08ec07"
+            "url": "https://github.com/doctrine/dbal.git",
+            "reference": "7ffb2701931aeae3bb32fa2012b9a575f3a7929b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/06f0b8a99a90c5392ceccb09b75b74ff6c08ec07",
-            "reference": "06f0b8a99a90c5392ceccb09b75b74ff6c08ec07",
+            "url": "https://api.github.com/repos/doctrine/dbal/zipball/7ffb2701931aeae3bb32fa2012b9a575f3a7929b",
+            "reference": "7ffb2701931aeae3bb32fa2012b9a575f3a7929b",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/common": "2.4.*@beta",
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*",
+            "symfony/console": "2.*"
+        },
+        "suggest": {
+            "symfony/console": "Allows use of the command line interface"
+        },
+        "time": "2013-08-24 01:02:33",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.4.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Doctrine\\DBAL\\": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jonathan Wage",
+                "email": "jonwage@gmail.com",
+                "homepage": "http://www.jwage.com/"
+            },
+            {
+                "name": "Guilherme Blanco",
+                "email": "guilhermeblanco@gmail.com",
+                "homepage": "http://www.instaclick.com"
+            },
+            {
+                "name": "Roman Borschel",
+                "email": "roman@code-factory.org"
+            },
+            {
+                "name": "Benjamin Eberlei",
+                "email": "kontakt@beberlei.de"
+            }
+        ],
+        "description": "Database Abstraction Layer",
+        "homepage": "http://www.doctrine-project.org",
+        "keywords": [
+            "database",
+            "dbal",
+            "persistence",
+            "queryobject"
+        ]
+    },
+    {
+        "name": "nesbot/carbon",
+        "version": "1.3.0",
+        "version_normalized": "1.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/briannesbitt/Carbon.git",
+            "reference": "24c4262e994f7f2a258db5ccb5b2f34073f162ca"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/24c4262e994f7f2a258db5ccb5b2f34073f162ca",
+            "reference": "24c4262e994f7f2a258db5ccb5b2f34073f162ca",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2013-09-09 02:39:19",
+        "time": "2013-08-21 04:36:40",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1337,152 +1409,6 @@
         ]
     },
     {
-        "name": "way/laravel-test-helpers",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/JeffreyWay/Laravel-Test-Helpers.git",
-            "reference": "01a1a87e8e883a0368a2ca5892b8062c8f092d55"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/JeffreyWay/Laravel-Test-Helpers/zipball/01a1a87e8e883a0368a2ca5892b8062c8f092d55",
-            "reference": "01a1a87e8e883a0368a2ca5892b8062c8f092d55",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "illuminate/support": "4.0.x",
-            "mockery/mockery": "*"
-        },
-        "time": "2013-09-07 13:00:41",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Way\\Tests": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "authors": [
-            {
-                "name": "Jeffrey Way",
-                "email": "jeffrey@jeffrey-way.com",
-                "homepage": "http://jeffrye-way.com",
-                "role": "Developer"
-            }
-        ],
-        "description": "Easier testing in Laravel."
-    },
-    {
-        "name": "mustache/mustache",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/bobthecow/mustache.php.git",
-            "reference": "14bc3b4f6a4770b535fc433bfd0435471ed386c6"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/bobthecow/mustache.php/zipball/14bc3b4f6a4770b535fc433bfd0435471ed386c6",
-            "reference": "14bc3b4f6a4770b535fc433bfd0435471ed386c6",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2.4"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "*"
-        },
-        "time": "2013-08-13 04:49:23",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Mustache": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Justin Hileman",
-                "email": "justin@justinhileman.info",
-                "homepage": "http://justinhileman.com"
-            }
-        ],
-        "description": "A Mustache implementation in PHP.",
-        "homepage": "https://github.com/bobthecow/mustache.php",
-        "keywords": [
-            "mustache",
-            "templating"
-        ]
-    },
-    {
-        "name": "way/generators",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/JeffreyWay/Laravel-4-Generators.git",
-            "reference": "60f27433a39afd7fa1f881e055406d3416f769af"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/JeffreyWay/Laravel-4-Generators/zipball/60f27433a39afd7fa1f881e055406d3416f769af",
-            "reference": "60f27433a39afd7fa1f881e055406d3416f769af",
-            "shasum": ""
-        },
-        "require": {
-            "mustache/mustache": "dev-master",
-            "php": ">=5.3.0",
-            "way/laravel-test-helpers": "dev-master"
-        },
-        "require-dev": {
-            "illuminate/console": "~4",
-            "illuminate/filesystem": "~4",
-            "illuminate/support": "~4",
-            "mockery/mockery": "dev-master"
-        },
-        "time": "2013-09-07 13:03:56",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Way\\Generators": "src/"
-            },
-            "classmap": [
-                "src/Way/Generators/Generators"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "authors": [
-            {
-                "name": "Jeffrey Way",
-                "email": "jeffrey@jeffrey-way.com",
-                "homepage": "http://jeffrye-way.com",
-                "role": "Developer"
-            }
-        ],
-        "description": "Laravel 4 Generators",
-        "keywords": [
-            "artisan",
-            "generators",
-            "laravel"
-        ]
-    },
-    {
         "name": "symfony/routing",
         "version": "2.3.x-dev",
         "version_normalized": "2.3.9999999.9999999-dev",
@@ -1490,12 +1416,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Routing.git",
-            "reference": "3085975262bc36dc89929a936056dc6e5cb8a100"
+            "reference": "69af3f07dbf3ae93dd513dbc373f561cb2e7f143"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Routing/zipball/3085975262bc36dc89929a936056dc6e5cb8a100",
-            "reference": "3085975262bc36dc89929a936056dc6e5cb8a100",
+            "url": "https://api.github.com/repos/symfony/Routing/zipball/69af3f07dbf3ae93dd513dbc373f561cb2e7f143",
+            "reference": "69af3f07dbf3ae93dd513dbc373f561cb2e7f143",
             "shasum": ""
         },
         "require": {
@@ -1512,7 +1438,7 @@
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2013-09-06 18:20:34",
+        "time": "2013-08-23 15:14:07",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1550,18 +1476,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Process.git",
-            "reference": "501b64b92040c1331339d8a4efe0e06f81dd889e"
+            "reference": "6e3b487a74ce7dcab6af34e14afcb9d438d69327"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Process/zipball/501b64b92040c1331339d8a4efe0e06f81dd889e",
-            "reference": "501b64b92040c1331339d8a4efe0e06f81dd889e",
+            "url": "https://api.github.com/repos/symfony/Process/zipball/6e3b487a74ce7dcab6af34e14afcb9d438d69327",
+            "reference": "6e3b487a74ce7dcab6af34e14afcb9d438d69327",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2013-09-07 16:30:19",
+        "time": "2013-08-30 13:10:46",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1599,18 +1525,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/HttpFoundation.git",
-            "reference": "903e22f3bc236bb92a1031c111bca4829931ba40"
+            "reference": "cd7b96d5777a742e178fb58059ab70d794b5b351"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/903e22f3bc236bb92a1031c111bca4829931ba40",
-            "reference": "903e22f3bc236bb92a1031c111bca4829931ba40",
+            "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/cd7b96d5777a742e178fb58059ab70d794b5b351",
+            "reference": "cd7b96d5777a742e178fb58059ab70d794b5b351",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2013-09-08 16:12:21",
+        "time": "2013-08-29 19:32:30",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1651,12 +1577,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/HttpKernel.git",
-            "reference": "db8bdfc092c6e70bdaf93cd7b09b3fcb5e43528b"
+            "reference": "bfa123abe1f4f701c5961d205f9a15eb20d6b5f6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/db8bdfc092c6e70bdaf93cd7b09b3fcb5e43528b",
-            "reference": "db8bdfc092c6e70bdaf93cd7b09b3fcb5e43528b",
+            "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/bfa123abe1f4f701c5961d205f9a15eb20d6b5f6",
+            "reference": "bfa123abe1f4f701c5961d205f9a15eb20d6b5f6",
             "shasum": ""
         },
         "require": {
@@ -1686,7 +1612,7 @@
             "symfony/dependency-injection": "",
             "symfony/finder": ""
         },
-        "time": "2013-09-08 16:12:21",
+        "time": "2013-08-30 13:10:46",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1724,12 +1650,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Console.git",
-            "reference": "6db369933dae13262c7c8c9a265d51723be1d2e3"
+            "reference": "db78f8ff7fc9e28d25ff9a0bf6ddf9f0e35fbbe3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Console/zipball/6db369933dae13262c7c8c9a265d51723be1d2e3",
-            "reference": "6db369933dae13262c7c8c9a265d51723be1d2e3",
+            "url": "https://api.github.com/repos/symfony/Console/zipball/db78f8ff7fc9e28d25ff9a0bf6ddf9f0e35fbbe3",
+            "reference": "db78f8ff7fc9e28d25ff9a0bf6ddf9f0e35fbbe3",
             "shasum": ""
         },
         "require": {
@@ -1741,7 +1667,7 @@
         "suggest": {
             "symfony/event-dispatcher": ""
         },
-        "time": "2013-09-06 18:20:34",
+        "time": "2013-08-17 16:34:49",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1778,12 +1704,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/laravel/framework.git",
-            "reference": "0802bde2ef554517f71c869b71caf8b340847d0d"
+            "reference": "307dcc142d65c71caf54d0192790dc1cfc78749f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravel/framework/zipball/0802bde2ef554517f71c869b71caf8b340847d0d",
-            "reference": "0802bde2ef554517f71c869b71caf8b340847d0d",
+            "url": "https://api.github.com/repos/laravel/framework/zipball/307dcc142d65c71caf54d0192790dc1cfc78749f",
+            "reference": "307dcc142d65c71caf54d0192790dc1cfc78749f",
             "shasum": ""
         },
         "require": {
@@ -1846,7 +1772,7 @@
             "pda/pheanstalk": "2.0.*",
             "phpunit/phpunit": "3.7.*"
         },
-        "time": "2013-09-07 05:09:22",
+        "time": "2013-08-31 21:50:30",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1883,73 +1809,6 @@
         "keywords": [
             "framework",
             "laravel"
-        ]
-    },
-    {
-        "name": "doctrine/dbal",
-        "version": "2.4.x-dev",
-        "version_normalized": "2.4.9999999.9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/doctrine/dbal.git",
-            "reference": "814e53d0c538a995e3a36452710d4c039f6c2723"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/dbal/zipball/814e53d0c538a995e3a36452710d4c039f6c2723",
-            "reference": "814e53d0c538a995e3a36452710d4c039f6c2723",
-            "shasum": ""
-        },
-        "require": {
-            "doctrine/common": "~2.4",
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*",
-            "symfony/console": "~2.0"
-        },
-        "suggest": {
-            "symfony/console": "Allows use of the command line interface"
-        },
-        "time": "2013-09-08 07:51:49",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Doctrine\\DBAL\\": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Jonathan Wage",
-                "email": "jonwage@gmail.com",
-                "homepage": "http://www.jwage.com/"
-            },
-            {
-                "name": "Guilherme Blanco",
-                "email": "guilhermeblanco@gmail.com",
-                "homepage": "http://www.instaclick.com"
-            },
-            {
-                "name": "Roman Borschel",
-                "email": "roman@code-factory.org"
-            },
-            {
-                "name": "Benjamin Eberlei",
-                "email": "kontakt@beberlei.de"
-            }
-        ],
-        "description": "Database Abstraction Layer",
-        "homepage": "http://www.doctrine-project.org",
-        "keywords": [
-            "database",
-            "dbal",
-            "persistence",
-            "queryobject"
         ]
     }
 ]

@@ -5,5 +5,3 @@ dist/
 tests/Doctrine/Tests/Common/Proxy/generated/
 vendor/
 .idea
-doctrine-common-*.tar
-doctrine-common-*.tar.gz

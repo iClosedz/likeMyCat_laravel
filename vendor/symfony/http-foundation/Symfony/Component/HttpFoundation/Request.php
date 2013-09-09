@@ -405,8 +405,7 @@ class Request
         $dup->format = null;
 
         if (!$dup->get('_format')) {
-            // we set the request format to null if the current request is not known
-            $dup->setRequestFormat($this->getRequestFormat(null));
+            $dup->setRequestFormat($this->getRequestFormat());
         }
 
         return $dup;
@@ -904,14 +903,6 @@ class Request
             if (self::$trustedHeaders[self::HEADER_CLIENT_PROTO] && 'https' === $this->headers->get(self::$trustedHeaders[self::HEADER_CLIENT_PROTO], 'http')) {
                 return 443;
             }
-        }
-
-        if ($host = $this->headers->get('HOST')) {
-            if (false !== $pos = strrpos($host, ':')) {
-                return intval(substr($host, $pos + 1));
-            }
-
-            return 'https' === $this->getScheme() ? 443 : 80;
         }
 
         return $this->server->get('SERVER_PORT');
@@ -1622,7 +1613,7 @@ class Request
                 $seg     = $segs[$index];
                 $baseUrl = '/'.$seg.$baseUrl;
                 ++$index;
-            } while ($last > $index && (false !== $pos = strpos($path, $baseUrl)) && 0 != $pos);
+            } while (($last > $index) && (false !== ($pos = strpos($path, $baseUrl))) && (0 != $pos));
         }
 
         // Does the baseUrl have anything in common with the request_uri?
@@ -1639,7 +1630,7 @@ class Request
         }
 
         $truncatedRequestUri = $requestUri;
-        if (false !== $pos = strpos($requestUri, '?')) {
+        if (($pos = strpos($requestUri, '?')) !== false) {
             $truncatedRequestUri = substr($requestUri, 0, $pos);
         }
 
@@ -1652,7 +1643,7 @@ class Request
         // If using mod_rewrite or ISAPI_Rewrite strip the script filename
         // out of baseUrl. $pos !== 0 makes sure it is not matching a value
         // from PATH_INFO or QUERY_STRING
-        if (strlen($requestUri) >= strlen($baseUrl) && (false !== $pos = strpos($requestUri, $baseUrl)) && $pos !== 0) {
+        if ((strlen($requestUri) >= strlen($baseUrl)) && ((false !== ($pos = strpos($requestUri, $baseUrl))) && ($pos !== 0))) {
             $baseUrl = substr($requestUri, 0, $pos + strlen($baseUrl));
         }
 
@@ -1705,7 +1696,7 @@ class Request
             $requestUri = substr($requestUri, 0, $pos);
         }
 
-        if (null !== $baseUrl && false === $pathInfo = substr($requestUri, strlen($baseUrl))) {
+        if ((null !== $baseUrl) && (false === ($pathInfo = substr($requestUri, strlen($baseUrl))))) {
             // If substr() returns false then PATH_INFO is set to an empty string
             return '/';
         } elseif (null === $baseUrl) {
