@@ -113,7 +113,7 @@ Route::post('login', array('before' => 'csrf', function(){
 		// Please note that for this to work, 
 		// the following command may have to be executed as postgres user
 		// on your server(s):
-		// echo "create extension pgcrypto" | psql -d catapp_db_laravel
+		// echo "create extension pgcrypto" | psql -d catapp_db_laravel_prod
 
 		// handle legacy login
 		try {
@@ -125,6 +125,7 @@ Route::post('login', array('before' => 'csrf', function(){
 		}
 
 		if(!empty($usersCount) && $usersCount > 0){
+			Auth::loginUsingId(User::where('email', '=', $email)->firstOrFail());
 			Auth::user()->password = Hash::make($password);
 			Auth::user()->save();
 			return Redirect::intended('/')->with('success', 'Login Successful');
