@@ -107,6 +107,7 @@ Route::post('login', array('before' => 'csrf', function(){
 	$password = Input::get('password');
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password))){
+		Auth::user()->touch();
 		return Redirect::intended('/')->with('success', 'Login Successful');
 	} else {
 
