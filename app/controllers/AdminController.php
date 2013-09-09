@@ -9,7 +9,12 @@ class AdminController extends BaseController {
 	protected $uploadWithTrashed;
 
 	public function __construct(User $user, Upload $upload){
-		//$this->beforeFilter('auth');
+
+		$this->user = $user->all(); 
+		$this->userWithTrashed = $user->withTrashed();
+		$this->upload = $upload->all(); 
+		$this->uploadWithTrashed = $upload->withTrashed();
+
 		$this->beforeFilter('csrf', array('on' => 'post'));
 		$this->beforeFilter(function(){
 			if(!Auth::check()){
@@ -20,23 +25,28 @@ class AdminController extends BaseController {
 				return Redirect::route('get /')->with('error', 'You must be an admin to access this page!');
 			}
 		});
-
-		$this->user = $user->all(); 
-		$this->userWithTrashed = $user->withTrashed();
-
-		$this->upload = $upload->all(); 
-		$this->uploadWithTrashed = $upload->withTrashed();
-
 	}
 
-	function showFlaggedUploads($userId){
+	function showHiddenUploads(){
 		return View::make('manageUploads')
-			->with('user', Auth::user())
-			->with('uploads', Upload::withTrashed()
-				->with('user', 'ratings', 'guestRatings', 'flagged')
-				->orderBy('id', 'DESC')
-				->paginate(4)
-				);
+		->with('user', Auth::user())
+		->with('uploads', $this->uploadWithTrashed
+			->with('user', 'ratings', 'guestRatings', 'flagged')
+			->whereNotNull('deleted_at')
+			->orderBy('id', 'DESC')
+			->paginate(4)
+			);
+	}
+
+	function showFlaggedUploads(){
+		return View::make('manageUploads')
+		->with('user', Auth::user())
+		->with('uploads', $this->uploadWithTrashed
+			->with('user', 'ratings', 'guestRatings', 'flagged')
+			->has('flagged')
+			->orderBy('id', 'DESC')
+			->paginate(4)
+			);
 	}
 
 	function showRoles($userId){
