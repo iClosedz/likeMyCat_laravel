@@ -56,7 +56,14 @@ class ImageUploadController extends BaseController {
     			->orderBy(DB::raw('RANDOM()'))
     			->take($howManyResults-1)
     			->get();
-    		}
+    		} else {
+              $additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
+                ->where('id', '!=', $firstUpload->id)
+                ->whereRaw('"id" not in (select upload_id from "ratings_guest" where session_id = \'' . session_id(). '\')')
+                ->orderBy(DB::raw('RANDOM()'))
+                ->take($howManyResults-1)
+                ->get();  
+            }
 
     		if(empty($additionalUploads)){
     		//Log::info('no additional uploads not yet rated - just grabbing random uploads now');

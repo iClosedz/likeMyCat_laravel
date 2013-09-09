@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'AddBlobToUploads' => $baseDir . '/app/database/migrations/2013_09_03_220219_add_blob_to_uploads.php',
     'AddFlaggedUploadsTable' => $baseDir . '/app/database/migrations/2013_09_05_220542_add_flagged_uploads_table.php',
+    'AddLegacyUsersTable' => $baseDir . '/app/database/migrations/2013_09_09_034123_add_legacy_users_table.php',
     'AddMimeToUploads' => $baseDir . '/app/database/migrations/2013_09_03_235737_add_mime_to_uploads.php',
     'AddNameToUploads' => $baseDir . '/app/database/migrations/2013_09_04_012858_add_name_to_uploads.php',
     'AddSoftDeletesToUploads' => $baseDir . '/app/database/migrations/2013_09_05_225106_add_soft_deletes_to_uploads.php',
