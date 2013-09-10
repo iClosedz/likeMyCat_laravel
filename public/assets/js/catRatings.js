@@ -29,59 +29,81 @@ $(document).ready(function () {
          return false;
       });
 
-/*
-      $(window).bind('hashchange', function () { //detect hash change
-        var hash = window.location.hash.slice(1); //hash to string (= "myanchor")
-        console.log('anchor change!');
-      });
-*/
 
+      $.fn.raty.defaults.path = '/assets/img';
+      $('#star').raty({ 
+         number: 10,
+         size     : 24,
+         starHalf : 'star-half-big.png',
+         starOff  : 'star-off-big.png',
+         starOn   : 'star-on-big.png',
+         click: function(score, evt) {
+            rateImage(score);
+            $('#star').raty('cancel', false);
+            return false;
+         }
+      });
+
+      $('#star-phone').raty({ 
+         number: 10,
+         starHalf : 'star-half-big.png',
+         starOff  : 'star-off-big.png',
+         starOn   : 'star-on-big.png',
+         click: function(score, evt) {
+            /* delay on phone so user can see rating before submit */
+            setTimeout(function() {
+               rateImage(score);
+               $('#star-phone').raty('cancel', false);
+               return false;
+            }, 800);
+         }
+      });
    });
 });
 
 function getTodaysTopCat(){
- $.get("/uploads/top/day", {})
-   .done(function (data) {
-      console.log('rating returned "' + data + '"');
+  $.get("/uploads/top/day", {})
+  .done(function (data) {
+   console.log('rating returned "' + data + '"');
 
-      document.getElementById('top_cat_name').innerHTML = data['results']['name'];
-      document.getElementById('top_cat_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
-      document.getElementById('img_top_cat').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
-      $("#top_cat_link").attr("href", '/rate#' + data['results']['upload_id']);
-   })
-   .fail(function (data) {
-      console.log("getTodaysTopCat failed: " + data);
-   });
+   document.getElementById('top_cat_name').innerHTML = data['results']['name'];
+   document.getElementById('top_cat_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
+   document.getElementById('img_top_cat').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
+   $("#top_cat_link").attr("href", '/rate#' + data['results']['upload_id']);
+})
+  .fail(function (data) {
+   console.log("getTodaysTopCat failed: " + data);
+});
 }
 
 function getTopCatAllTime(){
- $.get("/uploads/top/ever", {})
-   .done(function (data) {
-      console.log('rating returned "' + data + '"');
+  $.get("/uploads/top/ever", {})
+  .done(function (data) {
+   console.log('rating returned "' + data + '"');
 
-      document.getElementById('top_cat_ever_name').innerHTML = data['results']['name'];
-      document.getElementById('top_cat_ever_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
-      document.getElementById('img_top_cat_ever').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
-      $("#top_cat_ever_link").attr("href", '/rate#' + data['results']['upload_id']);
+   document.getElementById('top_cat_ever_name').innerHTML = data['results']['name'];
+   document.getElementById('top_cat_ever_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
+   document.getElementById('img_top_cat_ever').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
+   $("#top_cat_ever_link").attr("href", '/rate#' + data['results']['upload_id']);
 
-   })
-   .fail(function (data) {
-      console.log("getTodaysTopCat failed: " + data);
-   });
+})
+  .fail(function (data) {
+   console.log("getTodaysTopCat failed: " + data);
+});
 }
 
 function flagImage(uploadId) {
    console.log('flaging imageId ' + currentImage.uploadId);
 
    $.get("/uploads/" + currentImage.uploadId + "/flag/", {})
-      .done(function (data) {
-         console.log('rating returned "' + data + '"');
-         alert("Image flagged as inappropriate!");
+   .done(function (data) {
+      console.log('rating returned "' + data + '"');
+      alert("Image flagged as inappropriate!");
          getImageData(); // get next set of images
       })
-      .fail(function (data) {
-         console.log("Failed: " + data);
-      });
+   .fail(function (data) {
+      console.log("Failed: " + data);
+   });
 }
 
 function catImage(uploadId, fileName, fileNameThumb, avgRating, numRatings, catName) {
@@ -97,13 +119,13 @@ function rateImage(rating) {
    console.log('rating imageId ' + currentImage.uploadId + ': ' + rating);
 
    $.get("/uploads/" + currentImage.uploadId + "/rate/" + rating, {})
-      .done(function (data) {
-         console.log('rating returned "' + data + '"');
+   .done(function (data) {
+      console.log('rating returned "' + data + '"');
          getImageData(); // get next set of images
       })
-      .fail(function (data) {
-         console.log("Failed: " + data);
-      });
+   .fail(function (data) {
+      console.log("Failed: " + data);
+   });
 }
 
 function updateImage(elementId, imageSrc) {
@@ -162,7 +184,7 @@ function updatePrevRating() {
 function getParameterByName(name) {
    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-      results = regex.exec(location.search);
+   results = regex.exec(location.search);
    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
@@ -204,39 +226,39 @@ function getImageData() {
       'exclude_image_id': (firstTimeLoad ? -1 : nextImage.uploadId),
       'share_image_id': (shareImageId === '' ? -1 : shareImageId)
    })
-      .done(function (data) {
-         console.log('getUploadService.php returned "' + data + '"');
-         if (firstTimeLoad) {
-            currentImage.uploadId = data['results'][0]['upload_id'];
-            currentImage.fileName = data['results'][0]['file_name'];
-            currentImage.fileNameThumb = data['results'][0]['file_name_thumb'];
-            currentImage.avgRating = data['results'][0]['avg_rating'];
-            currentImage.numRatings = data['results'][0]['num_ratings'];
-            currentImage.catName = data['results'][0]['cat_name'];
+   .done(function (data) {
+      console.log('getUploadService.php returned "' + data + '"');
+      if (firstTimeLoad) {
+         currentImage.uploadId = data['results'][0]['upload_id'];
+         currentImage.fileName = data['results'][0]['file_name'];
+         currentImage.fileNameThumb = data['results'][0]['file_name_thumb'];
+         currentImage.avgRating = data['results'][0]['avg_rating'];
+         currentImage.numRatings = data['results'][0]['num_ratings'];
+         currentImage.catName = data['results'][0]['cat_name'];
 
-            nextImage.uploadId = data['results'][1]['upload_id'];
-            nextImage.fileName = data['results'][1]['file_name'];
-            nextImage.fileNameThumb = data['results'][1]['file_name_thumb'];
-            nextImage.avgRating = data['results'][1]['avg_rating'];
-            nextImage.numRatings = data['results'][1]['num_ratings'];
-            nextImage.catName = data['results'][1]['cat_name'];
+         nextImage.uploadId = data['results'][1]['upload_id'];
+         nextImage.fileName = data['results'][1]['file_name'];
+         nextImage.fileNameThumb = data['results'][1]['file_name_thumb'];
+         nextImage.avgRating = data['results'][1]['avg_rating'];
+         nextImage.numRatings = data['results'][1]['num_ratings'];
+         nextImage.catName = data['results'][1]['cat_name'];
 
-            updateImage('img_upload_current', currentImage.fileName);
-            updateImage('img_upload_next', nextImage.fileNameThumb);
-            updatePrevRating();
-            updateCurrentCatNameDisplay();
-            setShareId(currentImage.uploadId);
-            firstTimeLoad = false;
-         } else {
-            if (prevImage.uploadId == -1) {
-               document.getElementById('previous_div_box').style.display = '';
-               document.getElementById('previous_div_box').style.visibility = 'visible';
-            };
-            loadNextImage(data);
-            setShareId(currentImage.uploadId);
-         }
-      })
-      .fail(function (data) {
-         console.log("Failed: " + data.responseText);
-      });
+         updateImage('img_upload_current', currentImage.fileName);
+         updateImage('img_upload_next', nextImage.fileNameThumb);
+         updatePrevRating();
+         updateCurrentCatNameDisplay();
+         setShareId(currentImage.uploadId);
+         firstTimeLoad = false;
+      } else {
+         if (prevImage.uploadId == -1) {
+            document.getElementById('previous_div_box').style.display = '';
+            document.getElementById('previous_div_box').style.visibility = 'visible';
+         };
+         loadNextImage(data);
+         setShareId(currentImage.uploadId);
+      }
+   })
+.fail(function (data) {
+   console.log("Failed: " + data.responseText);
+});
 }
