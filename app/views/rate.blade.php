@@ -82,5 +82,4 @@ margin-bottom: 10px;
 		</div>
 	</div>
 </div>
-</div>
 @stop
