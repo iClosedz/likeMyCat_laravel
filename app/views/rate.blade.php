@@ -67,6 +67,7 @@ margin-bottom: 10px;
 		<div>
 			<h5>Today's Top Cat:</h5>
 			<a href="#" id="top_cat_link"><img id="img_top_cat" alt="Top Cat" src="/assets/img/placeholder_130.gif" /></a>
+			<br/>
 			<span class="catName" id="top_cat_name"></span>
 			<br/>
 			<small>Rating: <span id="top_cat_rating"></span></small>
@@ -74,6 +75,7 @@ margin-bottom: 10px;
 		<div>
 			<h5>All Time Leader:</h5>
 			<a href="#" id="top_cat_ever_link"><img id="img_top_cat_ever" alt="Top Cat Ever" src="/assets/img/placeholder_130.gif" /></a>
+			<br/>
 			<span class="catName" id="top_cat_ever_name"></span>
 			<br/>
 			<small>Rating: <span id="top_cat_ever_rating"></span></small>
