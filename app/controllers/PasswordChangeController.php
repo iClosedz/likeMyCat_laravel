@@ -31,9 +31,7 @@ class PasswordChangeController extends BaseController {
 
 			Auth::user()->password = Hash::make($newPassword);
 			Auth::user()->save();
-			$userId = Auth::user()->id;
-			Auth::logout();
-			Auth::loginUsingId($userId);
+			Session::regenerate();
 			return Redirect::to('rate')->with('success', 'Password changed!');
 		} else {
 			return View::make('passwordChange')->with('user', Auth::user())->with('username', $email)
