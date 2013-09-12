@@ -25,14 +25,14 @@ class ImageUploadController extends BaseController {
             if($count > 0) {
                  if (Auth::check()) {
                     $additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
-                        ->where('id', '<>', $uploadsBatch[$count-1][$id])
+                        ->where('id', '<>', $uploadsBatch[$count-1]['id'])
                         ->whereRaw('"id" in (select upload_id from "ratings" where user_id = ' . Auth::user()->id . ')')
                         ->orderBy(DB::raw('RANDOM()', ''))
                         ->take(ImageUploadController::SESSION_CACHE_SIZE - count($uploadsBatch))
                         ->get()->toArray();
                 } else {
                     $additionalUploads = Upload::with('user', 'ratings', 'guestRatings')
-                        ->where('id', '<>', $uploadsBatch[$count-1][$id])
+                        ->where('id', '<>', $uploadsBatch[$count-1]['id'])
                         ->whereRaw('"id" in (select upload_id from "ratings_guest" where session_id = \'' . session_id() . '\')')
                         ->orderBy(DB::raw('RANDOM()', ''))
                         ->take(ImageUploadController::SESSION_CACHE_SIZE - count($uploadsBatch))
