@@ -10,6 +10,8 @@ class Upload extends Eloquent {
 	protected $table = 'uploads';
 	protected $softDelete = true;
 	protected $touches = array('user');
+	protected $appends = array('avg_rating','num_rating');
+	protected $visible = array('id', 'avg_rating', 'num_rating', 'name');
 
 	public function user(){
 		return $this->belongsTo('User')->withTrashed();
@@ -57,6 +59,14 @@ class Upload extends Eloquent {
 		} else {
 			return $sum / $numRatings;
 		}
+	}
+
+	public function getAvgRatingAttribute(){
+	    return $this->getAvgRating();
+	}
+
+	public function getNumRatingAttribute(){
+	    return $this->getNumRatings();
 	}
 
 }
