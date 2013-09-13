@@ -66,10 +66,12 @@ function getTodaysTopCat(){
   .done(function (data) {
    console.log('rating returned "' + data + '"');
 
-   document.getElementById('top_cat_name').innerHTML = data['results']['name'];
-   document.getElementById('top_cat_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
-   document.getElementById('img_top_cat').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
-   $("#top_cat_link").attr("href", '/rate#' + data['results']['upload_id']);
+   if(data['success'] === true){
+      document.getElementById('top_cat_name').innerHTML = data['results']['name'];
+      document.getElementById('top_cat_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
+      document.getElementById('img_top_cat').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
+      $("#top_cat_link").attr("href", '/rate#' + data['results']['upload_id']);
+   }
 })
   .fail(function (data) {
    console.log("getTodaysTopCat failed: " + data);
@@ -81,10 +83,12 @@ function getTopCatAllTime(){
   .done(function (data) {
    console.log('rating returned "' + data + '"');
 
-   document.getElementById('top_cat_ever_name').innerHTML = data['results']['name'];
-   document.getElementById('top_cat_ever_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
-   document.getElementById('img_top_cat_ever').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
-   $("#top_cat_ever_link").attr("href", '/rate#' + data['results']['upload_id']);
+   if(data['success'] === true){
+      document.getElementById('top_cat_ever_name').innerHTML = data['results']['name'];
+      document.getElementById('top_cat_ever_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
+      document.getElementById('img_top_cat_ever').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
+      $("#top_cat_ever_link").attr("href", '/rate#' + data['results']['upload_id']);
+   }
 
 })
   .fail(function (data) {
