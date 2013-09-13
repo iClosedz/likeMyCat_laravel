@@ -48,7 +48,7 @@ class AdminController extends BaseController {
 			->with('user', 'ratings', 'guestRatings', 'flagged')
 			->whereNotNull('deleted_at')
 			->orderBy('id', 'DESC')
-			->paginate(4)
+			->paginate(10)
 			);
 	}
 
@@ -59,7 +59,7 @@ class AdminController extends BaseController {
 			->with('user', 'ratings', 'guestRatings', 'flagged')
 			->has('flagged')
 			->orderBy('id', 'DESC')
-			->paginate(4)
+			->paginate(10)
 			);
 	}
 
@@ -141,7 +141,7 @@ class AdminController extends BaseController {
 		->with('uploads', Upload::withTrashed()
 			->with('user', 'ratings', 'guestRatings', 'flagged')
 			->orderBy('id', 'DESC')
-			->paginate(4)
+			->paginate(10)
 			);
 	}
 
