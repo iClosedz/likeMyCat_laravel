@@ -45,6 +45,21 @@
 		{{ Form::password('password', array('class' => 'input-block-level', 'placeholder' => 'Password')) }}
 		{{ Form::password('password', array('class' => 'input-block-level', 'placeholder' => 'Confirm Password')) }}
 		{{ Form::button('Sign Up', array('class' => 'btn btn-large btn-primary', 'type' => 'submit')) }}
+		<hr/>
+		<div class="media">
+	        <div class="media-body">
+	          	<h5 class="media-heading">Why do you need my email address? Stalkers.  You're gonna sell it.  You're gonna sell every letter of it, aren't you?</h5>
+	          	<small>
+	            	<br/>
+	            	<p>Wow, that escalated quickly.</p>  
+	            	<p>
+	              No, we don't need or want to sell your email address or any of the information you choose to provide on this site.  
+	              We only need you to register with a REAL email address to keep the spammers and griefers at bay 
+	              (you can go make a new one at <a href="http://www.gmail.com">gmail.com</a> right now if you're very worried).
+	            	</p>
+	          	</small>
+	        </div>
+	    </div>
 	{{ Form::close() }}
 </div>
 @stop
