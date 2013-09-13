@@ -10,3 +10,4 @@ composer.phar
 
 #local sync job for dev
 sync.sh
+public/channel.html

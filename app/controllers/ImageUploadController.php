@@ -90,6 +90,7 @@ class ImageUploadController extends BaseController {
             $uploadsBatch = array_merge($uploadsBatch, array($sharedUpload));
         }
     
+        $firstPass = true;
         for ($i = 0; $i < $howManyResults; $i++) {
             if (!isset($uploadsBatch) || count($uploadsBatch) === 0) {
                 $this->refreshSessionUploadCache();
@@ -104,6 +105,9 @@ class ImageUploadController extends BaseController {
             } elseif($i > 0 && $uploads[$i-1]['upload_id'] == $uploadsBatch[$curCacheRow]['id']){
                 /* don't show same image twice in a row */
                 $i--;
+            } elseif (!$firstPass && isset($shareImageId) && $shareImageId > 0 && $uploadsBatch[$curCacheRow]['id'] == $shareImageId){
+                /* don't show shared image again */
+                $i--;
             } else {
                 $uploads[$i]['upload_id'] = $uploadsBatch[$curCacheRow]['id'];
                 $uploads[$i]['cat_name'] = htmlspecialchars(utf8_encode($uploadsBatch[$curCacheRow]['name']));
@@ -114,6 +118,7 @@ class ImageUploadController extends BaseController {
             }
 
             array_pop($uploadsBatch);
+            $firstPass = false;
         }
 
         Session::set('uploadCache', $uploadsBatch);
