@@ -48,8 +48,8 @@
 <br/>
 @endif
 @foreach($uploads as $upload)
-<div class="well">
-	<div class="row upload-box" id="row_for_upload_{{ $upload->id }}" style="padding-bottom:1cm;">
+<div class="well" id="row_for_upload_{{ $upload->id }}">
+	<div class="row upload-box" style="padding-bottom:1cm;">
 		<div class="span3">
 			@if (strpos(Route::getCurrentRoute()->getPath(), '/admin/') === 0)
 			<a href="/admin/uploads/{{ $upload->id }}/image">
