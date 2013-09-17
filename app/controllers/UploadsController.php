@@ -39,7 +39,8 @@ class UploadsController extends BaseController {
 		}
 
 		foreach ($allUploads as $u) {
-			if($u->getAvgRating() >= $topUploadRating && $u->getNumRatings() >= $topUploadRatingCount){
+			if($u->getAvgRating() > $topUploadRating || 
+				($u->getAvgRating() == $topUploadRating && $u->getNumRatings() >= $topUploadRatingCount){
 				// 5 ratings minimum for all time rating
 				if(($timespan === 'ever' && $u->getNumRatings() >= 5) || $timespan !== 'ever'){
 					$topUploadId = $u->id;
