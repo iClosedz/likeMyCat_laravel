@@ -26,7 +26,7 @@ margin-bottom: 10px;
 
 @section('content')
 <div class="row-fluid">
-	<div class="span8" id="current_box" style="outline: black solid thin; text-align: center;">
+	<div class="span8 well" id="current_box" style="text-align: center;">
 		<h2>Rate this cat!</h2>
 		<div class="btn-toolbar btn-rating-bar visible-phone">
 			<span id="star-phone"></span>
@@ -48,7 +48,7 @@ margin-bottom: 10px;
 		<p class="lead" style="margin-top:.5cm;"><span id="cat_name" class="catName"></span></p>
 		<a href="#" id="share_url"><i class="icon-share"></i> Share</a>
 	</div>
-	<div class="span2" style="outline: black dotted thin; text-align: center; padding-bottom:.5cm;">
+	<div class="span2 well" style="text-align: center;">
 		<div id="previous_div_box" class="" style="visibility:hidden; display: none;">
 			<a class="getPrevImage" id="previous_link" href="#"><h4>&laquo; Previous</h4></a>
 			<img class="getPrevImage" id="img_upload_prev" alt="Previous Image" src="/assets/img/placeholder_130.gif" />
@@ -79,7 +79,9 @@ margin-bottom: 10px;
 			<span class="catName" id="top_cat_ever_name"></span>
 			<br/>
 			<small>Rating: <span id="top_cat_ever_rating"></span></small>
-			<br/>
+		</div>
+		<hr/>
+		<div>
 			<h4><a href="{{ URL::to('uploads/top/view') }}">View Top Cats</a></h4>
 		</div>
 	</div>
