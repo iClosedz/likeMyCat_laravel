@@ -9,7 +9,9 @@
 @stop
 
 @section('content')
-	<h1>Cat Uploader</h1>
+	<div class="page-header">
+	  <h1>Upload <small>and find out how your cat rates!</small></h1>
+	</div>
 	<div class="fileupload fileupload-new" data-provides="fileupload">
 		<div class="fileupload-preview thumbnail" style="width: 300px; height: 225px;"></div>
 		<div>
@@ -40,8 +42,12 @@
 	</div>
 	@endif
 
-	@if (Auth::guest())
-		<div>Uploading as guest</div>
+	@if (Auth::check())
+		<div>Uploading as <strong>{{{ Auth::user()->email }}}</strong>.</div>
+	@else
+		<div class="well">
+			<a href="{{ URL::to('signup') }}">Sign up</a> to track and manage your uploaded cats.
+		</div>
 	@endif
 
 @stop

@@ -17,6 +17,7 @@ content:"\"";
 .btn-rating-bar{
 margin-bottom: 10px;
 }
+
 @stop
 
 @section('additionalScriptTags')

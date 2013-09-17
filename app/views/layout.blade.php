@@ -6,8 +6,8 @@
 	@yield('title')
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
-	<meta name="author" content="">
+	<meta name="description" content="Like My Cat">
+	<meta name="author" content="Bot Enterprises">
 
 	<!-- Le styles -->
 	<link href="/assets/css/bootstrap.css" rel="stylesheet">
@@ -29,7 +29,9 @@
 		@endif
 		@yield('customStyles')
 	</style>
+	
 	<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
 
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
@@ -44,7 +46,7 @@
 	</head>
 	<body>
 		<!--- start nav bar -->
-		<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container">
 					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -53,13 +55,14 @@
 					<a class="brand" href="{{ URL::to('rate') }}">Like My Cat?</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li><a href="{{ URL::to('rate') }}"><i class="icon-thumbs-up icon-white"></i> Rate</a></li> 
-							<li><a href="{{ URL::to('uploader') }}"><i class="icon-upload icon-white"></i> Upload</a></li>
-							<li><a href="{{ URL::to('about') }}"><i class="icon-info-sign icon-white"></i> About</a></li> 
-							<li><a href="{{ URL::to('contact') }}"><i class="icon-envelope icon-white"></i> Contact</a></li> 
+							<li><a href="{{ URL::to('rate') }}"><i class="icon-thumbs-up"></i> Rate</a></li> 
+							<li><a href="{{ URL::to('uploader') }}"><i class="icon-upload"></i> Upload</a></li>
+							<li><a href="{{ URL::to('about') }}"><i class="icon-info-sign"></i> About</a></li>
+							<li><a href="{{ URL::to('contact') }}"><i class="icon-envelope"></i> Contact</a></li> 
 							@if (Auth::check())
+							<li class="divider-vertical"></li>
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{{ $user->email }}}<b class="caret"></b></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> {{{ $user->email }}}<b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li><a href="{{ URL::to('logout') }}">Log Out</a></li>
 									<li class="divider"></li>
@@ -76,8 +79,6 @@
 									@endif
 								</ul>
 							</li>
-							@else
-							<li><a href="{{ URL::to('signup') }}">Sign Up</a></li> 
 							@endif
 						</ul>
 						@if (Auth::guest())
@@ -85,6 +86,7 @@
 							{{ Form::email('username', null, array('class' => 'span2', 'placeholder' => 'Email')) }}
 							{{ Form::password('password', array('class' => 'span2', 'placeholder' => 'Password')) }}
 							{{ Form::button('Sign In', array('class' => 'btn', 'type' => 'submit')) }}
+							<a href="{{ URL::to('signup') }}"><button class="btn btn-primary" type="button">Sign Up</button></a>
 							{{ Form::close() }}
 						@endif
 					</div>
