@@ -2,6 +2,23 @@
 
 class UploadsController extends BaseController {
 
+	function viewTopUploads(){
+
+		$paginateSize = 10;
+		$minimumNumRatings = 5;
+
+        $uploads = Upload::with('ratings', 'guestRatings')
+        	->whereRaw('((select count(rating) from ratings where ratings.upload_id = uploads.id) + (select count(rating) from ratings_guest where ratings_guest.upload_id = uploads.id)) >= ' . $minimumNumRatings)
+            ->orderBy(DB::raw(
+        	'cast(((select sum(rating) from ratings where ratings.upload_id = uploads.id) '
+            . ' + (select sum(rating) from ratings_guest where ratings_guest.upload_id = uploads.id)) as float) '
+            . ' / ((select count(rating) from ratings where ratings.upload_id = uploads.id) '
+            . ' + (select count(rating) from ratings_guest where ratings_guest.upload_id = uploads.id))'
+        	), 'desc')->paginate($paginateSize);
+
+		return View::make('uploads.top')->with('uploads', $uploads)->with('paginateSize', $paginateSize); 
+	}
+
 	function getTopUploads($timespan){
 		$topUploadId = 0;
 		$topUploadRating = 0;
@@ -23,7 +40,7 @@ class UploadsController extends BaseController {
 		foreach ($allUploads as $u) {
 			if($u->getAvgRating() > $topUploadRating){
 				// 5 ratings minimum for all time rating
-				if(($timespan === 'ever' && $u->getNumRatings() > 5) || $timespan !== 'ever'){
+				if(($timespan === 'ever' && $u->getNumRatings() >= 5) || $timespan !== 'ever'){
 					$topUploadId = $u->id;
 					$topUploadRating = $u->getAvgRating();
 				}
