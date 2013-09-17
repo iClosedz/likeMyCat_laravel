@@ -48,7 +48,7 @@
 <br/>
 @endif
 @foreach($uploads as $upload)
-<div>
+<div class="well">
 	<div class="row upload-box" id="row_for_upload_{{ $upload->id }}" style="padding-bottom:1cm;">
 		<div class="span3">
 			@if (strpos(Route::getCurrentRoute()->getPath(), '/admin/') === 0)
@@ -90,8 +90,9 @@
 			@else
 			<btn class="btn btn-danger hide-image" uploadid="{{$upload->id}}" hideafter="true">Delete</btn>
 			@endif
-			</div>
 		</div>
+	</div>
+</div>
 		<br/>
 		@endforeach
 		<?php echo $uploads->links(); ?>

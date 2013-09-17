@@ -4,6 +4,18 @@
 <title>View Top Uploads</title>
 @stop
 
+@section('customStyles')
+.catName{
+font-style:italic;
+}
+.catName:before{
+content:"\"";
+}
+.catName:after{
+content:"\"";
+}
+@stop
+
 @section('content')
 <div class="page-header">
   <h1>Top Cats <small>(Minimum 5 votes)</small></h1>
@@ -16,7 +28,7 @@
 	}
 ?>
 @foreach($uploads as $upload)
-<div>
+<div class="well">
 	<div class="row upload-box" id="row_for_upload_{{ $upload->id }}" style="padding-bottom:1cm;">
 		<div class="span3">
 			<a href="{{ URL::to('rate') }}#{{$upload->id}}">
@@ -34,7 +46,8 @@
 				@else
 				<span class="badge badge-info">#{{ $topUploadCount++ }}</span>
 				@endif
-				<strong>"{{{ $upload->name }}}"</strong>
+				<!--<strong>"{{{ $upload->name }}}"</strong>-->
+				<span class="catName">{{{ $upload->name }}}</span>
 				<br/>
 				<strong>Average rating</strong>: {{ round($upload->getAvgRating(),1) }}
 				<br/>
