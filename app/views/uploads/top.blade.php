@@ -11,7 +11,7 @@
 <?php 
 	$topUploadCount = 1; 
 
-	if(Input::has('page') && Input::get('page') > 1){
+	if(Input::has('page') && Input::get('page') > 0){
 		$topUploadCount += ((Input::get('page')-1) * $paginateSize);
 	}
 ?>
