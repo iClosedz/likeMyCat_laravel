@@ -22,6 +22,7 @@ class UploadsController extends BaseController {
 	function getTopUploads($timespan){
 		$topUploadId = 0;
 		$topUploadRating = 0;
+		$topUploadRatingCount = 0;
 
 		if($timespan === 'ever'){
 			$allUploads = Upload::with('ratings', 'guestRatings')->get();
@@ -38,11 +39,12 @@ class UploadsController extends BaseController {
 		}
 
 		foreach ($allUploads as $u) {
-			if($u->getAvgRating() > $topUploadRating){
+			if($u->getAvgRating() >= $topUploadRating && $u->getNumRatings() >= $topUploadRatingCount){
 				// 5 ratings minimum for all time rating
 				if(($timespan === 'ever' && $u->getNumRatings() >= 5) || $timespan !== 'ever'){
 					$topUploadId = $u->id;
 					$topUploadRating = $u->getAvgRating();
+					$topUploadRatingCount = $u->getNumRatings();
 				}
 			}
 		}
