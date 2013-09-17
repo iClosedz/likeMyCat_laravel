@@ -79,6 +79,8 @@ margin-bottom: 10px;
 			<span class="catName" id="top_cat_ever_name"></span>
 			<br/>
 			<small>Rating: <span id="top_cat_ever_rating"></span></small>
+			<br/>
+			<h4><a href="{{ URL::to('uploads/top/view') }}">View Top Cats</a></h4>
 		</div>
 	</div>
 </div>
