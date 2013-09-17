@@ -16,7 +16,7 @@ class UploadsController extends BaseController {
             . ' + (select count(rating) from ratings_guest where ratings_guest.upload_id = uploads.id))'
         	), 'desc')->paginate($paginateSize);
 
-		return View::make('uploads.top')->with('uploads', $uploads)->with('paginateSize', $paginateSize); 
+		return View::make('uploads.top')->with('user', Auth::user())->with('uploads', $uploads)->with('paginateSize', $paginateSize); 
 	}
 
 	function getTopUploads($timespan){
