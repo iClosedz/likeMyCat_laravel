@@ -31,10 +31,10 @@ class UploadsController extends BaseController {
 
 			$allUploads = Upload::with(array(
 				'ratings' => function($query) use($sinceWhen) { 
-					$query->where('updated_at', '>', $sinceWhen);
+					$query->where('updated_at', '>=', $sinceWhen);
 				}, 
 				'guestRatings' => function($query) use($sinceWhen) { 
-					$query->where('created_at', '>', $sinceWhen);
+					$query->where('created_at', '>=', $sinceWhen);
 				}))->get();
 		}
 
