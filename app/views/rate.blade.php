@@ -53,7 +53,7 @@ margin-bottom: 10px;
 			<a class="getPrevImage" id="previous_link" href="#"><h4>&laquo; Previous</h4></a>
 			<img class="getPrevImage" id="img_upload_prev" alt="Previous Image" src="/assets/img/placeholder_130.gif" />
 			<div>
-				<small>Average rating: <span id="avg_rating_display">0.0</span>
+				<small>Rating: <span id="avg_rating_display">0.0</span>
 					<br/>
 					(<span id="rating_count_display">0</span> votes)
 				</small>
@@ -74,7 +74,7 @@ margin-bottom: 10px;
 		</div>
 		<div>
 			<h5>All Time Leader:</h5>
-			<a href="#" id="top_cat_ever_link"><img id="img_top_cat_ever" alt="Top Cat Ever" src="/assets/img/placeholder_130.gif" /></a>
+			<a href="" id="top_cat_ever_link"><img id="img_top_cat_ever" alt="Top Cat Ever" src="/assets/img/placeholder_130.gif"/></a>
 			<br/>
 			<span class="catName" id="top_cat_ever_name"></span>
 			<br/>

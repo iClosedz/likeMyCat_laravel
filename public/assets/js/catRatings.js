@@ -71,6 +71,10 @@ function getTodaysTopCat(){
       document.getElementById('top_cat_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
       document.getElementById('img_top_cat').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
       $("#top_cat_link").attr("href", '/rate#' + data['results']['upload_id']);
+      $("#top_cat_link").bind('click', function() {
+         getImageData(data['results']['upload_id']);
+         return false;
+      });
    }
 })
   .fail(function (data) {
@@ -88,12 +92,20 @@ function getTopCatAllTime(){
       document.getElementById('top_cat_ever_rating').innerHTML = parseFloat(data['results']['rating']).toFixed(1);
       document.getElementById('img_top_cat_ever').src = '/uploads/' + data['results']['upload_id'] + '/image/thumb';
       $("#top_cat_ever_link").attr("href", '/rate#' + data['results']['upload_id']);
+      $("#top_cat_ever_link").bind('click', function() {
+         getImageData(data['results']['upload_id']);
+         return false;
+      });
    }
 
 })
   .fail(function (data) {
    console.log("getTodaysTopCat failed: " + data);
 });
+}
+
+function loadNextImageById(uploadId){
+   console.log('loadNextImageById() ' + uploadId);
 }
 
 function flagImage(uploadId) {
@@ -217,22 +229,28 @@ function setShareId(shareId) {
    document.getElementById('share_url').href = 'https://www.likemycat.com/rate#' + shareId;
 }
 
-function getImageData() {
+function getImageData(uploadId) {
    console.log('getImageData (firstTimeLoad: ' + firstTimeLoad + ')');
    var shareImageId = '';
-   if (firstTimeLoad) {
+   var hasUploadId = typeof uploadId !== 'undefined';
+   
+   if(hasUploadId){
+      shareImageId = uploadId;
+      console.log('uploadId: ' + uploadId);
+   }
+   else if (firstTimeLoad) {
       shareImageId = getShareId();
       console.log('shareImageId: ' + shareImageId);
    }
 
    $.post("/rate/getUploads", {
-      'how_many_results': (firstTimeLoad ? 2 : 1),
-      'exclude_image_id': (firstTimeLoad ? -1 : nextImage.uploadId),
+      'how_many_results': ((firstTimeLoad || hasUploadId) ? 2 : 1),
+      'exclude_image_id': ((firstTimeLoad || hasUploadId) ? -1 : nextImage.uploadId),
       'share_image_id': (shareImageId === '' ? -1 : shareImageId)
    })
    .done(function (data) {
       console.log('getUploadService.php returned "' + data + '"');
-      if (firstTimeLoad) {
+      if (firstTimeLoad || hasUploadId) {
          currentImage.uploadId = data['results'][0]['upload_id'];
          currentImage.fileName = data['results'][0]['file_name'];
          currentImage.fileNameThumb = data['results'][0]['file_name_thumb'];
