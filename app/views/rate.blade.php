@@ -18,11 +18,26 @@ content:"\"";
 margin-bottom: 10px;
 }
 
+.fb-comments, .fb-comments span, .fb-comments.fb_iframe_widget span iframe {
+    width: 100% !important;
+}
+
 @stop
 
 @section('additionalScriptTags')
 <script src="/assets/js/jquery.raty.min.js"></script>
 <script src="/assets/js/catRatings.js"></script>
+@stop
+
+@section('startOfBody')
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=487690214655188&status=0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 @stop
 
 @section('content')
@@ -48,6 +63,10 @@ margin-bottom: 10px;
 		<img id="img_upload_current" alt="Current Image" src="/assets/img/placeholder_600.gif" />
 		<p class="lead" style="margin-top:.5cm;"><span id="cat_name" class="catName"></span></p>
 		<a href="#" id="share_url"><i class="icon-share"></i> Share</a>
+		<hr/>
+		<div id="comments">
+			<!--<div class="fb-comments" data-href="https://www.likemycat.com/rate" data-width="400"></div>-->
+		</div>
 	</div>
 	<div class="span2 well" style="text-align: center;">
 		<div id="previous_div_box" class="" style="visibility:hidden; display: none;">

@@ -61,6 +61,18 @@ $(document).ready(function () {
    });
 });
 
+function getBaseUrl(){
+   if (!window.location.origin){
+      window.location.origin = window.location.protocol+"//"+window.location.host;
+   }
+
+   if (!window.location.origin){
+      return 'https://www.likemycat.com';
+   }
+
+  return window.location.origin;
+}
+
 function getTodaysTopCat(){
   $.get("/uploads/top/day", {})
   .done(function (data) {
@@ -226,7 +238,15 @@ function getShareId() {
 function setShareId(shareId) {
    console.log('setShareId(' + shareId + ')');
    window.location.hash = shareId;
-   document.getElementById('share_url').href = 'https://www.likemycat.com/rate#' + shareId;
+   document.getElementById('share_url').href = getBaseUrl() + '/rate#' + shareId;
+
+   updateCommentsUrl(getBaseUrl() + '/rate#' + shareId);
+}
+
+function updateCommentsUrl(url){
+   console.log('updateCommentsUrl(' + url + ')');
+   document.getElementById('comments').innerHTML='<div class="fb-comments" data-href="'+url+'" data-num-posts="10" data-width="400"></div>'; 
+   FB.XFBML.parse(document.getElementById('comments'));
 }
 
 function getImageData(uploadId) {

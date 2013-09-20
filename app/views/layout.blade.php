@@ -8,6 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="Like My Cat">
 	<meta name="author" content="Bot Enterprises">
+	<meta property="fb:app_id" content="487690214655188"/>
 
 	<!-- Le styles -->
 	<link href="/assets/css/bootstrap.css" rel="stylesheet">
@@ -48,6 +49,7 @@
 		@yield('additionalHeadData')
 	</head>
 	<body>
+		@yield('startOfBody')
 		<!--- start nav bar -->
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
