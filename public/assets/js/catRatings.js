@@ -241,8 +241,17 @@ function setShareId(shareId) {
    window.location.hash = shareId;
    document.getElementById('share_url').href = curUrl;
 
+   updateImageMetaTagForFacebook(shareId);
    updateLikeUrl(curUrl);
    updateCommentsUrl(curUrl);
+}
+
+function updateImageMetaTagForFacebook(imageId){
+   console.log('updating metatag to ' + '<meta property="og:image" name="fb_image_metatag" content="' + getBaseUrl() + '/uploads/' + imageId + '/image' + '"/>'); 
+   //$('meta[name=fb_image_metatag]').remove();
+   //$('head').append( '<meta property="og:image" name="fb_image_metatag" content="' + getBaseUrl() + '/uploads/' + imageId + '/image' + '"/>' );
+
+   $('meta[property=\'og:image\']').attr('content', '<meta property="og:image" name="fb_image_metatag" content="' + getBaseUrl() + '/uploads/' + imageId + '/image' + '"/>');
 }
 
 function updateCommentsUrl(url){
