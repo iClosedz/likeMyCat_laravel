@@ -237,10 +237,12 @@ function getShareId() {
 
 function setShareId(shareId) {
    console.log('setShareId(' + shareId + ')');
+   var curUrl = getBaseUrl() + '/rate#' + shareId;
    window.location.hash = shareId;
-   document.getElementById('share_url').href = getBaseUrl() + '/rate#' + shareId;
+   document.getElementById('share_url').href = curUrl;
 
-   updateCommentsUrl(getBaseUrl() + '/rate#' + shareId);
+   updateCommentsUrl(curUrl);
+   updateLikeUrl(curUrl);
 }
 
 function updateCommentsUrl(url){
