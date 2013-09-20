@@ -56,6 +56,12 @@ Route::get('login/fb/callback', function() {
         	$user->save();
 			$user->grantRole(Role::getByRoleName('user'))->grantRole(Role::getByRoleName('uploader'));
  		} else {
+ 			/*
+ 			 * Resetting password because account could have be registered to a *bad guy*
+ 			 * who was just waiting for a legit user to link to FB account.
+ 			 * See: https://lightraft.com/blog/account-hijacking-with-third-party-login/
+ 			 */
+ 			$user->password = 'facebook-login-only'; /* resetting password here to prevent vuln */
  			$user->photo = 'https://graph.facebook.com/'.$me['username'].'/picture?type=large';
         	$user->save();
  		}
