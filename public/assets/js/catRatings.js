@@ -58,6 +58,16 @@ $(document).ready(function () {
             }, 800);
          }
       });
+
+      
+
+      FB.Event.subscribe('comment.create',
+         function(response) {
+            alert('You liked the URL: ' + response);
+            $("#comments").hide().fadeIn('fast');
+         }
+      );
+
    });
 });
 
