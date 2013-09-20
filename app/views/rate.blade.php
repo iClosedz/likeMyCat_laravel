@@ -63,6 +63,9 @@ margin-bottom: 10px;
 		<img id="img_upload_current" alt="Current Image" src="/assets/img/placeholder_600.gif" />
 		<p class="lead" style="margin-top:.5cm;"><span id="cat_name" class="catName"></span></p>
 		<a href="#" id="share_url"><i class="icon-share"></i> Share</a>
+		<!--<div class="fb-like" data-href="https://www.daknag.me/rate" data-width="300" data-layout="button_count" data-show-faces="true" data-send="true"></div>-->
+		<div id="like">
+		</div>
 		<hr/>
 		<div id="comments">
 			<!--<div class="fb-comments" data-href="https://www.likemycat.com/rate" data-width="400"></div>-->

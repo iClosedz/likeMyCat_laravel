@@ -249,6 +249,12 @@ function updateCommentsUrl(url){
    FB.XFBML.parse(document.getElementById('comments'));
 }
 
+function updateLikeUrl(url){
+   console.log('updateLikeUrl(' + url + ')');
+   document.getElementById('like').innerHTML='<div class="fb-like" data-href="'+url+'" data-width="300" data-layout="button_count" data-show-faces="true" data-send="true"></div>'; 
+   FB.XFBML.parse(document.getElementById('like'));
+}
+
 function getImageData(uploadId) {
    console.log('getImageData (firstTimeLoad: ' + firstTimeLoad + ')');
    var shareImageId = '';
