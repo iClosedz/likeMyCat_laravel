@@ -743,8 +743,8 @@ class QueryBuilder
      */
     public function andWhere($where)
     {
-        $args = func_get_args();
         $where = $this->getQueryPart('where');
+        $args = func_get_args();
 
         if ($where instanceof CompositeExpression && $where->getType() === CompositeExpression::TYPE_AND) {
             $where->addMultiple($args);
@@ -776,8 +776,8 @@ class QueryBuilder
      */
     public function orWhere($where)
     {
-        $args = func_get_args();
         $where = $this->getQueryPart('where');
+        $args = func_get_args();
 
         if ($where instanceof CompositeExpression && $where->getType() === CompositeExpression::TYPE_OR) {
             $where->addMultiple($args);
@@ -869,8 +869,8 @@ class QueryBuilder
      */
     public function andHaving($having)
     {
-        $args = func_get_args();
         $having = $this->getQueryPart('having');
+        $args = func_get_args();
 
         if ($having instanceof CompositeExpression && $having->getType() === CompositeExpression::TYPE_AND) {
             $having->addMultiple($args);
@@ -892,8 +892,8 @@ class QueryBuilder
      */
     public function orHaving($having)
     {
-        $args = func_get_args();
         $having = $this->getQueryPart('having');
+        $args = func_get_args();
 
         if ($having instanceof CompositeExpression && $having->getType() === CompositeExpression::TYPE_OR) {
             $having->addMultiple($args);
