@@ -4,6 +4,13 @@
 <title>Like My Cat</title>
 @stop
 
+@section('additionalHeadData')
+<meta property="og:url" content="https://www.likemycat.com/" />
+<meta property="og:image" content="https://www.likemycat.com/assets/img/cathead.png" />
+<meta property="og:title" content="Like My Cat" />
+<meta property="og:description" content="Like and Rate all your favorite cats!" />`
+@stop
+
 @section('customStyles')
 .catName{
 font-style:italic;

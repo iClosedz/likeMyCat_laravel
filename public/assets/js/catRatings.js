@@ -241,8 +241,8 @@ function setShareId(shareId) {
    window.location.hash = shareId;
    document.getElementById('share_url').href = curUrl;
 
-   updateCommentsUrl(curUrl);
    updateLikeUrl(curUrl);
+   updateCommentsUrl(curUrl);
 }
 
 function updateCommentsUrl(url){
