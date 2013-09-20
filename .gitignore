@@ -5,6 +5,7 @@ composer.phar
 
 # Configuration
 /app/config/local
+/app/config/dev
 /app/config/staging
 /app/config/production
 

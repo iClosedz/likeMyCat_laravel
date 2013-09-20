@@ -14,6 +14,32 @@ Route::get('/', function(){
 /* Binding upload_id to Upload model */
 Route::model('upload_id', 'Upload'); 
 
+/** 
+ * Facebook routes
+ */
+Route::get('login/fb', function() {
+    $facebook = new Facebook(Config::get('facebook'));
+    $params = array(
+        'redirect_uri' => url('/login/fb/callback'),
+        'scope' => 'email',
+    );
+    return Redirect::to($facebook->getLoginUrl($params));
+});
+
+Route::get('login/fb/callback', function() {
+    $code = Input::get('code');
+    if (strlen($code) == 0) return Redirect::to('/')->with('message', 'There was an error communicating with Facebook');
+ 
+    $facebook = new Facebook(Config::get('facebook'));
+    $uid = $facebook->getUser();
+ 
+    if ($uid == 0) return Redirect::to('/')->with('message', 'There was an error');
+ 
+    $me = $facebook->api('/me');
+ 
+    dd($me);
+});
+
 /**
  * Route groups
  */

@@ -76,6 +76,10 @@ implements UserInterface, RemindableInterface {
 		return $this->hasMany('Upload')->orderBy('uploads.id', 'desc');
 	}
 
+	public function profiles(){
+        return $this->hasMany('Profile');
+    }
+
 	// we can define a many-to-many relation using the belongsToMany method:
 	public function roles()
 	{
