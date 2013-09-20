@@ -53,6 +53,9 @@
 			@endif
 			{{ Form::button('Sign In', array('class' => 'btn btn-large btn-primary', 'type' => 'submit')) }}
 			{{ Form::button('Forgot Password', array('class' => 'btn btn-large btn-warn', 'type' => 'submit', 'name' => 'forgot', 'value' => 'forgot')) }}
+			<hr/>
+			<a href="{{ URL::to('signup') }}"><button class="btn btn-large btn-success" type="button">Create a new account</button></a>
+
 		{{ Form::close() }}
 	@else
 		<h1>You're already logged in. Why are you here?</h1>

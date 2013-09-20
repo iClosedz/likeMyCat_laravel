@@ -26,6 +26,61 @@ Route::get('login/fb', function() {
     return Redirect::to($facebook->getLoginUrl($params));
 });
 
+
+Route::get('login/fb/callback', function() {
+    $code = Input::get('code');
+    if (strlen($code) == 0) {
+    	return Redirect::to('/')->with('message', 'There was an error communicating with Facebook');
+    }
+ 
+    $facebook = new Facebook(Config::get('facebook'));
+    $uid = $facebook->getUser();
+ 
+    if ($uid == 0) {
+    	return Redirect::to('/')->with('message', 'There was an error');
+    }
+ 
+    $me = $facebook->api('/me');
+ 
+    $profile = Profile::whereUid($uid)->first();
+    if (empty($profile)) {
+ 
+ 		$user = User::getUserByEmail($me['email']);
+ 		if(empty($user)){
+ 			$user = new User;
+ 			$user->email = $me['email'];
+ 			$user->password = 'facebook-login-only';
+ 			$user->is_guest = false;
+ 			$user->ip_address = ip2long(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 1);
+ 			$user->photo = 'https://graph.facebook.com/'.$me['username'].'/picture?type=large';
+        	$user->save();
+			$user->grantRole(Role::getByRoleName('user'))->grantRole(Role::getByRoleName('uploader'));
+ 		} else {
+ 			$user->photo = 'https://graph.facebook.com/'.$me['username'].'/picture?type=large';
+        	$user->save();
+ 		}
+ 
+        $profile = new Profile();
+        $profile->uid = $uid;
+        $profile->username = $me['username'];
+        $profile->user_id = $user->id;
+        $profile->access_token_secret = 'what is this for';
+        //$profile = $user->profiles()->save($profile);
+    }
+ 
+    $profile->access_token = $facebook->getAccessToken();
+    $profile->save();
+ 
+    $user = $profile->user;
+ 
+    Auth::login($user);
+ 
+    return Redirect::to('/')->with('message', 'Logged in with Facebook');
+});
+
+
+/*
+// for testing
 Route::get('login/fb/callback', function() {
     $code = Input::get('code');
     if (strlen($code) == 0) return Redirect::to('/')->with('message', 'There was an error communicating with Facebook');
@@ -39,6 +94,8 @@ Route::get('login/fb/callback', function() {
  
     dd($me);
 });
+*/
+
 
 /**
  * Route groups

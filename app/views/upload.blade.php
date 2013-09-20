@@ -46,7 +46,7 @@
 		<div>Uploading as <strong>{{{ Auth::user()->email }}}</strong>.</div>
 	@else
 		<div class="well">
-			<a href="{{ URL::to('signup') }}">Sign up</a> to track and manage your uploaded cats.
+			<a href="{{ URL::to('signup') }}">Sign up</a> or <a href="{{ URL::to('login/fb') }}">log in via Facebook</a> to track and manage your uploaded cats.
 		</div>
 	@endif
 

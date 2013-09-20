@@ -31,6 +31,9 @@
 	</style>
 	
 	<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+	<link href="/assets/css/social-buttons.css" rel="stylesheet">
+
 
 
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -82,12 +85,24 @@
 							@endif
 						</ul>
 						@if (Auth::guest())
-							{{ Form::open(array('route' => 'post login', 'class'=>'navbar-form pull-right')) }}
-							{{ Form::email('username', null, array('class' => 'span2', 'placeholder' => 'Email')) }}
-							{{ Form::password('password', array('class' => 'span2', 'placeholder' => 'Password')) }}
-							{{ Form::button('Sign In', array('class' => 'btn', 'type' => 'submit')) }}
-							<a href="{{ URL::to('signup') }}"><button class="btn btn-primary" type="button">Sign Up</button></a>
-							{{ Form::close() }}
+							<!-- {{ Form::open(array('route' => 'post login', 'class'=>'navbar-form pull-right')) }} -->
+							<!-- {{ Form::email('username', null, array('class' => 'span2', 'placeholder' => 'Email')) }} -->
+							<!-- {{ Form::password('password', array('class' => 'span2', 'placeholder' => 'Password')) }} -->
+							<!-- {{ Form::button('Sign In', array('class' => 'btn', 'type' => 'submit')) }} -->
+							<!-- <a href="{{ URL::to('signup') }}"><button class="btn btn-primary" type="button">Sign Up</button></a> -->
+							<!-- <a class="navbar-form pull-right" href="{{ URL::to('login/fb') }}"><img src="/assets/img/fb_connect.png"/></a> -->
+							<!-- {{ Form::close() }} -->
+							<span class="navbar-form pull-right">
+								<a href="{{ URL::to('login') }}"><button class="btn">Log In</button></a>
+								<a href="{{ URL::to('login/fb') }}"><button class="btn btn-facebook"><i class="icon-facebook"></i> | Connect with Facebook</button></a>
+							</span>
+						@endif
+						@if (Auth::check())
+							@if (!empty($user->photo))
+								<span class="navbar-form pull-right">
+									<img src="{{ $user->photo }}" class="img-polaroid" height="30" width="30"/>
+								</span>
+							@endif
 						@endif
 					</div>
 				</div>
