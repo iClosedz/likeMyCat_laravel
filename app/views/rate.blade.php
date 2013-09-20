@@ -60,6 +60,13 @@ margin-bottom: 10px;
     });
 
     // Additional initialization code such as adding Event Listeners goes here
+
+     FB.Event.subscribe('comment.create',
+         function(response) {
+            alert('You liked the URL: ' + response);
+            $("#comments").hide().fadeIn('fast');
+ 			}
+  		);
   };
 
   // Load the SDK asynchronously
