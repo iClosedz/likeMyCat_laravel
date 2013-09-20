@@ -63,8 +63,9 @@ margin-bottom: 10px;
 
      FB.Event.subscribe('comment.create',
          function(response) {
-            alert('You liked the URL: ' + response);
-            $("#comments").hide().fadeIn('fast');
+            //alert('You liked the URL: ' + response);
+            //$("#comments").hide().fadeIn('fast');
+            console.log('You liked the URL: ' + response);
  			}
   		);
   };
