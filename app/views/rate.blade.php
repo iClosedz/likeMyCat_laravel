@@ -17,7 +17,7 @@ function baseUrl(){
 $baseUrl = baseUrl();
 ?>
 <!--<meta property="og:url" content="{{ $baseUrl }}" />-->
-<meta property="og:image" content="{{ $baseUrl }}/assets/img/cathead.png" />
+<meta property="og:image" name="fb_image_metatag" content="{{ $baseUrl }}/assets/img/cathead_large.png" />
 <meta property="og:title" content="Like My Cat" />
 <meta property="og:description" content="Like and Rate all your favorite cats!" />`
 @stop
