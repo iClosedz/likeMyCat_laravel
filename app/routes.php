@@ -14,6 +14,14 @@ Route::get('/', function(){
 /* Binding upload_id to Upload model */
 Route::model('upload_id', 'Upload'); 
 
+Route::get('rate/{upload_id}', function(Upload $upload){
+	return View::make('rateById')
+		->with('user', Auth::user())
+		->with('currentUpload', $upload)
+		->with('nextUpload', $upload)
+		->with('previousUpload', $upload);
+})->where('upload_id', '[0-9]+');
+
 /** 
  * Facebook routes
  */
