@@ -5,8 +5,19 @@
 @stop
 
 @section('additionalHeadData')
-<meta property="og:url" content="https://www.likemycat.com/" />
-<meta property="og:image" content="https://www.likemycat.com/assets/img/cathead.png" />
+<?php
+function baseUrl(){
+  return sprintf(
+    "%s://%s",
+    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+    $_SERVER['HTTP_HOST']
+  );
+}
+
+$baseUrl = baseUrl();
+?>
+<meta property="og:url" content="{{ $baseUrl }}" />
+<meta property="og:image" content="{{ $baseUrl }}/assets/img/cathead.png" />
 <meta property="og:title" content="Like My Cat" />
 <meta property="og:description" content="Like and Rate all your favorite cats!" />`
 @stop
