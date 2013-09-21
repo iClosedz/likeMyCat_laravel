@@ -79,7 +79,7 @@ Route::get('login/fb/callback', function() {
  
     $user = $profile->user;
  
-    Auth::login($user);
+    Auth::login($user, true); // true == remember
  
     return Redirect::to('/')->with('message', 'Logged in with Facebook');
 });
