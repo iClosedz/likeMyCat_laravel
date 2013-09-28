@@ -143,13 +143,18 @@ class ImageUploadController extends BaseController {
         $mime      = Input::file('photo')->getMimeType();
         
         $orientation = 0;
-        $exif        = exif_read_data($path);
-        if (!empty($exif['Orientation'])) {
-            $orientation = $exif['Orientation'];
-        } elseif (isset($exif['COMPUTED']) && isset($exif['COMPUTED']['Orientation'])) {
-            $orientation = $exif['COMPUTED']['Orientation'];
-        } elseif (isset($exif['IFD0']) && isset($exif['IFD0']['Orientation'])) {
-            $orientation = $exif['IFD0']['Orientation'];
+
+        try{
+            $exif        = exif_read_data($path);
+            if (!empty($exif['Orientation'])) {
+                $orientation = $exif['Orientation'];
+            } elseif (isset($exif['COMPUTED']) && isset($exif['COMPUTED']['Orientation'])) {
+                $orientation = $exif['COMPUTED']['Orientation'];
+            } elseif (isset($exif['IFD0']) && isset($exif['IFD0']['Orientation'])) {
+                $orientation = $exif['IFD0']['Orientation'];
+            }
+        } catch (Exception $e) {
+            Log::error('Exception when attempting to read exif data: ' .  $e->getMessage());
         }
         
         $uniqueFileName  = uniqid();
