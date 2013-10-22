@@ -3,6 +3,14 @@
 //namespace ImageUpload;
 //use ImageUpload;
 
+/* treat errors as exceptions for this module */
+function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+    throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+}
+set_error_handler("exception_error_handler");
+
+
+
 class ImageUploadController extends BaseController {
     
     const UPLOAD_SIZE_LIMIT = 60000000; /* 6 mb */
@@ -153,7 +161,7 @@ class ImageUploadController extends BaseController {
             } elseif (isset($exif['IFD0']) && isset($exif['IFD0']['Orientation'])) {
                 $orientation = $exif['IFD0']['Orientation'];
             }
-        } catch (Exception $e) {
+        } catch (ErrorException $e) {
             Log::error('Exception when attempting to read exif data: ' .  $e->getMessage());
         }
         
